@@ -45,9 +45,8 @@
   .btn-submit{background:var(--primary);color:#fff;}
   .btn-submit:hover{background:#154a8a;}
   .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
-  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
   .btn-answer:hover{background:#e8f0fb;}
-  .btn-answer:disabled{color:var(--muted);border-color:var(--border);cursor:not-allowed;}
 
   .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
   .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
@@ -96,30 +95,24 @@
   <div class="q-block" data-type="short" data-patterns='["関数"]' data-example="関数" data-unlock="2026-04-21">
     <div class="q-label">問A-1（短答）</div>
     <div class="q-text">コード 2-3 の <code>len(df)</code> における <code>len</code> は _____ である。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["メソッド"]' data-example="メソッド" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["メソッド"]' data-example="メソッド" data-unlock="2026-04-21">
     <div class="q-label">問A-2（短答）</div>
     <div class="q-text">コード 2-7 の <code>df.drop()</code> における <code>drop</code> は _____ である。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="len は関数でオブジェクトの外から呼び出すが、drop はメソッドでオブジェクトに属する" data-unlock="2026-04-20">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="len は関数でオブジェクトの外から呼び出すが、drop はメソッドでオブジェクトに属する" data-unlock="2026-04-21">
     <div class="q-label">問A-3（選択）</div>
     <div class="q-text"><code>len(df)</code> と <code>df.drop()</code> の呼び出し方の違いを最もよく説明しているのはどれか。</div>
     <div class="choices">
@@ -130,7 +123,7 @@
     </div>
     <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
@@ -143,57 +136,48 @@
     <p>以下の問題では、コードを実際に実行したときの出力結果を読み取って答えてください。予習でノートブックを動かしていれば答えられるはずです。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["3"]' data-example="3" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["3"]' data-example="3" data-unlock="2026-04-21">
     <div class="q-label">問B-1（数値）</div>
     <div class="q-text">コード 2-3 を実行すると何が表示されるか？数値で答えよ。</div>
-    <div class="input-row">
-      <input type="text" placeholder="数値を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="数値を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["4列目","5列目","6列目"]' data-example="4列目、5列目、6列目" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["4列目","5列目","6列目"]' data-example="4列目、5列目、6列目" data-unlock="2026-04-21">
     <div class="q-label">問B-2（短答）</div>
     <div class="q-text">コード 2-11 を実行すると <code>df2</code> の列名（カラム名）は何か。左から順にすべて答えよ。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["5列目","1"]' data-example="5列目に1個" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["5列目","1"]' data-example="5列目に1個" data-unlock="2026-04-21">
     <div class="q-label">問B-3（短答）</div>
     <div class="q-text">コード 2-13 を実行すると、欠損値（NaN）はどの列に何個あるか。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="essay" data-keywords='["2行","欠損","NaN","dropna"]' data-example="2行。3行目に欠損値（NaN）があったため dropna() で削除された。" data-unlock="2026-04-20">
+  <div class="q-block" data-type="essay" data-keywords='["2行","欠損","NaN","dropna"]' data-example="2行。3行目に欠損値（NaN）があったため dropna() で削除された。" data-unlock="2026-04-21">
     <div class="q-label">問B-4（記述）</div>
     <div class="q-text">コード 2-14 を実行すると <code>df4</code> の行数は何行か。また、3行目がなくなった理由を一言で答えよ。</div>
     <textarea placeholder="回答を記述してください"></textarea>
     <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="essay" data-keywords='["1","2","3","4","4回"]' data-example="1, 2, 3, 4 の順に4回表示される。" data-unlock="2026-04-20">
+  <div class="q-block" data-type="essay" data-keywords='["1","2","3","4","4回"]' data-example="1, 2, 3, 4 の順に4回表示される。" data-unlock="2026-04-21">
     <div class="q-label">問B-5（記述）</div>
     <div class="q-text">コード 2-18 を実行すると、何が何回表示されるか。</div>
     <pre><code>for i in range(1, 5):
@@ -201,21 +185,18 @@
     <textarea placeholder="回答を記述してください"></textarea>
     <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["3","空"]' data-example="3要素。最後の要素は空文字列（''）。" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["3","空"]' data-example="3要素。最後の要素は空文字列（''）。" data-unlock="2026-04-21">
     <div class="q-label">問B-6（短答）</div>
     <div class="q-text">コード 2-20 を実行すると何要素のリストが返るか。また、最後の要素は何か。</div>
     <pre><code>"今日は朝から雨模様だ。明日は晴天になるらしい。".split("。")</code></pre>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
@@ -228,67 +209,52 @@
     <p>以下の問題では、指定された操作を行うためのコードを答えてください。クォート（<code>'</code> または <code>"</code>）はどちらを使っても正解とします。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["iloc","2"]' data-example="df.iloc[2]" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["iloc","2"]' data-example="df.iloc[2]" data-unlock="2026-04-21">
     <div class="q-label">問C-1（短答）</div>
     <div class="q-text">コード 2-2 で作成したデータフレーム <code>df</code> から 3行目を取り出すには ________ とすればよい。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["drop","3行目"]' data-example="df.drop('3行目')" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["drop","3行目"]' data-example="df.drop('3行目')" data-unlock="2026-04-21">
     <div class="q-label">問C-2（短答）</div>
     <div class="q-text">コード 2-2 で作成した <code>df</code> から 3行目を <code>drop</code> を使って削除するには _________________ とすればよい。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["5列目","<=","50"]' data-example='df3["5列目"] <= 50' data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["5列目","<=","50"]' data-example='df3["5列目"] <= 50' data-unlock="2026-04-21">
     <div class="q-label">問C-3（短答）</div>
     <div class="q-text">コード 2-12 で作成した <code>df3</code> の「5列目」の各要素について、50 以下かどうかを判定するには __________________ とすればよい。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["4列目","<=","30"]' data-example='df3[df3["4列目"] <= 30]' data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["4列目","<=","30"]' data-example='df3[df3["4列目"] <= 30]' data-unlock="2026-04-21">
     <div class="q-label">問C-4（短答）</div>
     <div class="q-text">コード 2-17 と同様に、<code>df3</code> から「4列目」が 30 以下の行だけを取り出すには __________________ とすればよい。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["／","join"]' data-example='"／".join([\'東京\', \'大阪\', \'名古屋\'])' data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["／","join"]' data-example='"／".join([\'東京\', \'大阪\', \'名古屋\'])' data-unlock="2026-04-21">
     <div class="q-label">問C-5（短答）</div>
     <div class="q-text">コード 2-21 を参考に、<code>['東京', '大阪', '名古屋']</code> というリストの要素を「／」で結合して一つの文字列にするには __________________ とすればよい。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
@@ -301,20 +267,17 @@
     <p>Pythonでは、数値・文字列・真偽値などのデータの「型（type）」が重要です。以下では、コードの出力やデータの型を読み取って答えてください。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["float64"]' data-example="float64" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["float64"]' data-example="float64" data-unlock="2026-04-21">
     <div class="q-label">問D-1（短答）</div>
     <div class="q-text">コード 2-11 の <code>df2</code> の「5列目」の型（dtype）は _____ である。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="None（欠損値）が含まれると pandas は整数型を保てないから" data-unlock="2026-04-20">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="None（欠損値）が含まれると pandas は整数型を保てないから" data-unlock="2026-04-21">
     <div class="q-label">問D-2（選択）</div>
     <div class="q-text">コード 2-11 で「5列目」の型が <code>int64</code> ではなく <code>float64</code> になった理由として正しいのはどれか。</div>
     <div class="choices">
@@ -325,23 +288,20 @@
     </div>
     <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["str","int","float"]' data-example="str, int, float" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["str","int","float"]' data-example="str, int, float" data-unlock="2026-04-21">
     <div class="q-label">問D-3（短答）</div>
     <div class="q-text">コード 2-19 を実行すると、<code>"1"</code> と <code>1</code> と <code>1.23</code> のそれぞれの型（type）は何か。</div>
     <pre><code>print(type("1"))
 print(type(1))
 print(type(1.23))</code></pre>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
@@ -354,7 +314,7 @@ print(type(1.23))</code></pre>
     <p>実際のデータ分析では、CSVファイルを読み込む際にエラーが発生したり、データの形式が想定と異なることがよくあります。エラーの原因やデータの扱い方の注意点について答えてください。</p>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="エラーが出るか、文字化けする" data-unlock="2026-04-20">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="エラーが出るか、文字化けする" data-unlock="2026-04-21">
     <div class="q-label">問E-1（選択）</div>
     <div class="q-text">コード 2-24 で <code>pd.read_csv()</code> を実行した際に <code>encoding="Shift-jis"</code> を指定している。この指定をしないとどうなる可能性が高いか。</div>
     <pre><code>birth = pd.read_csv("data/chapter02.csv", encoding="Shift-jis")</code></pre>
@@ -366,31 +326,28 @@ print(type(1.23))</code></pre>
     </div>
     <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='["5","head"]' data-example="5行、head()" data-unlock="2026-04-20">
+  <div class="q-block" data-type="short" data-patterns='["5","head"]' data-example="5行、head()" data-unlock="2026-04-21">
     <div class="q-label">問E-2（短答）</div>
     <div class="q-text">コード 2-25 を実行すると <code>birth</code> の先頭何行が表示されるか。また、使っているメソッド名は何か。</div>
-    <div class="input-row">
-      <input type="text" placeholder="回答を入力" />
-      <button class="btn btn-submit" onclick="submitShort(this)">回答</button>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="essay" data-keywords='["文字列","str","object","数値","カンマ"]' data-example="文字列型（str/object）として読み込まれているため、数値計算ができない。" data-unlock="2026-04-20">
+  <div class="q-block" data-type="essay" data-keywords='["文字列","str","object","数値","カンマ"]' data-example="文字列型（str/object）として読み込まれているため、数値計算ができない。" data-unlock="2026-04-21">
     <div class="q-label">問E-3（記述）</div>
     <div class="q-text">コード 2-25 の出力を見ると「世帯年間収入」列の値が <code>"4,488"</code> のようにカンマ付きの文字として表示されている。このままでは平均などの計算に使えない理由を一言で答えよ。</div>
     <textarea placeholder="理由を記述してください"></textarea>
     <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
     <div class="feedback"></div>
-    <button class="btn btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
     <div class="locked-msg"></div>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
@@ -402,17 +359,13 @@ print(type(1.23))</code></pre>
 
 <script>
 // ===== 解禁日設定 =====
-// 各問題の data-unlock 属性で個別に設定しています。
-// 変更する場合は該当する q-block の data-unlock="YYYY-MM-DD" を編集してください。
+// 各問題の data-unlock="YYYY-MM-DD" で個別に設定しています。
 // ======================
 const scores = {};
 let qIdx = 0;
 
-function norm(s){ return s.trim().replace(/　/g,' ').replace(/\s+/g,' '); }
-
 function isUnlocked(dateStr){
-  const unlock = new Date(dateStr + 'T00:00:00');
-  return new Date() >= unlock;
+  return new Date() >= new Date(dateStr + 'T00:00:00');
 }
 
 function showAnswer(btn){
@@ -430,8 +383,7 @@ function showAnswer(btn){
     locked.style.display = 'none';
   } else {
     const d = new Date(unlock + 'T00:00:00');
-    const y = d.getFullYear(), m = d.getMonth()+1, day = d.getDate();
-    locked.textContent = `正解例は ${y}年${m}月${day}日 以降に表示されます。`;
+    locked.textContent = `正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`;
     locked.style.display = 'block';
   }
 }
@@ -439,24 +391,19 @@ function showAnswer(btn){
 function submitShort(btn){
   const block = btn.closest('.q-block');
   const input = block.querySelector('input[type=text]');
-  const ans = norm(input.value);
+  const ans = input.value.trim();
   if(!ans) return;
-
   const patterns = JSON.parse(block.dataset.patterns);
   const ok = patterns.every(p => ans.includes(p));
   const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
   scores[qid] = ok ? 1 : 0;
-
   input.className = ok ? 'correct' : 'wrong';
   input.disabled = true;
   btn.disabled = true;
-
   const fb = block.querySelector('.feedback');
   fb.style.display = 'block';
   fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
-  fb.innerHTML = ok
-    ? '<div class="label">✅ 正解！（1点）</div>'
-    : '<div class="label">❌ 不正解（0点）</div>';
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
 }
 
 function submitMulti(btn){
@@ -465,25 +412,20 @@ function submitMulti(btn){
   const choices = block.querySelectorAll('.choice');
   const selected = block.querySelector('input[type=radio]:checked');
   if(!selected) return;
-
   const selIdx = [...choices].indexOf(selected.closest('.choice'));
   const ok = selIdx === correctIdx;
   const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
   scores[qid] = ok ? 1 : 0;
-
   choices.forEach((c,i) => {
     c.querySelector('input').disabled = true;
     if(i===correctIdx) c.classList.add('correct-choice');
     else if(i===selIdx && !ok) c.classList.add('wrong-choice');
   });
   btn.disabled = true;
-
   const fb = block.querySelector('.feedback');
   fb.style.display = 'block';
   fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
-  fb.innerHTML = ok
-    ? '<div class="label">✅ 正解！（1点）</div>'
-    : '<div class="label">❌ 不正解（0点）</div>';
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
 }
 
 function submitEssay(btn){
@@ -491,28 +433,18 @@ function submitEssay(btn){
   const ta = block.querySelector('textarea');
   const ans = ta.value.trim();
   if(!ans) return;
-
   const keywords = JSON.parse(block.dataset.keywords);
   const hit = keywords.filter(k => ans.includes(k)).length;
   const score = hit >= Math.ceil(keywords.length/2) ? 1 : hit > 0 ? 0.5 : 0;
   const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
   scores[qid] = score;
-
   ta.disabled = true;
   btn.disabled = true;
-
   const fb = block.querySelector('.feedback');
   fb.style.display = 'block';
-  if(score===1){
-    fb.className='feedback correct';
-    fb.innerHTML='<div class="label">✅ 正解（1点）</div>';
-  } else if(score===0.5){
-    fb.className='feedback partial';
-    fb.innerHTML='<div class="label">🔶 部分点（0.5点）</div>';
-  } else {
-    fb.className='feedback wrong';
-    fb.innerHTML='<div class="label">❌ キーワード不足（0点）</div>';
-  }
+  if(score===1){ fb.className='feedback correct'; fb.innerHTML='<div class="label">✅ 正解（1点）</div>'; }
+  else if(score===0.5){ fb.className='feedback partial'; fb.innerHTML='<div class="label">🔶 部分点（0.5点）</div>'; }
+  else { fb.className='feedback wrong'; fb.innerHTML='<div class="label">❌ キーワード不足（0点）</div>'; }
 }
 
 function calcTotal(){
@@ -521,7 +453,7 @@ function calcTotal(){
   const pct = Math.round((total/max)*100);
   const msg = pct===100?'🎉 満点です！': pct>=70?'👍 よくできました！':'📚 復習してみましょう。';
   const bar = document.getElementById('score-bar');
-  bar.style.display='block';
+  bar.style.display = 'block';
   document.getElementById('score-val').textContent = total.toFixed(1)+' / '+max;
   document.getElementById('score-msg').textContent = msg;
   document.getElementById('score-fill').style.width = pct+'%';
