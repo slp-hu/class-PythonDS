@@ -6,15 +6,11 @@
 <title>授業資料 ― プログラミング演習1(Python) 2026</title>
 <style>
   :root {
-    --primary: #1a56a0;
-    --accent: #e8a020;
-    --light: #f5f7fa;
-    --border: #dde3ea;
-    --text: #1e2733;
-    --muted: #5a6472;
+    --primary: #1a56a0; --accent: #e8a020; --light: #f5f7fa;
+    --border: #dde3ea; --text: #1e2733; --muted: #5a6472; --green: #1d8a4f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Helvetica Neue', 'Hiragino Sans', 'Meiryo', sans-serif; color: var(--text); line-height: 1.7; background: #fff; font-size: 17px; }
+  body { font-family: 'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif; color: var(--text); line-height: 1.7; background: #fff; font-size: 17px; }
   a { color: var(--primary); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -28,6 +24,16 @@
 
   main { max-width: 760px; margin: 32px auto; padding: 0 24px 48px; }
 
+  h2 { font-size: 18px; font-weight: 800; color: var(--primary); border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 16px; }
+
+  /* リンクカード */
+  .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; margin-bottom: 32px; }
+  .link-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; background: var(--light); transition: box-shadow .2s; }
+  .link-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-decoration: none; }
+  .link-card .lc-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 3px; }
+  .link-card .lc-desc { font-size: 13px; color: var(--muted); }
+
+  /* セッション */
   .session { border: 1.5px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
   .session-header { display: flex; align-items: center; gap: 16px; background: var(--light); padding: 14px 20px; cursor: pointer; user-select: none; }
   .session-header:hover { background: #eaeff6; }
@@ -36,12 +42,12 @@
   .session-title { font-size: 16px; font-weight: 700; flex: 1; }
   .chevron { font-size: 12px; color: var(--muted); transition: transform .2s; }
   .session.open .chevron { transform: rotate(180deg); }
-
   .session-body { display: none; padding: 16px 20px; border-top: 1px solid var(--border); }
   .session.open .session-body { display: block; }
 
-  .file-list { list-style: none; padding: 0; }
-  .file-list li { padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  /* ファイルリスト */
+  .file-list { list-style: none; padding: 0; margin-bottom: 12px; }
+  .file-list li { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
   .file-list li:last-child { border-bottom: none; }
   .file-icon { font-size: 18px; }
   .file-info { flex: 1; }
@@ -50,11 +56,18 @@
   .file-note { font-size: 12px; color: #b56000; background: #fff8e1; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
   .btn-dl { display: inline-block; background: var(--primary); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
   .btn-dl:hover { background: #154a8a; text-decoration: none; }
+  .btn-quiz { display: inline-block; background: var(--accent); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .btn-quiz:hover { background: #c98010; text-decoration: none; }
+
+  /* 補足リンク */
+  .supp-list { list-style: none; padding: 0; }
+  .supp-list li { padding: 5px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
+  .supp-list li:last-child { border-bottom: none; }
+  .supp-label { font-size: 12px; color: var(--muted); margin-right: 6px; }
 
   .empty { font-size: 14px; color: var(--muted); font-style: italic; }
 
   footer { background: #0d1f35; color: rgba(255,255,255,0.6); padding: 20px 24px; text-align: center; font-size: 13px; }
-  footer a { color: rgba(255,255,255,0.75); }
 </style>
 </head>
 <body>
@@ -71,6 +84,33 @@
 
 <main>
 
+  <!-- 一般情報リンク -->
+  <h2 style="margin-top:8px">参考リンク</h2>
+  <div class="link-grid">
+    <a href="https://www.e-stat.go.jp/" target="_blank" class="link-card">
+      <div class="lc-title">e-Stat</div>
+      <div class="lc-desc">政府統計の総合窓口。各種公開データを検索・ダウンロードできる。</div>
+    </a>
+    <a href="https://pandas.pydata.org/" target="_blank" class="link-card">
+      <div class="lc-title">pandas</div>
+      <div class="lc-desc">授業で使用するデータ分析ライブラリの公式サイト。</div>
+    </a>
+    <a href="https://pandas.pydata.org/docs/reference/index.html" target="_blank" class="link-card">
+      <div class="lc-title">pandas APIリファレンス</div>
+      <div class="lc-desc">pandasの関数・メソッドの詳細仕様。</div>
+    </a>
+    <a href="https://pola.rs/" target="_blank" class="link-card">
+      <div class="lc-title">Polars</div>
+      <div class="lc-desc">高速なデータフレームライブラリ。pandasの代替として注目。</div>
+    </a>
+    <a href="https://docs.pola.rs/api/python/stable/reference/index.html" target="_blank" class="link-card">
+      <div class="lc-title">Polars APIリファレンス</div>
+      <div class="lc-desc">PolarsのPython APIの詳細仕様。</div>
+    </a>
+  </div>
+
+  <!-- 第1回 -->
+  <h2>授業回ごとの資料</h2>
   <div class="session open">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num">第1回</span>
@@ -80,17 +120,23 @@
     <div class="session-body">
       <ul class="file-list">
         <li>
-          <span class="file-icon">📄</span>
+          <span class="file-icon">🧪</span>
           <div class="file-info">
-            <div class="file-name">授業スライド <span class="file-note">昨年度版</span></div>
-            <div class="file-desc">ガイダンス・Google Colabの使い方</div>
+            <div class="file-name">確認テスト</div>
+            <div class="file-desc">1・2章の理解を確認するブラウザ上のクイズ</div>
           </div>
-          <a href="L01.pdf" target="_blank" class="btn-dl">閲覧 / DL</a>
+          <a href="quiz.html" target="_blank" class="btn-quiz">テストを受ける</a>
         </li>
+      </ul>
+      <p style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px">補足リンク</p>
+      <ul class="supp-list">
+        <li><span class="supp-label">図1-1補足</span><a href="https://www.tiobe.com/tiobe-index/" target="_blank">TIOBE Index — プログラミング言語の人気ランキング</a></li>
+        <li><span class="supp-label">コード1-1補足</span><a href="https://ja.wikipedia.org/wiki/Hello_world" target="_blank">Wikipedia: Hello world プログラム</a></li>
       </ul>
     </div>
   </div>
 
+  <!-- 第2回 -->
   <div class="session open">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num">第2回</span>
@@ -111,6 +157,7 @@
     </div>
   </div>
 
+  <!-- 第3回以降 -->
   <div class="session">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第3回</span>
@@ -226,7 +273,7 @@
 </footer>
 
 <script>
-  function toggle(h) { h.parentElement.classList.toggle('open'); }
+  function toggle(h){ h.parentElement.classList.toggle('open'); }
 </script>
 
 </body>
