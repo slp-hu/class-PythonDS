@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>授業資料 ― プログラミング演習1(Python) 2026</title>
+<style>
+  :root {
+    --primary: #1a56a0;
+    --accent: #e8a020;
+    --light: #f5f7fa;
+    --border: #dde3ea;
+    --text: #1e2733;
+    --muted: #5a6472;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', 'Hiragino Sans', 'Meiryo', sans-serif; color: var(--text); line-height: 1.7; background: #fff; font-size: 17px; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header { background: linear-gradient(135deg, #0d3b6e, #1a56a0); color: #fff; padding: 32px 24px; text-align: center; }
+  header h1 { font-size: clamp(18px,4vw,26px); font-weight: 800; margin-bottom: 4px; }
+  header p { font-size: 14px; opacity: .8; }
+  header a { color: rgba(255,255,255,0.75); font-size: 13px; }
+  header a:hover { color: #fff; }
+
+  .notice { background: #fff8e1; border-bottom: 2px solid var(--accent); padding: 12px 24px; text-align: center; font-size: 14px; color: #7a5200; }
+
+  main { max-width: 760px; margin: 32px auto; padding: 0 24px 48px; }
+
+  .session { border: 1.5px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .session-header { display: flex; align-items: center; gap: 16px; background: var(--light); padding: 14px 20px; cursor: pointer; user-select: none; }
+  .session-header:hover { background: #eaeff6; }
+  .session-num { background: var(--primary); color: #fff; border-radius: 6px; padding: 2px 10px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .session-num.upcoming { background: var(--muted); }
+  .session-title { font-size: 16px; font-weight: 700; flex: 1; }
+  .chevron { font-size: 12px; color: var(--muted); transition: transform .2s; }
+  .session.open .chevron { transform: rotate(180deg); }
+
+  .session-body { display: none; padding: 16px 20px; border-top: 1px solid var(--border); }
+  .session.open .session-body { display: block; }
+
+  .file-list { list-style: none; padding: 0; }
+  .file-list li { padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .file-list li:last-child { border-bottom: none; }
+  .file-icon { font-size: 18px; }
+  .file-info { flex: 1; }
+  .file-name { font-size: 15px; font-weight: 600; }
+  .file-desc { font-size: 13px; color: var(--muted); }
+  .file-note { font-size: 12px; color: #b56000; background: #fff8e1; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
+  .btn-dl { display: inline-block; background: var(--primary); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .btn-dl:hover { background: #154a8a; text-decoration: none; }
+
+  .empty { font-size: 14px; color: var(--muted); font-style: italic; }
+
+  footer { background: #0d1f35; color: rgba(255,255,255,0.6); padding: 20px 24px; text-align: center; font-size: 13px; }
+  footer a { color: rgba(255,255,255,0.75); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>授業資料 ― プログラミング演習1(Python) 2026</h1>
+  <p>担当：伊藤 克亘 ／ 法政大学 情報科学部</p>
+  <p style="margin-top:6px"><a href="index.html">← 履修案内ページに戻る</a></p>
+</header>
+
+<div class="notice">
+  ⚠️ このページの資料は随時追加されます。Moodleにも同じ資料が掲載されています。
+</div>
+
+<main>
+
+  <div class="session open">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num">第1回</span>
+      <span class="session-title">ガイダンス・Google Colabの使い方</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body">
+      <ul class="file-list">
+        <li>
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">授業スライド <span class="file-note">昨年度版</span></div>
+            <div class="file-desc">ガイダンス・Google Colabの使い方</div>
+          </div>
+          <a href="L01.pdf" target="_blank" class="btn-dl">閲覧 / DL</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="session open">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num">第2回</span>
+      <span class="session-title">データの基礎的な扱い</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body">
+      <ul class="file-list">
+        <li>
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">授業スライド <span class="file-note">昨年度版</span></div>
+            <div class="file-desc">第2章「データの基礎的な扱い」— 型・DataFrame・関数の読み方</div>
+          </div>
+          <a href="L02.pdf" target="_blank" class="btn-dl">閲覧 / DL</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第3回</span>
+      <span class="session-title">代表値と分布</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第4回</span>
+      <span class="session-title">相関・回帰</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第5回</span>
+      <span class="session-title">クラスタリング</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第6回</span>
+      <span class="session-title">決定木</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第7回</span>
+      <span class="session-title">ランダム・フォレスト</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第8回</span>
+      <span class="session-title">施策効果・因果推論</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第9回</span>
+      <span class="session-title">テキストデータ分析</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第10回</span>
+      <span class="session-title">実データ分析・最終課題告知</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第11回</span>
+      <span class="session-title">最終課題：設計・相談</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第12回</span>
+      <span class="session-title">重点指導①</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第13回</span>
+      <span class="session-title">重点指導②</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+  <div class="session">
+    <div class="session-header" onclick="toggle(this)">
+      <span class="session-num upcoming">第14回</span>
+      <span class="session-title">発表・講評・最終版作成</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
+  </div>
+
+</main>
+
+<footer>
+  プログラミング演習1(Python) ／ 法政大学 情報科学部 ／ 担当：伊藤 克亘
+</footer>
+
+<script>
+  function toggle(h) { h.parentElement.classList.toggle('open'); }
+</script>
+
+</body>
+</html>
