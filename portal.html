@@ -26,14 +26,12 @@
 
   h2 { font-size: 18px; font-weight: 800; color: var(--primary); border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 16px; }
 
-  /* リンクカード */
   .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; margin-bottom: 32px; }
-  .link-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; background: var(--light); transition: box-shadow .2s; }
+  .link-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; background: var(--light); transition: box-shadow .2s; display: block; }
   .link-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-decoration: none; }
   .link-card .lc-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 3px; }
   .link-card .lc-desc { font-size: 13px; color: var(--muted); }
 
-  /* セッション */
   .session { border: 1.5px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
   .session-header { display: flex; align-items: center; gap: 16px; background: var(--light); padding: 14px 20px; cursor: pointer; user-select: none; }
   .session-header:hover { background: #eaeff6; }
@@ -45,7 +43,6 @@
   .session-body { display: none; padding: 16px 20px; border-top: 1px solid var(--border); }
   .session.open .session-body { display: block; }
 
-  /* ファイルリスト */
   .file-list { list-style: none; padding: 0; margin-bottom: 12px; }
   .file-list li { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
   .file-list li:last-child { border-bottom: none; }
@@ -59,7 +56,6 @@
   .btn-quiz { display: inline-block; background: var(--accent); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
   .btn-quiz:hover { background: #c98010; text-decoration: none; }
 
-  /* 補足リンク */
   .supp-list { list-style: none; padding: 0; }
   .supp-list li { padding: 5px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
   .supp-list li:last-child { border-bottom: none; }
@@ -84,8 +80,8 @@
 
 <main>
 
-  <!-- 一般情報リンク -->
-  <h2 style="margin-top:8px">参考リンク</h2>
+  <!-- 参考リンク -->
+  <h2 id="links" style="margin-top:8px">参考リンク</h2>
   <div class="link-grid">
     <a href="https://www.e-stat.go.jp/" target="_blank" class="link-card">
       <div class="lc-title">e-Stat</div>
@@ -109,9 +105,10 @@
     </a>
   </div>
 
-  <!-- 第1回 -->
-  <h2>授業回ごとの資料</h2>
-  <div class="session open">
+  <!-- 授業回ごとの資料 -->
+  <h2 id="sessions">授業回ごとの資料</h2>
+
+  <div class="session open" id="s01">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num">第1回</span>
       <span class="session-title">ガイダンス・Google Colabの使い方</span>
@@ -139,8 +136,7 @@
     </div>
   </div>
 
-  <!-- 第2回 -->
-  <div class="session">
+  <div class="session" id="s02">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第2回</span>
       <span class="session-title">データの基礎的な扱い</span>
@@ -149,8 +145,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <!-- 第3回以降 -->
-  <div class="session">
+  <div class="session" id="s03">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第3回</span>
       <span class="session-title">代表値と分布</span>
@@ -159,7 +154,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s04">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第4回</span>
       <span class="session-title">相関・回帰</span>
@@ -168,7 +163,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s05">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第5回</span>
       <span class="session-title">クラスタリング</span>
@@ -177,7 +172,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s06">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第6回</span>
       <span class="session-title">決定木</span>
@@ -186,7 +181,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s07">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第7回</span>
       <span class="session-title">ランダム・フォレスト</span>
@@ -195,7 +190,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s08">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第8回</span>
       <span class="session-title">施策効果・因果推論</span>
@@ -204,7 +199,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s09">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第9回</span>
       <span class="session-title">テキストデータ分析</span>
@@ -213,7 +208,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s10">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第10回</span>
       <span class="session-title">実データ分析・最終課題告知</span>
@@ -222,7 +217,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s11">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第11回</span>
       <span class="session-title">最終課題：設計・相談</span>
@@ -231,7 +226,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s12">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第12回</span>
       <span class="session-title">重点指導①</span>
@@ -240,7 +235,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s13">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第13回</span>
       <span class="session-title">重点指導②</span>
@@ -249,7 +244,7 @@
     <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
   </div>
 
-  <div class="session">
+  <div class="session" id="s14">
     <div class="session-header" onclick="toggle(this)">
       <span class="session-num upcoming">第14回</span>
       <span class="session-title">発表・講評・最終版作成</span>
