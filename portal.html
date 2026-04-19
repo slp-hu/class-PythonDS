@@ -6,262 +6,204 @@
 <title>授業資料 ― プログラミング演習1(Python) 2026</title>
 <style>
   :root {
-    --primary: #1a56a0; --accent: #e8a020; --light: #f5f7fa;
-    --border: #dde3ea; --text: #1e2733; --muted: #5a6472; --green: #1d8a4f;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --code-bg: #f8fafc;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif; color: var(--text); line-height: 1.7; background: #fff; font-size: 17px; }
-  a { color: var(--primary); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
 
-  header { background: linear-gradient(135deg, #0d3b6e, #1a56a0); color: #fff; padding: 32px 24px; text-align: center; }
-  header h1 { font-size: clamp(18px,4vw,26px); font-weight: 800; margin-bottom: 4px; }
-  header p { font-size: 14px; opacity: .8; }
-  header a { color: rgba(255,255,255,0.75); font-size: 13px; }
-  header a:hover { color: #fff; }
+  header { margin-bottom: 2rem; }
+  h1 { font-size: 1.45rem; font-weight: 800; margin-bottom: .2rem; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: .75rem; }
+  .back-link { font-size: .85rem; color: var(--accent); text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
 
-  .notice { background: #fff8e1; border-bottom: 2px solid var(--accent); padding: 12px 24px; text-align: center; font-size: 14px; color: #7a5200; }
+  .notice { background: #fefce8; border: 1px solid #fde68a; border-radius: 8px; padding: .75rem 1rem; font-size: .85rem; color: #92400e; margin-bottom: 2rem; }
 
-  main { max-width: 760px; margin: 32px auto; padding: 0 24px 48px; }
+  /* ref links */
+  h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-left: 4px solid var(--accent); padding-left: .75rem; }
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .75rem; margin-bottom: 2.5rem; }
+  .ref-card { background: white; border: 1px solid var(--border); border-radius: 8px; padding: .85rem 1rem; text-decoration: none; color: var(--text); transition: border-color .2s, box-shadow .2s; }
+  .ref-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(37,99,235,.08); }
+  .ref-card .ref-name { font-weight: 700; font-size: .93rem; color: var(--accent); margin-bottom: .2rem; }
+  .ref-card .ref-desc { font-size: .82rem; color: var(--muted); }
 
-  h2 { font-size: 18px; font-weight: 800; color: var(--primary); border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 16px; }
+  /* accordion */
+  .sessions { display: flex; flex-direction: column; gap: .6rem; }
+  details { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  details[open] { border-color: var(--accent); }
+  summary { cursor: pointer; padding: .9rem 1.1rem; font-weight: 600; font-size: .95rem; list-style: none; display: flex; align-items: center; gap: .6rem; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  .arrow { margin-left: auto; font-size: .8rem; color: var(--muted); transition: transform .2s; }
+  details[open] .arrow { transform: rotate(180deg); }
+  .session-num { font-size: .78rem; font-weight: 700; color: var(--accent); background: var(--accent-light); padding: .15em .6em; border-radius: 4px; }
+  .session-body { padding: 0 1.1rem 1.1rem; border-top: 1px solid var(--border); }
 
-  .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; margin-bottom: 32px; }
-  .link-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; background: var(--light); transition: box-shadow .2s; display: block; }
-  .link-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-decoration: none; }
-  .link-card .lc-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 3px; }
-  .link-card .lc-desc { font-size: 13px; color: var(--muted); }
+  /* quiz card inside session */
+  .quiz-card { display: flex; align-items: flex-start; gap: .75rem; background: var(--accent-light); border: 1px solid #bfdbfe; border-radius: 8px; padding: .85rem 1rem; margin: .9rem 0 .5rem; }
+  .quiz-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .quiz-info { flex: 1; }
+  .quiz-title { font-weight: 700; font-size: .9rem; color: var(--accent); }
+  .quiz-desc { font-size: .83rem; color: var(--muted); margin-bottom: .5rem; }
+  .quiz-link { display: inline-block; background: var(--accent); color: white; text-decoration: none; padding: .35rem .9rem; border-radius: 6px; font-size: .85rem; font-weight: 600; }
+  .quiz-link:hover { background: #1d4ed8; }
 
-  .session { border: 1.5px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
-  .session-header { display: flex; align-items: center; gap: 16px; background: var(--light); padding: 14px 20px; cursor: pointer; user-select: none; }
-  .session-header:hover { background: #eaeff6; }
-  .session-num { background: var(--primary); color: #fff; border-radius: 6px; padding: 2px 10px; font-size: 13px; font-weight: 700; white-space: nowrap; }
-  .session-num.upcoming { background: var(--muted); }
-  .session-title { font-size: 16px; font-weight: 700; flex: 1; }
-  .chevron { font-size: 12px; color: var(--muted); transition: transform .2s; }
-  .session.open .chevron { transform: rotate(180deg); }
-  .session-body { display: none; padding: 16px 20px; border-top: 1px solid var(--border); }
-  .session.open .session-body { display: block; }
+  /* code block */
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: .75rem 1rem; margin: .75rem 0; overflow-x: auto; }
+  pre code { font-size: .86em; font-family: "SFMono-Regular", Consolas, monospace; }
+  code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: .1em .35em; font-size: .88em; font-family: "SFMono-Regular", Consolas, monospace; }
 
-  .file-list { list-style: none; padding: 0; margin-bottom: 12px; }
-  .file-list li { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-  .file-list li:last-child { border-bottom: none; }
-  .file-icon { font-size: 18px; }
-  .file-info { flex: 1; }
-  .file-name { font-size: 15px; font-weight: 600; }
-  .file-desc { font-size: 13px; color: var(--muted); }
-  .file-note { font-size: 12px; color: #b56000; background: #fff8e1; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
-  .btn-dl { display: inline-block; background: var(--primary); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
-  .btn-dl:hover { background: #154a8a; text-decoration: none; }
-  .btn-quiz { display: inline-block; background: var(--accent); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
-  .btn-quiz:hover { background: #c98010; text-decoration: none; }
+  /* supp links */
+  .supp-list { list-style: none; margin: .5rem 0; }
+  .supp-list li { font-size: .88rem; padding: .2rem 0; }
+  .supp-list li::before { content: "・"; color: var(--accent); }
+  .supp-list a { color: var(--accent); text-decoration: none; }
+  .supp-list a:hover { text-decoration: underline; }
+  .supp-label { font-size: .78rem; color: var(--muted); }
 
-  .supp-list { list-style: none; padding: 0; }
-  .supp-list li { padding: 5px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
-  .supp-list li:last-child { border-bottom: none; }
-  .supp-label { font-size: 12px; color: var(--muted); margin-right: 6px; }
+  .placeholder { font-size: .88rem; color: var(--muted); font-style: italic; padding: .75rem 0; }
 
-  .empty { font-size: 14px; color: var(--muted); font-style: italic; }
-
-  footer { background: #0d1f35; color: rgba(255,255,255,0.6); padding: 20px 24px; text-align: center; font-size: 13px; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); text-align: center; }
 </style>
 </head>
 <body>
+<div class="container">
 
-<header>
-  <h1>授業資料 ― プログラミング演習1(Python) 2026</h1>
-  <p>担当：伊藤 克亘 ／ 法政大学 情報科学部</p>
-  <p style="margin-top:6px"><a href="index.html">← 履修案内ページに戻る</a></p>
-</header>
+  <header>
+    <h1>授業資料 ― プログラミング演習1(Python) 2026</h1>
+    <p class="sub">担当：伊藤 克亘 ／ 法政大学 情報科学部</p>
+    <a class="back-link" href="https://slp-hu.github.io/class-PythonDS/index.html">← 履修案内ページに戻る</a>
+  </header>
 
-<div class="notice">
-  ⚠️ このページの資料は随時追加されます。Moodleにも同じ資料が掲載されている場合は、受講者はMoodleの方を参照してください。
-</div>
-
-<main>
+  <div class="notice">⚠️ このページの資料は随時追加されます。Moodleにも同じ資料が掲載されている場合は、受講者はMoodleの方を参照してください。</div>
 
   <!-- 参考リンク -->
-  <h2 id="links" style="margin-top:8px">参考リンク</h2>
-  <div class="link-grid">
-    <a href="https://www.e-stat.go.jp/" target="_blank" class="link-card">
-      <div class="lc-title">e-Stat</div>
-      <div class="lc-desc">政府統計の総合窓口。各種公開データを検索・ダウンロードできる。</div>
+  <h2>参考リンク</h2>
+  <div class="ref-grid">
+    <a class="ref-card" href="https://www.e-stat.go.jp/" target="_blank">
+      <div class="ref-name">e-Stat</div>
+      <div class="ref-desc">政府統計の総合窓口。各種公開データを検索・ダウンロードできる。</div>
     </a>
-    <a href="https://pandas.pydata.org/" target="_blank" class="link-card">
-      <div class="lc-title">pandas</div>
-      <div class="lc-desc">授業で使用するデータ分析ライブラリの公式サイト。</div>
+    <a class="ref-card" href="https://pandas.pydata.org/" target="_blank">
+      <div class="ref-name">pandas</div>
+      <div class="ref-desc">授業で使用するデータ分析ライブラリの公式サイト。</div>
     </a>
-    <a href="https://pandas.pydata.org/docs/reference/index.html" target="_blank" class="link-card">
-      <div class="lc-title">pandas APIリファレンス</div>
-      <div class="lc-desc">pandasの関数・メソッドの詳細仕様。</div>
+    <a class="ref-card" href="https://pandas.pydata.org/docs/reference/index.html" target="_blank">
+      <div class="ref-name">pandas APIリファレンス</div>
+      <div class="ref-desc">pandasの関数・メソッドの詳細仕様。</div>
     </a>
-    <a href="https://pola.rs/" target="_blank" class="link-card">
-      <div class="lc-title">Polars</div>
-      <div class="lc-desc">高速なデータフレームライブラリ。pandasの代替として注目。</div>
+    <a class="ref-card" href="https://pola.rs/" target="_blank">
+      <div class="ref-name">Polars</div>
+      <div class="ref-desc">高速なデータフレームライブラリ。pandasの代替として注目。</div>
     </a>
-    <a href="https://docs.pola.rs/api/python/stable/reference/index.html" target="_blank" class="link-card">
-      <div class="lc-title">Polars APIリファレンス</div>
-      <div class="lc-desc">PolarsのPython APIの詳細仕様。</div>
+    <a class="ref-card" href="https://docs.pola.rs/api/python/stable/reference/index.html" target="_blank">
+      <div class="ref-name">Polars APIリファレンス</div>
+      <div class="ref-desc">PolarsのPython APIの詳細仕様。</div>
     </a>
   </div>
 
   <!-- 授業回ごとの資料 -->
-  <h2 id="sessions">授業回ごとの資料</h2>
+  <h2>授業回ごとの資料</h2>
+  <div class="sessions">
 
-  <div class="session open" id="s01">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num">第1回</span>
-      <span class="session-title">ガイダンス・Google Colabの使い方</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body">
-      <ul class="file-list">
-        <li>
-          <span class="file-icon">🧪</span>
-          <div class="file-info">
-            <div class="file-name">確認テスト</div>
-            <div class="file-desc">1・2章の理解を確認するブラウザ上のクイズ</div>
+    <!-- 第1回 -->
+    <details open>
+      <summary>
+        <span class="session-num">第1回</span>
+        ガイダンス・Google Colabの使い方
+        <span class="arrow">▼</span>
+      </summary>
+      <div class="session-body">
+        <div class="quiz-card">
+          <div class="quiz-icon">🧪</div>
+          <div class="quiz-info">
+            <div class="quiz-title">確認テスト</div>
+            <div class="quiz-desc">1・2章の理解を確認するブラウザ上のクイズ</div>
+            <a class="quiz-link" href="https://slp-hu.github.io/class-PythonDS/quiz_L01.html" target="_blank">テストを受ける</a>
           </div>
-          <a href="quiz.html" target="_blank" class="btn-quiz">テストを受ける</a>
-        </li>
-      </ul>
-      <p style="font-size:13px;font-weight:700;color:var(--muted);margin:12px 0 6px">第2章用 Jupyter Notebook 追加セル</p>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:8px">冒頭に次の内容のセルを追加すること：</p>
-      <pre style="font-size:13px;margin-bottom:12px">!wget -P data https://github.com/yuhikaku/book-16636/raw/refs/heads/main/notebook/data/chapter02.csv</pre>
-      <p style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px">補足リンク</p>
-      <ul class="supp-list">
-        <li><span class="supp-label">図1-1補足</span><a href="https://www.tiobe.com/tiobe-index/" target="_blank">TIOBE Index — プログラミング言語の人気ランキング</a></li>
-        <li><span class="supp-label">コード1-1補足</span><a href="https://ja.wikipedia.org/wiki/Hello_world" target="_blank">Wikipedia: Hello world プログラム</a></li>
-      </ul>
-    </div>
-  </div>
+        </div>
 
-  <div class="session" id="s02">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第2回</span>
-      <span class="session-title">データの基礎的な扱い</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
+        <a href="https://slp-hu.github.io/class-PythonDS/L01.pdf" target="_blank" style="display:inline-flex; align-items:center; gap:.5rem; background:white; border:1px solid var(--border); border-radius:8px; padding:.65rem 1rem; text-decoration:none; color:var(--text); font-size:.9rem; font-weight:600; margin:.9rem 0 .75rem;">
+          📄 <span>授業スライド L01.pdf</span>
+        </a>
 
-  <div class="session" id="s03">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第3回</span>
-      <span class="session-title">代表値と分布</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
+        <p style="font-size:.88rem; font-weight:600; margin:.75rem 0 .25rem; color:var(--muted);">第2章用 Jupyter Notebook 追加セル</p>
+        <p style="font-size:.85rem; margin-bottom:.5rem;">冒頭に次の内容のセルを追加すること：</p>
+        <pre><code>!wget -P data https://github.com/yuhikaku/book-16636/raw/refs/heads/main/notebook/data/chapter02.csv</code></pre>
 
-  <div class="session" id="s04">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第4回</span>
-      <span class="session-title">相関・回帰</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
+        <p style="font-size:.88rem; font-weight:600; margin:.75rem 0 .25rem; color:var(--muted);">補足リンク</p>
+        <ul class="supp-list">
+          <li><span class="supp-label">図1-1補足</span> <a href="https://www.tiobe.com/tiobe-index/" target="_blank">TIOBE Index — プログラミング言語の人気ランキング</a></li>
+          <li><span class="supp-label">コード1-1補足</span> <a href="https://ja.wikipedia.org/wiki/Hello_world" target="_blank">Wikipedia: Hello world プログラム</a></li>
+        </ul>
+      </div>
+    </details>
 
-  <div class="session" id="s05">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第5回</span>
-      <span class="session-title">クラスタリング</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
+    <!-- 第2回〜14回 -->
+    <details>
+      <summary><span class="session-num">第2回</span> データの基礎的な扱い <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第3回</span> 代表値と分布 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第4回</span> 相関・回帰 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第5回</span> クラスタリング <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第6回</span> 決定木 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第7回</span> ランダム・フォレスト <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第8回</span> 施策効果・因果推論 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第9回</span> テキストデータ分析 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第10回</span> 実データ分析・最終課題告知 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第11回</span> 最終課題：設計・相談 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第12回</span> 重点指導① <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第13回</span> 重点指導② <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
+    <details>
+      <summary><span class="session-num">第14回</span> 発表・講評・最終版作成 <span class="arrow">▼</span></summary>
+      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+    </details>
 
-  <div class="session" id="s06">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第6回</span>
-      <span class="session-title">決定木</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
+  </div><!-- /sessions -->
 
-  <div class="session" id="s07">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第7回</span>
-      <span class="session-title">ランダム・フォレスト</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
+  <footer>
+    プログラミング演習1(Python) ／ 法政大学 情報科学部 ／ 担当：伊藤 克亘
+  </footer>
 
-  <div class="session" id="s08">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第8回</span>
-      <span class="session-title">施策効果・因果推論</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-  <div class="session" id="s09">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第9回</span>
-      <span class="session-title">テキストデータ分析</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-  <div class="session" id="s10">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第10回</span>
-      <span class="session-title">実データ分析・最終課題告知</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-  <div class="session" id="s11">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第11回</span>
-      <span class="session-title">最終課題：設計・相談</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-  <div class="session" id="s12">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第12回</span>
-      <span class="session-title">重点指導①</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-  <div class="session" id="s13">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第13回</span>
-      <span class="session-title">重点指導②</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-  <div class="session" id="s14">
-    <div class="session-header" onclick="toggle(this)">
-      <span class="session-num upcoming">第14回</span>
-      <span class="session-title">発表・講評・最終版作成</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="session-body"><p class="empty">資料は授業後に順次公開します。</p></div>
-  </div>
-
-</main>
-
-<footer>
-  プログラミング演習1(Python) ／ 法政大学 情報科学部 ／ 担当：伊藤 克亘
-</footer>
-
-<script>
-  function toggle(h){ h.parentElement.classList.toggle('open'); }
-</script>
-
+</div>
 </body>
 </html>
