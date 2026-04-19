@@ -3,629 +3,462 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1・2章 確認テスト</title>
+<title>1・2章確認テスト</title>
 <style>
   :root {
-    --accent: #2563eb;
-    --accent-light: #eff6ff;
-    --correct: #16a34a;
-    --correct-bg: #f0fdf4;
-    --wrong: #dc2626;
-    --wrong-bg: #fef2f2;
-    --partial: #d97706;
-    --partial-bg: #fffbeb;
-    --border: #e2e8f0;
-    --text: #1e293b;
-    --muted: #64748b;
-    --code-bg: #f8fafc;
+    --primary:#1a56a0; --accent:#e8a020; --light:#f5f7fa;
+    --border:#dde3ea; --text:#1e2733; --muted:#5a6472;
+    --green:#1d8a4f; --red:#c0392b;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
-  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
-  .subtitle { color: var(--muted); font-size: .9rem; margin-bottom: .75rem; }
-  .notice { background: #fefce8; border: 1px solid #fde68a; border-radius: 8px; padding: .75rem 1rem; font-size: .85rem; color: #92400e; margin-bottom: 2rem; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif;color:var(--text);background:var(--light);font-size:16px;line-height:1.7;padding:24px 16px 48px;}
+  code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:14px;font-family:'Courier New',monospace;}
+  pre{background:#eef2f8;border-radius:6px;padding:10px 14px;font-size:13px;font-family:'Courier New',monospace;margin-bottom:12px;white-space:pre-wrap;}
+  h1{font-size:20px;color:var(--primary);font-weight:800;margin-bottom:4px;}
+  .subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .notice{font-size:12px;color:#7a5200;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:8px 12px;margin-bottom:24px;max-width:720px;}
 
-  /* score board */
-  #scoreboard { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
-  #score-display { font-size: 2rem; font-weight: 800; color: var(--accent); min-width: 5rem; }
-  #score-label { color: var(--muted); font-size: .9rem; }
-  #reset-btn { margin-left: auto; background: var(--accent); color: white; border: none; border-radius: 8px; padding: .5rem 1.1rem; font-size: .9rem; cursor: pointer; }
-  #reset-btn:hover { background: #1d4ed8; }
+  .section{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:24px;overflow:hidden;max-width:720px;margin-left:auto;margin-right:auto;}
+  .sec-header{background:var(--primary);color:#fff;padding:12px 20px;font-weight:700;font-size:15px;}
+  .sec-desc{background:#e8f0fb;border-bottom:1px solid var(--border);padding:16px 20px;font-size:14px;}
+  .sec-desc p{margin-top:4px;}
 
-  /* section */
-  .section { margin-bottom: 2.5rem; }
-  .section-title { font-size: 1.05rem; font-weight: 700; border-left: 4px solid var(--accent); padding-left: .75rem; margin-bottom: .5rem; }
-  .section-intro { font-size: .88rem; color: var(--muted); margin-bottom: 1.25rem; background: var(--accent-light); border-radius: 8px; padding: .75rem 1rem; }
+  .q-block{padding:20px;border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.6;}
 
-  /* question card */
-  .q-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
-  .q-label { font-size: .78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .4rem; }
-  .q-text { font-size: .95rem; margin-bottom: 1rem; }
-  .q-text code, code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: .1em .4em; font-size: .88em; font-family: "SFMono-Regular", Consolas, monospace; }
-  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: .75rem 1rem; margin: .5rem 0 1rem; overflow-x: auto; }
-  pre code { background: none; border: none; padding: 0; font-size: .87em; }
+  .input-row{display:flex;gap:8px;margin-bottom:8px;}
+  input[type=text],textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  input.correct{border-color:var(--green)!important;background:#f0faf5;}
+  input.wrong{border-color:var(--red)!important;background:#fdf0f0;}
+  textarea{resize:vertical;min-height:72px;}
 
-  /* inputs */
-  input[type=text], textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: .5rem .75rem; font-size: .93rem; font-family: inherit; outline: none; transition: border-color .2s; }
-  input[type=text]:focus, textarea:focus { border-color: var(--accent); }
-  textarea { resize: vertical; min-height: 80px; }
-  .radio-group { display: flex; flex-direction: column; gap: .5rem; margin-bottom: .75rem; }
-  .radio-group label { display: flex; align-items: flex-start; gap: .6rem; cursor: pointer; font-size: .93rem; }
-  .radio-group input[type=radio] { margin-top: .25rem; flex-shrink: 0; }
+  .choices{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .choice{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;transition:background .15s;}
+  .choice:hover{background:var(--light);}
+  .choice input[type=radio]{margin-top:3px;flex-shrink:0;}
+  .choice.correct-choice{border-color:var(--green)!important;background:#f0faf5!important;}
+  .choice.wrong-choice{border-color:var(--red)!important;background:#fdf0f0!important;}
 
-  /* buttons */
-  .btn-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .75rem; }
-  .check-btn { background: var(--accent); color: white; border: none; border-radius: 6px; padding: .4rem .9rem; font-size: .85rem; cursor: pointer; }
-  .check-btn:hover { background: #1d4ed8; }
-  .show-btn { background: white; color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; padding: .4rem .9rem; font-size: .85rem; cursor: pointer; }
-  .show-btn:hover { background: var(--accent-light); }
+  .btn{padding:8px 20px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s;}
+  .btn-submit{background:var(--primary);color:#fff;}
+  .btn-submit:hover{background:#154a8a;}
+  .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
+  .btn-answer:hover{background:#e8f0fb;}
 
-  /* feedback */
-  .feedback { margin-top: .75rem; padding: .65rem .9rem; border-radius: 6px; font-size: .88rem; display: none; }
-  .feedback.correct { background: var(--correct-bg); color: var(--correct); border: 1px solid #bbf7d0; }
-  .feedback.wrong { background: var(--wrong-bg); color: var(--wrong); border: 1px solid #fecaca; }
-  .feedback.partial { background: var(--partial-bg); color: var(--partial); border: 1px solid #fde68a; }
-  .feedback.info { background: var(--accent-light); color: var(--accent); border: 1px solid #bfdbfe; }
+  .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
+  .feedback.wrong{background:#fdf0f0;border:1.5px solid #f0b0a8;color:#8b1a10;}
+  .feedback.partial{background:#fff8e1;border:1.5px solid #f5d78e;color:#7a5200;}
+  .feedback .label{font-weight:800;margin-bottom:2px;}
 
-  .answer-box { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: .6rem .9rem; font-size: .88rem; margin-top: .5rem; display: none; }
-  .answer-box strong { display: block; margin-bottom: .3rem; color: var(--muted); font-size: .8rem; }
+  .answer-box{background:#f0faf5;border:1.5px solid #a8dfc0;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .answer-box .label{font-weight:700;color:var(--green);margin-bottom:2px;}
+  .locked-msg{font-size:13px;color:#b56000;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:6px 12px;margin-top:8px;display:none;}
 
-  #grade-btn { display: block; width: 100%; padding: .85rem; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 1rem; }
-  #grade-btn:hover { background: #1d4ed8; }
+  .score-bar{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:24px 28px;max-width:720px;margin:0 auto 24px;display:none;}
+  .score-bar h2{font-size:18px;color:var(--primary);margin-bottom:12px;}
+  .score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1;}
+  .score-msg{font-size:15px;color:var(--muted);margin-top:6px;}
+  .progress-bg{background:var(--border);border-radius:4px;height:8px;margin-top:12px;}
+  .progress-fill{height:8px;border-radius:4px;background:var(--primary);transition:width .6s;}
+  .btn-retry{background:var(--primary);color:#fff;margin-top:16px;width:100%;padding:12px;font-size:16px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+  .btn-retry:hover{background:#154a8a;}
+
+  .calc-wrap{max-width:720px;margin:0 auto 24px;text-align:center;}
 </style>
 </head>
 <body>
-<div class="container">
 
+<div style="max-width:720px;margin:0 auto 16px">
   <h1>1・2章 確認テスト</h1>
-  <p class="subtitle">プログラミング演習1(Python) ／ 全20問・各1点（記述問題は簡易採点）</p>
+  <div class="subtitle">プログラミング演習1(Python) ／ 全20問・各1点（記述問題は簡易採点）</div>
   <div class="notice">⚠️ 正誤判定は簡易な自動処理で行っているため、実際の正解・不正解と異なる場合があります。判定結果はあくまで参考としてご利用ください。</div>
+</div>
 
-  <div id="scoreboard">
-    <div>
-      <div id="score-display">—</div>
-      <div id="score-label">採点するボタンを押すと結果が表示されます</div>
-    </div>
-    <button id="reset-btn" onclick="resetAll()">もう一度挑戦する</button>
+<div class="score-bar" id="score-bar">
+  <h2>結果</h2>
+  <div class="score-big" id="score-val">-</div>
+  <div class="score-msg" id="score-msg"></div>
+  <div class="progress-bg"><div class="progress-fill" id="score-fill" style="width:0%"></div></div>
+  <button class="btn-retry" onclick="location.reload()">もう一度挑戦する</button>
+</div>
+
+<!-- ===== Section A ===== -->
+<div class="section">
+  <div class="sec-header">セクション A：関数とメソッドの区別</div>
+  <div class="sec-desc">
+    <p>Pythonには、<code>len(df)</code> のように単独で呼び出す<strong>関数</strong>と、<code>df.drop()</code> のようにオブジェクトに「.」でつないで呼び出す<strong>メソッド</strong>があります。以下では、コード中の操作が関数・メソッドのどちらにあたるかを答えてください。</p>
   </div>
 
-  <!-- ===== SECTION A ===== -->
-  <div class="section">
-    <div class="section-title">セクション A：関数とメソッドの区別</div>
-    <div class="section-intro">Pythonには、<code>len(df)</code> のように単独で呼び出す<strong>関数</strong>と、<code>df.drop()</code> のようにオブジェクトに「.」でつないで呼び出す<strong>メソッド</strong>があります。以下では、コード中の操作が関数・メソッドのどちらにあたるかを答えてください。</div>
-
-    <!-- A-1 -->
-    <div class="q-card" id="q-A1">
-      <div class="q-label">問A-1（短答）</div>
-      <div class="q-text">コード 2-3 の <code>len(df)</code> における <code>len</code> は _____ である。</div>
-      <input type="text" id="ans-A1" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('A1')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('A1')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-A1"></div>
-      <div class="answer-box" id="ab-A1"><strong>正解例</strong>関数 / 組み込み関数 / ビルトイン関数 / function</div>
-    </div>
-
-    <!-- A-2 -->
-    <div class="q-card" id="q-A2">
-      <div class="q-label">問A-2（短答）</div>
-      <div class="q-text">コード 2-7 の <code>df.drop()</code> における <code>drop</code> は _____ である。</div>
-      <input type="text" id="ans-A2" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('A2')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('A2')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-A2"></div>
-      <div class="answer-box" id="ab-A2"><strong>正解例</strong>メソッド / method / DataFrameのメソッド / データフレームのメソッド</div>
-    </div>
-
-    <!-- A-3 -->
-    <div class="q-card" id="q-A3">
-      <div class="q-label">問A-3（選択）</div>
-      <div class="q-text"><code>len(df)</code> と <code>df.drop()</code> の呼び出し方の違いを最もよく説明しているのはどれか。</div>
-      <div class="radio-group">
-        <label><input type="radio" name="A3" value="0"> len は引数をとるが、drop は引数をとらない</label>
-        <label><input type="radio" name="A3" value="1"> len は関数でオブジェクトの外から呼び出すが、drop はメソッドでオブジェクトに属する</label>
-        <label><input type="radio" name="A3" value="2"> len は数値を返すが、drop は文字列を返す</label>
-        <label><input type="radio" name="A3" value="3"> 違いはない</label>
-      </div>
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkRadio('A3', '1')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('A3')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-A3"></div>
-      <div class="answer-box" id="ab-A3"><strong>正解例</strong>len は関数でオブジェクトの外から呼び出すが、drop はメソッドでオブジェクトに属する</div>
-    </div>
+  <div class="q-block" data-type="short" data-patterns='["関数"]' data-example="関数（組み込み関数 / ビルトイン関数 / function も可）" data-unlock="2026-04-21">
+    <div class="q-label">問A-1（短答）</div>
+    <div class="q-text">コード 2-3 の <code>len(df)</code> における <code>len</code> は _____ である。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <!-- ===== SECTION B ===== -->
-  <div class="section">
-    <div class="section-title">セクション B：出力を読む</div>
-    <div class="section-intro">以下の問題では、コードを実際に実行したときの出力結果を読み取って答えてください。予習でノートブックを動かしていれば答えられるはずです。</div>
+  <div class="q-block" data-type="short" data-patterns='["メソッド"]' data-example="メソッド（method / DataFrameのメソッド も可）" data-unlock="2026-04-21">
+    <div class="q-label">問A-2（短答）</div>
+    <div class="q-text">コード 2-7 の <code>df.drop()</code> における <code>drop</code> は _____ である。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
 
-    <!-- B-1 -->
-    <div class="q-card" id="q-B1">
-      <div class="q-label">問B-1（数値）</div>
-      <div class="q-text">コード 2-3 を実行すると何が表示されるか？数値で答えよ。</div>
-      <input type="text" id="ans-B1" placeholder="数値を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkNum('B1', 3)">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('B1')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-B1"></div>
-      <div class="answer-box" id="ab-B1"><strong>正解例</strong>3</div>
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="len は関数でオブジェクトの外から呼び出すが、drop はメソッドでオブジェクトに属する" data-unlock="2026-04-21">
+    <div class="q-label">問A-3（選択）</div>
+    <div class="q-text"><code>len(df)</code> と <code>df.drop()</code> の呼び出し方の違いを最もよく説明しているのはどれか。</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="A3"> len は引数をとるが、drop は引数をとらない</label>
+      <label class="choice"><input type="radio" name="A3"> len は関数でオブジェクトの外から呼び出すが、drop はメソッドでオブジェクトに属する</label>
+      <label class="choice"><input type="radio" name="A3"> len は数値を返すが、drop は文字列を返す</label>
+      <label class="choice"><input type="radio" name="A3"> 違いはない</label>
     </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
 
-    <!-- B-2 -->
-    <div class="q-card" id="q-B2">
-      <div class="q-label">問B-2（短答）</div>
-      <div class="q-text">コード 2-11 を実行すると <code>df2</code> の列名（カラム名）は何か。左から順にすべて答えよ。</div>
-      <input type="text" id="ans-B2" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('B2')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('B2')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-B2"></div>
-      <div class="answer-box" id="ab-B2"><strong>正解例</strong>4列目、5列目、6列目</div>
-    </div>
+<!-- ===== Section B ===== -->
+<div class="section">
+  <div class="sec-header">セクション B：出力を読む</div>
+  <div class="sec-desc">
+    <p>以下の問題では、コードを実際に実行したときの出力結果を読み取って答えてください。予習でノートブックを動かしていれば答えられるはずです。</p>
+  </div>
 
-    <!-- B-3 -->
-    <div class="q-card" id="q-B3">
-      <div class="q-label">問B-3（短答）</div>
-      <div class="q-text">コード 2-13 を実行すると、欠損値（NaN）はどの列に何個あるか。</div>
-      <input type="text" id="ans-B3" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('B3')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('B3')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-B3"></div>
-      <div class="answer-box" id="ab-B3"><strong>正解例</strong>5列目に1個</div>
-    </div>
+  <div class="q-block" data-type="short" data-patterns='["3"]' data-example="3" data-unlock="2026-04-21">
+    <div class="q-label">問B-1（数値）</div>
+    <div class="q-text">コード 2-3 を実行すると何が表示されるか？数値で答えよ。</div>
+    <div class="input-row"><input type="text" placeholder="数値を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
 
-    <!-- B-4 -->
-    <div class="q-card" id="q-B4">
-      <div class="q-label">問B-4（記述）</div>
-      <div class="q-text">コード 2-14 を実行すると <code>df4</code> の行数は何行か。また、3行目がなくなった理由を一言で答えよ。</div>
-      <textarea id="ans-B4" placeholder="回答を入力"></textarea>
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkEssay('B4')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('B4')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-B4"></div>
-      <div class="answer-box" id="ab-B4"><strong>正解例</strong>2行、3行目に欠損値（NaN）があったため dropna() で削除された</div>
-    </div>
+  <div class="q-block" data-type="short" data-patterns='["4列目","5列目","6列目"]' data-example="4列目、5列目、6列目" data-unlock="2026-04-21">
+    <div class="q-label">問B-2（短答）</div>
+    <div class="q-text">コード 2-11 を実行すると <code>df2</code> の列名（カラム名）は何か。左から順にすべて答えよ。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
 
-    <!-- B-5 -->
-    <div class="q-card" id="q-B5">
-      <div class="q-label">問B-5（記述）</div>
-      <div class="q-text">コード 2-18 を実行すると、何が何回表示されるか。</div>
-      <pre><code>for i in range(1, 5):
+  <div class="q-block" data-type="short" data-patterns='["5列目","1"]' data-example="5列目に1個" data-unlock="2026-04-21">
+    <div class="q-label">問B-3（短答）</div>
+    <div class="q-text">コード 2-13 を実行すると、欠損値（NaN）はどの列に何個あるか。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-keywords='["2行","欠損","NaN","dropna"]' data-example="2行。3行目に欠損値（NaN）があったため dropna() で削除された。" data-unlock="2026-04-21">
+    <div class="q-label">問B-4（記述）</div>
+    <div class="q-text">コード 2-14 を実行すると <code>df4</code> の行数は何行か。また、3行目がなくなった理由を一言で答えよ。</div>
+    <textarea placeholder="回答を記述してください"></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-keywords='["1","2","3","4","4回"]' data-example="1, 2, 3, 4 の順に4回表示される。" data-unlock="2026-04-21">
+    <div class="q-label">問B-5（記述）</div>
+    <div class="q-text">コード 2-18 を実行すると、何が何回表示されるか。</div>
+    <pre><code>for i in range(1, 5):
     print(i)</code></pre>
-      <textarea id="ans-B5" placeholder="回答を入力"></textarea>
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkEssay('B5')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('B5')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-B5"></div>
-      <div class="answer-box" id="ab-B5"><strong>正解例</strong>1, 2, 3, 4 の順に4回</div>
-    </div>
-
-    <!-- B-6 -->
-    <div class="q-card" id="q-B6">
-      <div class="q-label">問B-6（短答）</div>
-      <div class="q-text">コード 2-20 を実行すると何要素のリストが返るか。また、最後の要素は何か。</div>
-      <pre><code>"今日は朝から雨模様だ。明日は晴天になるらしい。".split("。")</code></pre>
-      <input type="text" id="ans-B6" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('B6')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('B6')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-B6"></div>
-      <div class="answer-box" id="ab-B6"><strong>正解例</strong>3要素、最後の要素は空文字列（''）</div>
-    </div>
+    <textarea placeholder="回答を記述してください"></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <!-- ===== SECTION C ===== -->
-  <div class="section">
-    <div class="section-title">セクション C：コードを書く</div>
-    <div class="section-intro">以下の問題では、指定された操作を行うためのコードを答えてください。クォート（<code>'</code> または <code>"</code>）はどちらを使っても正解とします。</div>
+  <div class="q-block" data-type="short" data-patterns='["3","空"]' data-example="3要素。最後の要素は空文字列（''）。" data-unlock="2026-04-21">
+    <div class="q-label">問B-6（短答）</div>
+    <div class="q-text">コード 2-20 を実行すると何要素のリストが返るか。また、最後の要素は何か。</div>
+    <pre><code>"今日は朝から雨模様だ。明日は晴天になるらしい。".split("。")</code></pre>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
 
-    <!-- C-1 -->
-    <div class="q-card" id="q-C1">
-      <div class="q-label">問C-1（短答）</div>
-      <div class="q-text">コード 2-2 で作成したデータフレーム <code>df</code> から 3行目を取り出すには ________ とすればよい。</div>
-      <input type="text" id="ans-C1" placeholder="コードを入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('C1')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('C1')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-C1"></div>
-      <div class="answer-box" id="ab-C1"><strong>正解例</strong>df.iloc[2] / df.iloc[2, :] / df.iloc[-1] / df.loc["3行目"] / df[2:3] / df.tail(1)</div>
-    </div>
-
-    <!-- C-2 -->
-    <div class="q-card" id="q-C2">
-      <div class="q-label">問C-2（短答）</div>
-      <div class="q-text">コード 2-2 で作成した <code>df</code> から 3行目を <code>drop</code> を使って削除するには _________________ とすればよい。</div>
-      <input type="text" id="ans-C2" placeholder="コードを入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('C2')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('C2')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-C2"></div>
-      <div class="answer-box" id="ab-C2"><strong>正解例</strong>df.drop('3行目') / df.drop(['3行目']) / df.drop(index='3行目') / df.drop(index=['3行目'])</div>
-    </div>
-
-    <!-- C-3 -->
-    <div class="q-card" id="q-C3">
-      <div class="q-label">問C-3（短答）</div>
-      <div class="q-text">コード 2-12 で作成した <code>df3</code> の「5列目」の各要素について、50 以下かどうかを判定するには __________________ とすればよい。</div>
-      <input type="text" id="ans-C3" placeholder="コードを入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('C3')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('C3')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-C3"></div>
-      <div class="answer-box" id="ab-C3"><strong>正解例</strong>df3["5列目"] &lt;= 50 / df3['5列目'] &lt;= 50 / df3.loc[:, "5列目"] &lt;= 50 / 50 &gt;= df3["5列目"]</div>
-    </div>
-
-    <!-- C-4 -->
-    <div class="q-card" id="q-C4">
-      <div class="q-label">問C-4（短答）</div>
-      <div class="q-text">コード 2-17 と同様に、<code>df3</code> から「4列目」が 30 以下の行だけを取り出すには __________________ とすればよい。</div>
-      <input type="text" id="ans-C4" placeholder="コードを入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('C4')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('C4')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-C4"></div>
-      <div class="answer-box" id="ab-C4"><strong>正解例</strong>df3[df3["4列目"] &lt;= 30] / df3[df3['4列目'] &lt;= 30] / df3.loc[df3["4列目"] &lt;= 30] / df3[30 >= df3["4列目"]]</div>
-    </div>
-
-    <!-- C-5 -->
-    <div class="q-card" id="q-C5">
-      <div class="q-label">問C-5（短答）</div>
-      <div class="q-text">コード 2-21 を参考に、<code>['東京', '大阪', '名古屋']</code> というリストの要素を「／」で結合して一つの文字列にするには __________________ とすればよい。</div>
-      <input type="text" id="ans-C5" placeholder="コードを入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('C5')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('C5')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-C5"></div>
-      <div class="answer-box" id="ab-C5"><strong>正解例</strong>"／".join(['東京', '大阪', '名古屋']) / '／'.join(['東京', '大阪', '名古屋'])</div>
-    </div>
+<!-- ===== Section C ===== -->
+<div class="section">
+  <div class="sec-header">セクション C：コードを書く</div>
+  <div class="sec-desc">
+    <p>以下の問題では、指定された操作を行うためのコードを答えてください。クォート（<code>'</code> または <code>"</code>）はどちらを使っても正解とします。</p>
   </div>
 
-  <!-- ===== SECTION D ===== -->
-  <div class="section">
-    <div class="section-title">セクション D：型・意味を読む</div>
-    <div class="section-intro">Pythonでは、数値・文字列・真偽値などのデータの「型（type）」が重要です。以下では、コードの出力やデータの型を読み取って答えてください。</div>
+  <div class="q-block" data-type="short" data-patterns='["iloc","2"]' data-example="df.iloc[2]　など（df.iloc[-1] / df.loc[&quot;3行目&quot;] / df[2:3] / df.tail(1) も可）" data-unlock="2026-04-21">
+    <div class="q-label">問C-1（短答）</div>
+    <div class="q-text">コード 2-2 で作成したデータフレーム <code>df</code> から 3行目を取り出すには ________ とすればよい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
 
-    <!-- D-1 -->
-    <div class="q-card" id="q-D1">
-      <div class="q-label">問D-1（短答）</div>
-      <div class="q-text">コード 2-11 の <code>df2</code> の「5列目」の型（dtype）は _____ である。</div>
-      <input type="text" id="ans-D1" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('D1')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('D1')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-D1"></div>
-      <div class="answer-box" id="ab-D1"><strong>正解例</strong>float64 / Float64 / float / 浮動小数点数</div>
+  <div class="q-block" data-type="short" data-patterns='["drop","3行目"]' data-example="df.drop('3行目')　など（df.drop(index='3行目') / df.drop(['3行目']) も可）" data-unlock="2026-04-21">
+    <div class="q-label">問C-2（短答）</div>
+    <div class="q-text">コード 2-2 で作成した <code>df</code> から 3行目を <code>drop</code> を使って削除するには _________________ とすればよい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["5列目","<=","50"]' data-example='df3["5列目"] <= 50　など（df3.loc[:,"5列目"] <= 50 / 50 >= df3["5列目"] も可）' data-unlock="2026-04-21">
+    <div class="q-label">問C-3（短答）</div>
+    <div class="q-text">コード 2-12 で作成した <code>df3</code> の「5列目」の各要素について、50 以下かどうかを判定するには __________________ とすればよい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["4列目","<=","30"]' data-example='df3[df3["4列目"] <= 30]　など（df3.loc[df3["4列目"] <= 30] も可）' data-unlock="2026-04-21">
+    <div class="q-label">問C-4（短答）</div>
+    <div class="q-text">コード 2-17 と同様に、<code>df3</code> から「4列目」が 30 以下の行だけを取り出すには __________________ とすればよい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["／","join"]' data-example='"／".join([\'東京\', \'大阪\', \'名古屋\'])' data-unlock="2026-04-21">
+    <div class="q-label">問C-5（短答）</div>
+    <div class="q-text">コード 2-21 を参考に、<code>['東京', '大阪', '名古屋']</code> というリストの要素を「／」で結合して一つの文字列にするには __________________ とすればよい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section D ===== -->
+<div class="section">
+  <div class="sec-header">セクション D：型・意味を読む</div>
+  <div class="sec-desc">
+    <p>Pythonでは、数値・文字列・真偽値などのデータの「型（type）」が重要です。以下では、コードの出力やデータの型を読み取って答えてください。</p>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["float"]' data-example="float64（Float64 / float / 浮動小数点数 も可）" data-unlock="2026-04-21">
+    <div class="q-label">問D-1（短答）</div>
+    <div class="q-text">コード 2-11 の <code>df2</code> の「5列目」の型（dtype）は _____ である。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="None（欠損値）が含まれると pandas は整数型を保てないから" data-unlock="2026-04-21">
+    <div class="q-label">問D-2（選択）</div>
+    <div class="q-text">コード 2-11 で「5列目」の型が <code>int64</code> ではなく <code>float64</code> になった理由として正しいのはどれか。</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="D2"> 10, 50 という数値が小数だから</label>
+      <label class="choice"><input type="radio" name="D2"> None（欠損値）が含まれると pandas は整数型を保てないから</label>
+      <label class="choice"><input type="radio" name="D2"> pd.DataFrame の仕様で常に float になるから</label>
+      <label class="choice"><input type="radio" name="D2"> 列名が「5列目」だから</label>
     </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
 
-    <!-- D-2 -->
-    <div class="q-card" id="q-D2">
-      <div class="q-label">問D-2（選択）</div>
-      <div class="q-text">コード 2-11 で「5列目」の型が <code>int64</code> ではなく <code>float64</code> になった理由として正しいのはどれか。</div>
-      <div class="radio-group">
-        <label><input type="radio" name="D2" value="0"> 10, 50 という数値が小数だから</label>
-        <label><input type="radio" name="D2" value="1"> None（欠損値）が含まれると pandas は整数型を保てないから</label>
-        <label><input type="radio" name="D2" value="2"> pd.DataFrame の仕様で常に float になるから</label>
-        <label><input type="radio" name="D2" value="3"> 列名が「5列目」だから</label>
-      </div>
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkRadio('D2', '1')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('D2')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-D2"></div>
-      <div class="answer-box" id="ab-D2"><strong>正解例</strong>None（欠損値）が含まれると pandas は整数型を保てないから</div>
-    </div>
-
-    <!-- D-3 -->
-    <div class="q-card" id="q-D3">
-      <div class="q-label">問D-3（短答）</div>
-      <div class="q-text">コード 2-19 を実行すると、<code>"1"</code> と <code>1</code> と <code>1.23</code> のそれぞれの型（type）は何か。</div>
-      <pre><code>print(type("1"))
+  <div class="q-block" data-type="short" data-patterns='["str","int","float"]' data-example="str, int, float" data-unlock="2026-04-21">
+    <div class="q-label">問D-3（短答）</div>
+    <div class="q-text">コード 2-19 を実行すると、<code>"1"</code> と <code>1</code> と <code>1.23</code> のそれぞれの型（type）は何か。</div>
+    <pre><code>print(type("1"))
 print(type(1))
 print(type(1.23))</code></pre>
-      <input type="text" id="ans-D3" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('D3')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('D3')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-D3"></div>
-      <div class="answer-box" id="ab-D3"><strong>正解例</strong>str, int, float / str・int・float / "1"はstr、1はint、1.23はfloat</div>
-    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section E ===== -->
+<div class="section">
+  <div class="sec-header">セクション E：エラーとデータ取り込み</div>
+  <div class="sec-desc">
+    <p>実際のデータ分析では、CSVファイルを読み込む際にエラーが発生したり、データの形式が想定と異なることがよくあります。エラーの原因やデータの扱い方の注意点について答えてください。</p>
   </div>
 
-  <!-- ===== SECTION E ===== -->
-  <div class="section">
-    <div class="section-title">セクション E：エラーとデータ取り込み</div>
-    <div class="section-intro">実際のデータ分析では、CSVファイルを読み込む際にエラーが発生したり、データの形式が想定と異なることがよくあります。エラーの原因やデータの扱い方の注意点について答えてください。</div>
-
-    <!-- E-1 -->
-    <div class="q-card" id="q-E1">
-      <div class="q-label">問E-1（選択）</div>
-      <div class="q-text">コード 2-24 で <code>pd.read_csv()</code> を実行した際に <code>encoding="Shift-jis"</code> を指定している。この指定をしないとどうなる可能性が高いか。</div>
-      <pre><code>birth = pd.read_csv("data/chapter02.csv", encoding="Shift-jis")</code></pre>
-      <div class="radio-group">
-        <label><input type="radio" name="E1" value="0"> データが読み込めない（ファイルが見つからないエラーになる）</label>
-        <label><input type="radio" name="E1" value="1"> エラーが出るか、文字化けする</label>
-        <label><input type="radio" name="E1" value="2"> 数値列が float になる</label>
-        <label><input type="radio" name="E1" value="3"> 列名が消える</label>
-      </div>
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkRadio('E1', '1')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('E1')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-E1"></div>
-      <div class="answer-box" id="ab-E1"><strong>正解例</strong>エラーが出るか、文字化けする</div>
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="エラーが出るか、文字化けする" data-unlock="2026-04-21">
+    <div class="q-label">問E-1（選択）</div>
+    <div class="q-text">コード 2-24 で <code>pd.read_csv()</code> を実行した際に <code>encoding="Shift-jis"</code> を指定している。この指定をしないとどうなる可能性が高いか。</div>
+    <pre><code>birth = pd.read_csv("data/chapter02.csv", encoding="Shift-jis")</code></pre>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="E1"> データが読み込めない（ファイルが見つからないエラーになる）</label>
+      <label class="choice"><input type="radio" name="E1"> エラーが出るか、文字化けする</label>
+      <label class="choice"><input type="radio" name="E1"> 数値列が float になる</label>
+      <label class="choice"><input type="radio" name="E1"> 列名が消える</label>
     </div>
-
-    <!-- E-2 -->
-    <div class="q-card" id="q-E2">
-      <div class="q-label">問E-2（短答）</div>
-      <div class="q-text">コード 2-25 を実行すると <code>birth</code> の先頭何行が表示されるか。また、使っているメソッド名は何か。</div>
-      <input type="text" id="ans-E2" placeholder="回答を入力">
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkShort('E2')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('E2')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-E2"></div>
-      <div class="answer-box" id="ab-E2"><strong>正解例</strong>5行、head() / 先頭5行、head</div>
-    </div>
-
-    <!-- E-3 -->
-    <div class="q-card" id="q-E3">
-      <div class="q-label">問E-3（記述）</div>
-      <div class="q-text">コード 2-25 の出力を見ると「世帯年間収入」列の値が <code>"4,488"</code> のようにカンマ付きの文字として表示されている。このままでは平均などの計算に使えない理由を一言で答えよ。</div>
-      <textarea id="ans-E3" placeholder="回答を入力"></textarea>
-      <div class="btn-row">
-        <button class="check-btn" onclick="checkEssay('E3')">採点</button>
-        <button class="show-btn" onclick="toggleAnswer('E3')">正解を見る</button>
-      </div>
-      <div class="feedback" id="fb-E3"></div>
-      <div class="answer-box" id="ab-E3"><strong>正解例</strong>文字列（str / object型）として読み込まれているため、数値計算ができないから。カンマが含まれているため数値として認識されないから。</div>
-    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <button id="grade-btn" onclick="gradeAll()">採点する</button>
+  <div class="q-block" data-type="short" data-patterns='["5","head"]' data-example="5行、head()（先頭5行、head も可）" data-unlock="2026-04-21">
+    <div class="q-label">問E-2（短答）</div>
+    <div class="q-text">コード 2-25 を実行すると <code>birth</code> の先頭何行が表示されるか。また、使っているメソッド名は何か。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-keywords='["文字列","str","object","数値","カンマ"]' data-example="文字列型（str/object）として読み込まれているため、数値計算ができない。" data-unlock="2026-04-21">
+    <div class="q-label">問E-3（記述）</div>
+    <div class="q-text">コード 2-25 の出力を見ると「世帯年間収入」列の値が <code>"4,488"</code> のようにカンマ付きの文字として表示されている。このままでは平均などの計算に使えない理由を一言で答えよ。</div>
+    <textarea placeholder="理由を記述してください"></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <button class="btn btn-submit" style="padding:12px 40px;font-size:17px" onclick="calcTotal()">採点する</button>
 </div>
 
 <script>
-// ============================================================
-// 正解データ（XMLの全バリアントを反映）
-// ============================================================
-const ANSWERS = {
-  // --- Short answer: array of accepted strings (case/space-insensitive after normalize) ---
-  A1: { type: 'short', correct: ['関数','組み込み関数','組込み関数','組込関数','ビルトイン関数','function'] },
-  A2: { type: 'short', correct: ['メソッド','method','DataFrameのメソッド','データフレームのメソッド','dataframeのメソッド'] },
-  B1: { type: 'num', correct: 3 },
-  B2: { type: 'short', correct: [
-    '4列目、5列目、6列目','4列目,5列目,6列目','4列目，5列目，6列目','4列目 5列目 6列目',
-    '4列目　5列目　6列目','4列目5列目6列目'
-  ]},
-  B3: {
-    type: 'short',
-    correct: ['5列目に1個','5列目に１個','5列目が1個','5列目、1個','5列目,1個','5列目:1','5列目：1','5列目1個'],
-    partial: ['1個','１個','5列目']
-  },
-  B4: {
-    type: 'essay',
-    keywords_full: [['2行','2行目','２行'], ['欠損','nan','none','dropna']],
-    partial_keywords: [['2行','2行目','２行'], ['欠損','nan','none','dropna']]
-  },
-  B5: {
-    type: 'essay',
-    keywords_full: [['1','２','3','4','1,2,3,4','1、2、3、4'], ['4回','4度']],
-    partial_keywords: [['4回'], ['1から4','1,2,3,4']]
-  },
-  B6: {
-    type: 'short',
-    correct: [
-      '3要素、最後の要素は空文字列','3要素。最後の要素は空文字列','3つ、空文字','3要素、空文字',
-      '3、空文字列','3個、空文字','3要素,空文字列','3,空文字列','3個,空文字列'
-    ],
-    partial: ['3要素','3個','3','空文字','空文字列']
-  },
-  C1: { type: 'short', correct: [
-    'df.iloc[2]','df.iloc[2,:]','df.iloc[2, :]',
-    'df.iloc[-1]','df.iloc[-1,:]','df.iloc[-1, :]',
-    'df.loc["3行目"]',"df.loc['3行目']",
-    'df.loc["3行目",:]',"df.loc['3行目',:]",
-    'df.loc["3行目", :]',"df.loc['3行目', :]",
-    'df[2:3]','df.tail(1)'
-  ]},
-  C2: { type: 'short', correct: [
-    "df.drop('3行目')",'df.drop("3行目")',
-    "df.drop(['3行目'])",'df.drop(["3行目"])',
-    "df.drop(index='3行目",'df.drop(index="3行目")',
-    "df.drop(index=['3行目'])",'df.drop(index=["3行目"])',
-    "df.drop(labels='3行目",'df.drop(labels="3行目")',
-    "df.drop('3行目', axis=0)",'df.drop("3行目", axis=0)',
-    "df.drop('3行目',axis=0)",'df.drop("3行目",axis=0)',
-    "df.drop(['3行目'], axis=0)",'df.drop(["3行目"], axis=0)'
-  ]},
-  C3: { type: 'short', correct: [
-    'df3["5列目"] <= 50',"df3['5列目'] <= 50",
-    'df3["5列目"]<=50',"df3['5列目']<=50",
-    'df3["5列目"] <=50',"df3['5列目'] <=50",
-    'df3["5列目"]<= 50',"df3['5列目']<= 50",
-    'df3.loc[:, "5列目"] <= 50',"df3.loc[:, '5列目'] <= 50",
-    '50 >= df3["5列目"]',"50 >= df3['5列目']"
-  ]},
-  C4: { type: 'short', correct: [
-    'df3[df3["4列目"] <= 30]',"df3[df3['4列目'] <= 30]",
-    'df3[df3["4列目"]<=30]',"df3[df3['4列目']<=30]",
-    'df3.loc[df3["4列目"] <= 30]',"df3.loc[df3['4列目'] <= 30]",
-    'df3.loc[df3["4列目"]<=30]',"df3.loc[df3['4列目']<=30]",
-    'df3[df3.loc[:, "4列目"] <= 30]',"df3[df3.loc[:, '4列目'] <= 30]",
-    'df3[30 >= df3["4列目"]]',"df3[30 >= df3['4列目']]"
-  ]},
-  C5: { type: 'short', correct: [
-    '"／".join([\'東京\', \'大阪\', \'名古屋\'])',
-    "'／'.join(['東京', '大阪', '名古屋'])",
-    '"／".join(["東京", "大阪", "名古屋"])',
-    "'／'.join([\"東京\", \"大阪\", \"名古屋\"])",
-    '"／".join([\'東京\',\'大阪\',\'名古屋\'])',
-    "'／'.join(['東京','大阪','名古屋'])",
-    '"／".join(["東京","大阪","名古屋"])',
-    // loose match: contains join and ／ and all 3 cities
-  ]},
-  D1: { type: 'short', correct: ['float64','Float64','FLOAT64','float 64'],
-        partial: ['float','浮動小数点数','浮動小数点'] },
-  D3: { type: 'short', correct: [
-    'str, int, float','str,int,float','str・int・float','str/int/float','str int float',
-    'str、int、float',
-    '"1" は str、1 は int、1.23 は float',
-    "'1' は str、1 は int、1.23 は float"
-  ]},
-  E2: { type: 'short', correct: [
-    '5行、head()','5行,head()','5行 head()','5、head()','先頭5行、head()','先頭5行、head',
-    '5行、head','5行,head','先頭5行,head()','先頭5行,head'
-  ], partial: ['5行','5','head()','head'] },
-  E3: { type: 'essay',
-    keywords_full: [['文字列','str','object','文字']],
-    partial_keywords: [['文字列','str','object','文字'],['カンマ','コンマ']]
-  },
-};
-
-// normalize for comparison
-function norm(s) {
-  return s.trim().replace(/\s+/g, ' ').replace(/[　]/g, ' ').toLowerCase();
-}
-
+// ===== 解禁日設定 =====
+// 各問題の data-unlock="YYYY-MM-DD" で個別に設定しています。
+// ======================
 const scores = {};
+let qIdx = 0;
 
-function showFeedback(id, cls, msg) {
-  const el = document.getElementById('fb-' + id);
-  el.className = 'feedback ' + cls;
-  el.textContent = msg;
-  el.style.display = 'block';
+function isUnlocked(dateStr) {
+  return new Date() >= new Date(dateStr + 'T00:00:00');
 }
 
-function checkShort(id) {
-  const raw = document.getElementById('ans-' + id).value;
-  const n = norm(raw);
-  const data = ANSWERS[id];
-  // Exact match (normalized)
-  const isCorrect = data.correct.some(c => norm(c) === n);
-  if (isCorrect) {
-    scores[id] = 1;
-    showFeedback(id, 'correct', '✅ 正解です！');
-    return;
-  }
-  // Partial
-  if (data.partial) {
-    const isPartial = data.partial.some(c => norm(c) === n || n.includes(norm(c)));
-    if (isPartial) {
-      scores[id] = 0.5;
-      showFeedback(id, 'partial', '△ 部分的に合っています。もう少し詳しく答えてみましょう。');
-      return;
-    }
-  }
-  // Loose: for C5, check join + ／ + 3 cities
-  if (id === 'C5' && n.includes('join') && n.includes('／') && n.includes('東京') && n.includes('大阪') && n.includes('名古屋')) {
-    scores[id] = 1;
-    showFeedback(id, 'correct', '✅ 正解です！');
-    return;
-  }
-  scores[id] = 0;
-  showFeedback(id, 'wrong', '❌ 不正解です。「正解を見る」で確認しましょう。');
-}
-
-function checkNum(id, answer) {
-  const val = parseFloat(document.getElementById('ans-' + id).value);
-  if (val === answer) {
-    scores[id] = 1;
-    showFeedback(id, 'correct', '✅ 正解です！');
+function showAnswer(btn) {
+  const block = btn.closest('.q-block');
+  const unlock = block.dataset.unlock;
+  const example = block.dataset.example;
+  const locked = block.querySelector('.locked-msg');
+  const box = block.querySelector('.answer-box');
+  const text = block.querySelector('.answer-text');
+  if (isUnlocked(unlock)) {
+    text.textContent = example;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+    locked.style.display = 'none';
   } else {
-    scores[id] = 0;
-    showFeedback(id, 'wrong', '❌ 不正解です。');
+    const d = new Date(unlock + 'T00:00:00');
+    locked.textContent = `正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`;
+    locked.style.display = 'block';
   }
 }
 
-function checkRadio(id, correctVal) {
-  const sel = document.querySelector(`input[name="${id}"]:checked`);
-  if (!sel) { showFeedback(id, 'info', 'ℹ️ 選択肢を選んでください。'); return; }
-  if (sel.value === correctVal) {
-    scores[id] = 1;
-    showFeedback(id, 'correct', '✅ 正解です！');
-  } else {
-    scores[id] = 0;
-    showFeedback(id, 'wrong', '❌ 不正解です。');
-  }
+function submitShort(btn) {
+  const block = btn.closest('.q-block');
+  const input = block.querySelector('input[type=text]');
+  const ans = input.value.trim();
+  if (!ans) return;
+  const patterns = JSON.parse(block.dataset.patterns);
+  const ok = patterns.every(p => ans.includes(p));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  input.className = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
 }
 
-function checkEssay(id) {
-  const raw = norm(document.getElementById('ans-' + id).value);
-  const data = ANSWERS[id];
-  // full: all keyword groups matched
-  const fullMatch = data.keywords_full.every(group => group.some(kw => raw.includes(kw.toLowerCase())));
-  if (fullMatch) {
-    scores[id] = 1;
-    showFeedback(id, 'correct', '✅ 正解です！');
-    return;
-  }
-  // partial: at least one group matched
-  const partialMatch = data.partial_keywords.some(group => group.some(kw => raw.includes(kw.toLowerCase())));
-  if (partialMatch) {
-    scores[id] = 0.5;
-    showFeedback(id, 'partial', '△ キーワードが一部含まれています。採点者が確認します。');
-    return;
-  }
-  scores[id] = 0;
-  showFeedback(id, 'wrong', '❌ キーワードが見つかりませんでした。「正解を見る」で確認しましょう。');
-}
-
-function toggleAnswer(id) {
-  const el = document.getElementById('ab-' + id);
-  el.style.display = el.style.display === 'block' ? 'none' : 'block';
-}
-
-function gradeAll() {
-  const allIds = ['A1','A2','A3','B1','B2','B3','B4','B5','B6',
-                  'C1','C2','C3','C4','C5','D1','D2','D3','E1','E2','E3'];
-  allIds.forEach(id => {
-    const d = ANSWERS[id];
-    if (!d) return;
-    if (document.getElementById('fb-' + id).style.display === 'block') return; // already checked
-    if (d.type === 'num') checkNum(id, d.correct);
-    else if (d.type === 'short') checkShort(id);
-    else if (d.type === 'essay') checkEssay(id);
-    else if (id === 'A3') checkRadio('A3', '1');
-    else if (id === 'D2') checkRadio('D2', '1');
-    else if (id === 'E1') checkRadio('E1', '1');
+function submitMulti(btn) {
+  const block = btn.closest('.q-block');
+  const correctIdx = parseInt(block.dataset.correctIdx);
+  const choices = block.querySelectorAll('.choice');
+  const selected = block.querySelector('input[type=radio]:checked');
+  if (!selected) return;
+  const selIdx = [...choices].indexOf(selected.closest('.choice'));
+  const ok = selIdx === correctIdx;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  choices.forEach((c, i) => {
+    c.querySelector('input').disabled = true;
+    if (i === correctIdx) c.classList.add('correct-choice');
+    else if (i === selIdx && !ok) c.classList.add('wrong-choice');
   });
-  // tally
-  const total = Object.values(scores).reduce((a, b) => a + b, 0);
-  const pct = Math.round((total / 20) * 100);
-  document.getElementById('score-display').textContent = `${total.toFixed(1)} / 20`;
-  document.getElementById('score-label').textContent = `正答率 ${pct}%`;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
 }
 
-function resetAll() {
-  document.querySelectorAll('input[type=text], textarea').forEach(el => el.value = '');
-  document.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
-  document.querySelectorAll('.feedback').forEach(el => { el.style.display = 'none'; el.className = 'feedback'; });
-  document.querySelectorAll('.answer-box').forEach(el => el.style.display = 'none');
-  Object.keys(scores).forEach(k => delete scores[k]);
-  document.getElementById('score-display').textContent = '—';
-  document.getElementById('score-label').textContent = '採点するボタンを押すと結果が表示されます';
+function submitEssay(btn) {
+  const block = btn.closest('.q-block');
+  const ta = block.querySelector('textarea');
+  const ans = ta.value.trim();
+  if (!ans) return;
+  const keywords = JSON.parse(block.dataset.keywords);
+  const hit = keywords.filter(k => ans.includes(k)).length;
+  const score = hit >= Math.ceil(keywords.length / 2) ? 1 : hit > 0 ? 0.5 : 0;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = score;
+  ta.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  if (score === 1)   { fb.className = 'feedback correct'; fb.innerHTML = '<div class="label">✅ 正解（1点）</div>'; }
+  else if (score === 0.5) { fb.className = 'feedback partial'; fb.innerHTML = '<div class="label">🔶 部分点（0.5点）</div>'; }
+  else               { fb.className = 'feedback wrong';   fb.innerHTML = '<div class="label">❌ キーワード不足（0点）</div>'; }
+}
+
+function calcTotal() {
+  const total = Object.values(scores).reduce((a, b) => a + b, 0);
+  const max = 20;
+  const pct = Math.round((total / max) * 100);
+  const msg = pct === 100 ? '🎉 満点です！' : pct >= 70 ? '👍 よくできました！' : '📚 復習してみましょう。';
+  const bar = document.getElementById('score-bar');
+  bar.style.display = 'block';
+  document.getElementById('score-val').textContent = total.toFixed(1) + ' / ' + max;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-fill').style.width = pct + '%';
+  bar.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 </body>
