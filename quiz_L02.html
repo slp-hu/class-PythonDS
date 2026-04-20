@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3章確認テスト</title>
+<style>
+  :root {
+    --primary:#1a56a0; --accent:#e8a020; --light:#f5f7fa;
+    --border:#dde3ea; --text:#1e2733; --muted:#5a6472;
+    --green:#1d8a4f; --red:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif;color:var(--text);background:var(--light);font-size:16px;line-height:1.7;padding:24px 16px 48px;}
+  code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:14px;font-family:'Courier New',monospace;}
+  pre{background:#eef2f8;border-radius:6px;padding:10px 14px;font-size:13px;font-family:'Courier New',monospace;margin-bottom:12px;white-space:pre-wrap;}
+  h1{font-size:20px;color:var(--primary);font-weight:800;margin-bottom:4px;}
+  .subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .notice{font-size:12px;color:#7a5200;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:8px 12px;margin-bottom:24px;max-width:720px;}
+
+  .section{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:24px;overflow:hidden;max-width:720px;margin-left:auto;margin-right:auto;}
+  .sec-header{background:var(--primary);color:#fff;padding:12px 20px;font-weight:700;font-size:15px;}
+  .sec-desc{background:#e8f0fb;border-bottom:1px solid var(--border);padding:16px 20px;font-size:14px;}
+  .sec-desc p{margin-top:4px;}
+
+  .q-block{padding:20px;border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.6;}
+  .q-text ol{margin-left:1.5em;margin-top:6px;font-weight:400;font-size:15px;}
+  .q-text ol li{margin-bottom:4px;}
+  .q-text ul{margin-left:1.5em;margin-top:6px;font-weight:400;font-size:15px;}
+  .q-text ul li{margin-bottom:4px;}
+
+  .input-row{display:flex;gap:8px;margin-bottom:8px;}
+  input[type=text],textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  input.correct{border-color:var(--green)!important;background:#f0faf5;}
+  input.wrong{border-color:var(--red)!important;background:#fdf0f0;}
+  textarea{resize:vertical;min-height:72px;}
+
+  .choices{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .choice{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;transition:background .15s;}
+  .choice:hover{background:var(--light);}
+  .choice input[type=radio]{margin-top:3px;flex-shrink:0;}
+  .choice.correct-choice{border-color:var(--green)!important;background:#f0faf5!important;}
+  .choice.wrong-choice{border-color:var(--red)!important;background:#fdf0f0!important;}
+
+  .btn{padding:8px 20px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s;}
+  .btn-submit{background:var(--primary);color:#fff;}
+  .btn-submit:hover{background:#154a8a;}
+  .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
+  .btn-answer:hover{background:#e8f0fb;}
+
+  .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
+  .feedback.wrong{background:#fdf0f0;border:1.5px solid #f0b0a8;color:#8b1a10;}
+  .feedback.partial{background:#fff8e1;border:1.5px solid #f5d78e;color:#7a5200;}
+  .feedback .label{font-weight:800;margin-bottom:2px;}
+
+  .answer-box{background:#f0faf5;border:1.5px solid #a8dfc0;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .answer-box .label{font-weight:700;color:var(--green);margin-bottom:2px;}
+  .locked-msg{font-size:13px;color:#b56000;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:6px 12px;margin-top:8px;display:none;}
+
+  .score-bar{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:24px 28px;max-width:720px;margin:0 auto 24px;display:none;}
+  .score-bar h2{font-size:18px;color:var(--primary);margin-bottom:12px;}
+  .score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1;}
+  .score-msg{font-size:15px;color:var(--muted);margin-top:6px;}
+  .progress-bg{background:var(--border);border-radius:4px;height:8px;margin-top:12px;}
+  .progress-fill{height:8px;border-radius:4px;background:var(--primary);transition:width .6s;}
+  .btn-retry{background:var(--primary);color:#fff;margin-top:16px;width:100%;padding:12px;font-size:16px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+  .btn-retry:hover{background:#154a8a;}
+
+  .calc-wrap{max-width:720px;margin:0 auto 24px;text-align:center;}
+</style>
+</head>
+<body>
+
+<div style="max-width:720px;margin:0 auto 16px">
+  <h1>3章 確認テスト</h1>
+  <div class="subtitle">プログラミング演習1(Python) ／ 全16問（記述問題は簡易採点）</div>
+  <div class="notice">⚠️ 正誤判定は簡易な自動処理で行っているため、実際の正解・不正解と異なる場合があります。判定結果はあくまで参考としてご利用ください。</div>
+</div>
+
+<div class="score-bar" id="score-bar">
+  <h2>結果</h2>
+  <div class="score-big" id="score-val">-</div>
+  <div class="score-msg" id="score-msg"></div>
+  <div class="progress-bg"><div class="progress-fill" id="score-fill" style="width:0%"></div></div>
+  <button class="btn-retry" onclick="location.reload()">もう一度挑戦する</button>
+</div>
+
+<!-- ===== Section A ===== -->
+<div class="section">
+  <div class="sec-header">セクション A：関数・メソッド・リストの区別</div>
+  <div class="sec-desc">
+    <p>関数（<code>len(df)</code> のように単独で呼ぶ形）とメソッド（<code>df.mean()</code> のようにオブジェクトに「.」でつなぐ形）の違い、そしてリストという Python の基本的なデータ型について確認します。</p>
+  </div>
+
+  <!-- A1 -->
+  <div class="q-block" data-type="multi" data-correct-idx="0"
+       data-example="len() はPythonの組み込み関数で、df.mean() はDataFrameのメソッドである"
+       data-unlock="2026-04-28">
+    <div class="q-label">問A-1（選択）</div>
+    <div class="q-text">
+      教科書コード 3-1 ではデータフレーム <code>df</code> を作成し、コード 3-2 では <code>len(df)</code> を、コード 3-5 では <code>df.mean()</code> を実行しています。<br>
+      次の説明のうち、<strong>正しいもの</strong>を1つ選んでください。
+    </div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="A1"> <code>len()</code> はPythonの組み込み関数で、<code>df.mean()</code> はDataFrameのメソッドである</label>
+      <label class="choice"><input type="radio" name="A1"> <code>len()</code> も <code>df.mean()</code> も、どちらもDataFrameのメソッドである</label>
+      <label class="choice"><input type="radio" name="A1"> <code>len(df)</code> と <code>df.len()</code> は同じ書き方で、同じ結果になる</label>
+      <label class="choice"><input type="radio" name="A1"> <code>df.mean()</code> はDataFrameの行数を返す</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- A2 -->
+  <div class="q-block" data-type="short"
+       data-patterns='["リスト"]'
+       data-example="リスト（list も可）"
+       data-unlock="2026-04-28">
+    <div class="q-label">問A-2（短答）</div>
+    <div class="q-text">
+      コード 3-6 では次のような変数 <code>age_spans</code> を作っています。
+      <pre><code>age_spans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+             110, 120, 130, 140, 150, 160, 170, 180, 190, 200]</code></pre>
+      このように、複数の要素を順序付きで保持するPythonのデータ型のことを何と呼びますか？<strong>カタカナで答えてください。</strong>
+    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section B ===== -->
+<div class="section">
+  <div class="sec-header">セクション B：出力を読む</div>
+  <div class="sec-desc">
+    <p>教科書コードを実行したときに表示される結果（行数・ブール値・中央値など）を正しく読み取れるか確認します。</p>
+  </div>
+
+  <!-- B1 -->
+  <div class="q-block" data-type="num" data-correct="17"
+       data-example="17"
+       data-unlock="2026-04-28">
+    <div class="q-label">問B-1（数値）</div>
+    <div class="q-text">コード 3-1 で作成したデータフレーム <code>df</code> に対して、コード 3-2 で <code>len(df)</code> を実行すると、何が表示されますか？数値で答えてください。</div>
+    <div class="input-row"><input type="text" placeholder="数値を入力" /><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- B2 -->
+  <div class="q-block" data-type="num" data-correct="5"
+       data-example="5"
+       data-unlock="2026-04-28">
+    <div class="q-label">問B-2（数値）</div>
+    <div class="q-text">コード 3-9 で <code>dfB = df[df["B市"] &gt; 64]</code> を実行した後、コード 3-10 で <code>len(dfB)</code> を実行すると、何が表示されますか？数値で答えてください。</div>
+    <div class="input-row"><input type="text" placeholder="数値を入力" /><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- B3 -->
+  <div class="q-block" data-type="short"
+       data-patterns='["bool"]'
+       data-example="bool（boolean も可）"
+       data-unlock="2026-04-28">
+    <div class="q-label">問B-3（短答）</div>
+    <div class="q-text">
+      コード 3-8 で <code>df["B市"] &gt; 64</code> を実行したとき、出力の最終行に <code>dtype: ___</code> と表示されます。<code>___</code> に入る型名を答えてください（英小文字）。
+    </div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- B4 -->
+  <div class="q-block" data-type="num" data-correct="51" data-tolerance="0.05"
+       data-example="51"
+       data-unlock="2026-04-28">
+    <div class="q-label">問B-4（数値）</div>
+    <div class="q-text">コード 3-15 で <code>df.median()</code> を実行したとき、A市の中央値はいくつですか？数値で答えてください。</div>
+    <div class="input-row"><input type="text" placeholder="数値を入力" /><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section C ===== -->
+<div class="section">
+  <div class="sec-header">セクション C：コードを書く（練習問題・リスト対応）</div>
+  <div class="sec-desc">
+    <p>教科書コードや練習問題を参考に、リストの要素を取り出すコードや、平均値などを求めるコードを自分で書けるか確認します。</p>
+  </div>
+
+  <!-- C1 -->
+  <div class="q-block" data-type="short"
+       data-patterns='["len","age_spans"]'
+       data-example="len(age_spans)"
+       data-unlock="2026-04-28">
+    <div class="q-label">問C-1（短答）</div>
+    <div class="q-text">
+      コード 3-6 で次のように <code>age_spans</code> が定義されています。
+      <pre><code>age_spans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+             110, 120, 130, 140, 150, 160, 170, 180, 190, 200]</code></pre>
+      この <code>age_spans</code> に要素がいくつ入っているか（要素数）を調べるには、どのようなコードを書けばよいですか？<strong>1行のコードで答えてください。</strong>
+    </div>
+    <div class="input-row"><input type="text" placeholder="コードを入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- C2 -->
+  <div class="q-block" data-type="short"
+       data-patterns='["mean"]'
+       data-example="mean（df[&quot;気温&quot;].mean() と書く）"
+       data-unlock="2026-04-28">
+    <div class="q-label">問C-2（短答）</div>
+    <div class="q-text">
+      練習問題 問2 で気温の平均を求めるとき、次のコードの <code>___</code> に入るメソッド名は何ですか？英小文字で答えてください。
+      <pre><code>df["気温"].___()</code></pre>
+    </div>
+    <div class="input-row"><input type="text" placeholder="メソッド名を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- C3 -->
+  <div class="q-block" data-type="short"
+       data-patterns='["age_spans","-1"]'
+       data-example="age_spans[-1]（age_spans[19] も可）"
+       data-unlock="2026-04-28">
+    <div class="q-label">問C-3（短答）</div>
+    <div class="q-text">
+      コード 3-6 の <code>age_spans</code> から<strong>最後の要素（200）</strong>を取り出すコードを1行で書いてください。
+      <pre><code>age_spans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+             110, 120, 130, 140, 150, 160, 170, 180, 190, 200]</code></pre>
+    </div>
+    <div class="input-row"><input type="text" placeholder="コードを入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section D ===== -->
+<div class="section">
+  <div class="sec-header">セクション D：型・意味を読む</div>
+  <div class="sec-desc">
+    <p><code>df.mean()</code> の結果が <code>float64</code> になる理由や、ブールフィルタリングの意味など、出力の「型」と「意味」を読み取れるか確認します。</p>
+  </div>
+
+  <!-- D1 -->
+  <div class="q-block" data-type="short"
+       data-patterns='["float"]'
+       data-example="float64（Float64 / float も可）"
+       data-unlock="2026-04-28">
+    <div class="q-label">問D-1（短答）</div>
+    <div class="q-text">コード 3-5 で <code>df.mean()</code> を実行したとき、出力の最終行に <code>dtype: ___</code> と表示されます。<code>___</code> に入る型名を答えてください（英小文字）。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- D2 -->
+  <div class="q-block" data-type="multi" data-correct-idx="0"
+       data-example="df のうち、B市の値が64より大きい行だけを取り出して dfB に代入している"
+       data-unlock="2026-04-28">
+    <div class="q-label">問D-2（選択）</div>
+    <div class="q-text">
+      コード 3-9 の次のコードは何をしていますか？正しい説明を1つ選んでください。
+      <pre><code>dfB = df[df["B市"] &gt; 64]</code></pre>
+    </div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="D2"> <code>df</code> のうち、B市の値が64より大きい行だけを取り出して <code>dfB</code> に代入している</label>
+      <label class="choice"><input type="radio" name="D2"> <code>df</code> の B市列から64より大きい<strong>値</strong>だけを取り出している</label>
+      <label class="choice"><input type="radio" name="D2"> <code>df</code> のB市列の値を、すべて64より大きい値に書き換えている</label>
+      <label class="choice"><input type="radio" name="D2"> <code>df</code> のB市列を削除し、残りを <code>dfB</code> に代入している</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section E ===== -->
+<div class="section">
+  <div class="sec-header">セクション E：エラーとデータ取り込み</div>
+  <div class="sec-desc">
+    <p>CSV や Excel など、外部ファイルを pandas で読み込む方法を確認します。</p>
+  </div>
+
+  <!-- E1 -->
+  <div class="q-block" data-type="multi" data-correct-idx="0"
+       data-example="df = pd.read_excel(&quot;chapter03_exercise.xlsx&quot;)"
+       data-unlock="2026-04-28">
+    <div class="q-label">問E-1（選択）</div>
+    <div class="q-text">練習問題で使う <code>chapter03_exercise.xlsx</code> を pandas で読み込むための正しいコードはどれですか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="E1"> <code>df = pd.read_excel("chapter03_exercise.xlsx")</code></label>
+      <label class="choice"><input type="radio" name="E1"> <code>df = pd.read_csv("chapter03_exercise.xlsx")</code></label>
+      <label class="choice"><input type="radio" name="E1"> <code>df = open("chapter03_exercise.xlsx")</code></label>
+      <label class="choice"><input type="radio" name="E1"> <code>df = pd.DataFrame("chapter03_exercise.xlsx")</code></label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section F ===== -->
+<div class="section">
+  <div class="sec-header">セクション F：開発側の追加問題（記述・実装説明）</div>
+  <div class="sec-desc">
+    <p>実装の仕組みやパラメータの意味を、自分の言葉で説明する記述問題です。Google Colab の AI だけでは表面的にしか答えられないので、実際に手元でコードを動かして確かめてください。</p>
+  </div>
+
+  <!-- F1 -->
+  <div class="q-block" data-type="essay"
+       data-keywords='["bool","ブール","True","False","64より大きい","B市"]'
+       data-example="①dtype は bool ②B市の値が64より大きい行だけが dfB に入る"
+       data-unlock="2026-04-28">
+    <div class="q-label">問F-1（記述）</div>
+    <div class="q-text">
+      <strong>【開発側：実装の説明】</strong><br>
+      コード 3-9 の次のコードについて、以下の問いに答えなさい。
+      <pre><code>dfB = df[df["B市"] &gt; 64]</code></pre>
+      <ol>
+        <li>コード 3-8 で <code>df["B市"] &gt; 64</code> を単独で実行したときの出力の<strong>型（dtype）は何か</strong>、1語で答えなさい。</li>
+        <li><code>dfB = df[df["B市"] &gt; 64]</code> を実行すると、<code>dfB</code> にはどのような行が入るか、<strong>1〜2文で</strong>説明しなさい。</li>
+      </ol>
+    </div>
+    <textarea placeholder="①dtype：&#10;②説明："></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- F2 -->
+  <div class="q-block" data-type="essay"
+       data-keywords='["std","ddof","大きい","ddof=1","ddof=0"]'
+       data-example="std()（ddof=1）の方が std(ddof=0) より大きい"
+       data-unlock="2026-04-28">
+    <div class="q-label">問F-2（記述）</div>
+    <div class="q-text">
+      <strong>【開発側：引数による違いを確かめる】</strong><br>
+      pandas の <code>std()</code> メソッドには <code>ddof</code> という引数があります。以下の問いに答えなさい。
+      <ol>
+        <li><code>df["売上高"].std()</code> と <code>df["売上高"].std(ddof=0)</code> をそれぞれ実行し、<strong>2つの値を小数第2位まで</strong>書きなさい。</li>
+        <li>その2つの値のうち、<strong>どちらが大きかったか</strong>を答えなさい（「<code>std()</code>（デフォルト）の方が大きい／小さい」の形で答えればよい）。</li>
+      </ol>
+    </div>
+    <textarea placeholder="①std()の値：　　std(ddof=0)の値：&#10;②どちらが大きい："></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- F3 -->
+  <div class="q-block" data-type="essay"
+       data-keywords='["bins","幅","区切り","リスト","0","120"]'
+       data-example="①bins指定で棒の区切り幅が揃う（例：10刻みになる）②例：[0,10,20,...,120]"
+       data-unlock="2026-04-28">
+    <div class="q-label">問F-3（記述）</div>
+    <div class="q-text">
+      <strong>【開発側：パラメータを自分で設計する】</strong><br>
+      コード 3-6 ではヒストグラムを描くときに次のように <code>bins</code> を指定しています。
+      <pre><code>age_spans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200]
+df["A市"].plot(kind="hist", bins=age_spans)</code></pre>
+      <ol>
+        <li><code>bins</code> を指定しない場合と、上記のように指定した場合とで、ヒストグラムの見た目はどう変わりますか。<strong>1文で</strong>答えなさい。</li>
+        <li>練習問題の売上高データ（単位：万円、おおむね <strong>0〜120</strong> の範囲）に対して、適切と思う <code>bins</code> のリストを<strong>1つ例示</strong>しなさい（例：<code>[0, 10, 20, ..., 120]</code>）。</li>
+      </ol>
+    </div>
+    <textarea placeholder="①見た目の違い：&#10;②binsの例："></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section G ===== -->
+<div class="section">
+  <div class="sec-header">セクション G：分析・企画側の追加問題（解釈・判断）</div>
+  <div class="sec-desc">
+    <p>平均・中央値・ヒストグラムなどの数値やグラフを「どう解釈するか」「どう意思決定に使うか」を問う記述問題です。Python コードは不要です。</p>
+  </div>
+
+  <!-- G1 -->
+  <div class="q-block" data-type="essay"
+       data-keywords='["中央値","外れ値","平均","標準的","普通"]'
+       data-example="①中央値（外れ値の影響を受けにくく、普通の1日を表しやすいため）②最大値・曜日・天気など追加情報1つ"
+       data-unlock="2026-04-28">
+    <div class="q-label">問G-1（記述）</div>
+    <div class="q-text">
+      <strong>【分析・企画側：どちらの数値を使うか】</strong><br>
+      pandasで計算した結果、おでんの売上高について次のことがわかりました。
+      <ul>
+        <li>平均（mean）：約 <strong>56.0 万円</strong></li>
+        <li>中央値（median）：約 <strong>58.8 万円</strong></li>
+      </ul>
+      以下の問いに答えなさい。コードを書く必要はありません。
+      <ol>
+        <li>「このおでん屋の<strong>標準的な1日の売上</strong>はだいたい○○万円くらいです」と説明したい場合、<strong>平均と中央値のどちらを使うほうが適切</strong>ですか。<strong>理由を一言</strong>添えて答えなさい。</li>
+        <li>この2つの数値だけでは判断しきれないと感じる部分について、<strong>追加で確認したい情報を1つ</strong>挙げなさい（例：最大値、曜日、天気…など）。</li>
+      </ol>
+    </div>
+    <textarea placeholder="①どちらを使うか・理由：&#10;②追加で確認したい情報："></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- G2 -->
+  <div class="q-block" data-type="essay"
+       data-keywords='["仕入れ","気温","低い","多め","予報"]'
+       data-example="①気温が低い予報の日は多めに仕入れる など②曜日・雨・季節・イベントなど1つ"
+       data-unlock="2026-04-28">
+    <div class="q-label">問G-2（記述）</div>
+    <div class="q-text">
+      <strong>【分析・企画側：データから判断する】</strong><br>
+      pandasで計算した結果、気温データについて次のことがわかりました。
+      <ul>
+        <li>平均：約 <strong>20.25 ℃</strong></li>
+        <li>中央値：約 <strong>18.70 ℃</strong></li>
+        <li>標準偏差：約 <strong>6.53 ℃</strong></li>
+      </ul>
+      「気温が低い日ほどおでんの売上が高い」という傾向があると仮定して、以下の問いに答えなさい。コードを書く必要はありません。
+      <ol>
+        <li>あなたがおでん屋の店長なら、<strong>翌日の気温予報を見て仕入れをどう変えますか</strong>。具体的な工夫を<strong>1つ</strong>書きなさい。</li>
+        <li>気温データだけでは判断できない重要な情報を<strong>1つ</strong>挙げなさい（例：曜日、雨、季節…など）。</li>
+      </ol>
+    </div>
+    <textarea placeholder="①仕入れの工夫：&#10;②気温以外で必要な情報："></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <!-- G3 -->
+  <div class="q-block" data-type="essay"
+       data-keywords='["施策","売上","ヒストグラム","読み取れない","分布"]'
+       data-example="①売上が低い日への施策を1つ②ヒストグラムから読み取れない情報を1つ"
+       data-unlock="2026-04-28">
+    <div class="q-label">問G-3（記述）</div>
+    <div class="q-text">
+      <strong>【分析・企画側：グラフの読み方と限界】</strong><br>
+      売上高のヒストグラムを描くと、データの分布（どの売上帯の日が多いか）が視覚的にわかります。以下の問いに答えなさい。コードを書く必要はありません。
+      <ol>
+        <li>「売上が低い日を減らすための施策」を<strong>1つ</strong>、一言で書きなさい（例：寒い日限定の割引、SNS告知、仕込み量の見直しなど）。</li>
+        <li>ヒストグラム1枚からは<strong>読み取れない情報</strong>を<strong>1つ</strong>挙げなさい（例：時系列・曜日差・天気など）。</li>
+      </ol>
+    </div>
+    <textarea placeholder="①施策：&#10;②読み取れない情報："></textarea>
+    <button class="btn btn-submit" style="margin-top:8px" onclick="submitEssay(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <button class="btn btn-submit" style="padding:12px 40px;font-size:17px" onclick="calcTotal()">採点する</button>
+</div>
+
+<script>
+// ===== 解禁日設定 =====
+// 各問題の data-unlock="YYYY-MM-DD" で個別に設定しています。
+// ======================
+const scores = {};
+let qIdx = 0;
+
+function isUnlocked(dateStr) {
+  return new Date() >= new Date(dateStr + 'T00:00:00');
+}
+
+function showAnswer(btn) {
+  const block = btn.closest('.q-block');
+  const unlock = block.dataset.unlock;
+  const example = block.dataset.example;
+  const locked = block.querySelector('.locked-msg');
+  const box = block.querySelector('.answer-box');
+  const text = block.querySelector('.answer-text');
+  if (isUnlocked(unlock)) {
+    text.textContent = example;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+    locked.style.display = 'none';
+  } else {
+    const d = new Date(unlock + 'T00:00:00');
+    locked.textContent = `正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`;
+    locked.style.display = 'block';
+  }
+}
+
+function submitShort(btn) {
+  const block = btn.closest('.q-block');
+  const input = block.querySelector('input[type=text]');
+  const ans = input.value.trim();
+  if (!ans) return;
+  const patterns = JSON.parse(block.dataset.patterns);
+  const ok = patterns.every(p => ans.includes(p));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  input.className = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function submitNum(btn) {
+  const block = btn.closest('.q-block');
+  const input = block.querySelector('input[type=text]');
+  const val = parseFloat(input.value.trim());
+  if (isNaN(val)) return;
+  const correct = parseFloat(block.dataset.correct);
+  const tol = parseFloat(block.dataset.tolerance || '0');
+  const ok = Math.abs(val - correct) <= tol;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  input.className = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function submitMulti(btn) {
+  const block = btn.closest('.q-block');
+  const correctIdx = parseInt(block.dataset.correctIdx);
+  const choices = block.querySelectorAll('.choice');
+  const selected = block.querySelector('input[type=radio]:checked');
+  if (!selected) return;
+  const selIdx = [...choices].indexOf(selected.closest('.choice'));
+  const ok = selIdx === correctIdx;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  choices.forEach((c, i) => {
+    c.querySelector('input').disabled = true;
+    if (i === correctIdx) c.classList.add('correct-choice');
+    else if (i === selIdx && !ok) c.classList.add('wrong-choice');
+  });
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function submitEssay(btn) {
+  const block = btn.closest('.q-block');
+  const ta = block.querySelector('textarea');
+  const ans = ta.value.trim();
+  if (!ans) return;
+  const keywords = JSON.parse(block.dataset.keywords);
+  const hit = keywords.filter(k => ans.includes(k)).length;
+  const score = hit >= Math.ceil(keywords.length / 2) ? 1 : hit > 0 ? 0.5 : 0;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = score;
+  ta.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  if (score === 1)        { fb.className = 'feedback correct'; fb.innerHTML = '<div class="label">✅ 正解（1点）</div>'; }
+  else if (score === 0.5) { fb.className = 'feedback partial'; fb.innerHTML = '<div class="label">🔶 部分点（0.5点）</div>'; }
+  else                    { fb.className = 'feedback wrong';   fb.innerHTML = '<div class="label">❌ キーワード不足（0点）</div>'; }
+}
+
+function calcTotal() {
+  const total = Object.values(scores).reduce((a, b) => a + b, 0);
+  const max = 16;
+  const pct = Math.round((total / max) * 100);
+  const msg = pct === 100 ? '🎉 満点です！' : pct >= 70 ? '👍 よくできました！' : '📚 復習してみましょう。';
+  const bar = document.getElementById('score-bar');
+  bar.style.display = 'block';
+  document.getElementById('score-val').textContent = total.toFixed(1) + ' / ' + max;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-fill').style.width = pct + '%';
+  bar.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
