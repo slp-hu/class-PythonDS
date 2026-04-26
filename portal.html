@@ -147,7 +147,27 @@
     <!-- 第2回〜14回 -->
     <details>
       <summary><span class="session-num">第2回</span> データの基礎的な扱い <span class="arrow">▼</span></summary>
-      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+      <div class="session-body">
+        <div class="quiz-card">
+          <div class="quiz-icon">🧪</div>
+          <div class="quiz-info">
+            <div class="quiz-title">確認テスト</div>
+            <div class="quiz-desc">3章の理解を確認するブラウザ上のクイズ</div>
+            <a class="quiz-link" href="https://slp-hu.github.io/class-PythonDS/quiz_L02.html" target="_blank">テストを受ける</a>
+          </div>
+        </div>
+        <div class="quiz-card" style="background:#fefce8; border-color:#fde68a;">
+          <div class="quiz-icon">📝</div>
+          <div class="quiz-info">
+            <div class="quiz-title" style="color:#92400e;">課題</div>
+            <div class="quiz-desc">2章の追加課題</div>
+            <a class="quiz-link" href="https://slp-hu.github.io/class-PythonDS/chap02_extra_questions.html" target="_blank" style="background:#d97706;">課題を見る</a>
+          </div>
+        </div>
+        <p style="font-size:.88rem; font-weight:600; margin:.75rem 0 .25rem; color:var(--muted);">第3章用 Jupyter Notebook 追加セル</p>
+        <p style="font-size:.85rem; margin-bottom:.5rem;">3章のノートブックには <code>import japanize_matplotlib</code> がありますが、Google Colab にはこのライブラリが入っていないため、そのまま実行するとエラーになります。ノートブックの<strong>冒頭（import より前）</strong>に次のセルを追加して、先に実行してください。</p>
+        <pre><code>!pip install japanize-matplotlib</code></pre>
+      </div>
     </details>
     <details>
       <summary><span class="session-num">第3回</span> 代表値と分布 <span class="arrow">▼</span></summary>
