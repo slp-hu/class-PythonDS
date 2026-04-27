@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>chap03_extra_answers</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="第3章-追加問題-解答例">第3章 追加問題 解答例</h1>
+<p>使用データ：<code>chapter03_exercise.xlsx</code>（おでん売上高と気温、n=100）</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>気温 (℃)</th>
+<th>売上高 (万円)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平均</td>
+<td>20.25</td>
+<td>56.03</td>
+</tr>
+<tr>
+<td>中央値</td>
+<td>18.70</td>
+<td>58.80</td>
+</tr>
+<tr>
+<td>標準偏差</td>
+<td>6.53</td>
+<td>20.54</td>
+</tr>
+<tr>
+<td>最小値</td>
+<td>6.89</td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>最大値</td>
+<td>35.44</td>
+<td>104.92</td>
+</tr>
+<tr>
+<td>Q1</td>
+<td>15.37</td>
+<td>41.36</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>24.96</td>
+<td>71.02</td>
+</tr>
+<tr>
+<td>IQR</td>
+<td>9.59</td>
+<td>29.67</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="開発側-解答例">開発側 解答例</h2>
+<hr />
+<h3 id="f1.-dataframeの-に渡せるものを整理して説明する">F1. DataFrameの
+<code>[]</code> に渡せるものを整理して説明する</h3>
+<h4 id="各コードの型と内容分類">(1) 各コードの型と内容・分類</h4>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[<span class="st">&quot;A市&quot;</span>])           <span class="co"># → pandas.core.series.Series</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[[<span class="st">&quot;A市&quot;</span>, <span class="st">&quot;B市&quot;</span>]])  <span class="co"># → pandas.core.frame.DataFrame</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[df[<span class="st">&quot;B市&quot;</span>] <span class="op">&gt;</span> <span class="dv">64</span>])  <span class="co"># → pandas.core.frame.DataFrame</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>コード</th>
+<th>返る型</th>
+<th>分類</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df["A市"]</code></td>
+<td>Series</td>
+<td>①列ラベル（文字列）を渡した場合</td>
+</tr>
+<tr>
+<td><code>df[["A市", "B市"]]</code></td>
+<td>DataFrame</td>
+<td>②列ラベルのリストを渡した場合</td>
+</tr>
+<tr>
+<td><code>df[df["B市"] &gt; 64]</code></td>
+<td>DataFrame</td>
+<td>③真偽値のSeriesを渡した場合</td>
+</tr>
+</tbody>
+</table>
+<p>①と②の違いに注意：文字列を1つ渡すと <strong>Series</strong>
+が返るが、 1要素のリストを渡した場合（<code>df[["A市"]]</code>）でも
+<strong>DataFrame</strong> が返る。</p>
+<h4 id="typedfb市-64-の確認と仕組みの説明">(2)
+<code>type(df["B市"] &gt; 64)</code> の確認と仕組みの説明</h4>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[<span class="st">&quot;B市&quot;</span>] <span class="op">&gt;</span> <span class="dv">64</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># → &lt;class &#39;pandas.core.series.Series&#39;&gt;</span></span></code></pre></div>
+<p><strong>仕組みの説明：</strong></p>
+<p><code>df["B市"] &gt; 64</code> はまず Series
+同士の比較演算として評価される。 pandas は Series の各要素を順番に 64
+と比べ、大きければ <code>True</code>、 そうでなければ <code>False</code>
+を格納した、元と同じ行数（17行）の bool 型 Series を返す。</p>
+<pre><code>0     False
+1     False
+...
+12     True   ← B市の値が70なので True
+...
+16     True
+Name: B市, dtype: bool</code></pre>
+<p>この bool Series を <code>df[...]</code> に渡すと、pandas は「Series
+のインデックスと DataFrame のインデックスを照合し、<code>True</code>
+に対応する行だけを取り出す」という
+処理を内部で行う。行の番号（インデックス）をキーにして True/False
+を参照し、 True の行だけで構成された新しい DataFrame
+を返す、というのが仕組みである。</p>
+<blockquote>
+<p><strong>補足（query との対比）：</strong> 同じ結果は
+<code>df.query("B市 &gt; 64")</code> でも得られる。 <code>query()</code>
+は文字列で条件を書けるため、変数名にスペースが含まれない場合は
+読みやすいが、列名に日本語や記号が含まれる場合は
+<code>df.query("`列名` &gt; 64")</code>
+のようにバッククォートが必要になるなど注意点もある。</p>
+</blockquote>
+<hr />
+<h3 id="f2.-bins-のデフォルトを使ってはいけない理由と適切な決め方">F2.
+bins のデフォルトを使ってはいけない理由と、適切な決め方</h3>
+<h4 id="デフォルト-bins10-の問題点">(1) デフォルト <code>bins=10</code>
+の問題点</h4>
+<p>売上高データの範囲は 0.33〜104.92 万円（幅 約104万円）である。
+<code>bins=10</code> の場合、ビン幅は 104 ÷ 10 = 約10.4 万円になる。</p>
+<p>問題は、この10という値に統計的な根拠がない点にある。
+データの個数・ばらつき・範囲を一切考慮していないため、
+データが少ない場合は粗すぎて分布の形が見えず、
+データが多い場合は細かすぎて棒が乱立し形が読みにくくなる。
+「とりあえず10」で描いたヒストグラムは、分布の形を正確に反映しているとは言えない。</p>
+<h4 id="つの公式による計算売上高データn100">(2)
+3つの公式による計算（売上高データ、n=100）</h4>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(df)            <span class="co"># 100</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>std <span class="op">=</span> df[<span class="st">&quot;売上高&quot;</span>].std()  <span class="co"># 20.54</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>q1  <span class="op">=</span> df[<span class="st">&quot;売上高&quot;</span>].quantile(<span class="fl">0.25</span>)  <span class="co"># 41.36</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>q3  <span class="op">=</span> df[<span class="st">&quot;売上高&quot;</span>].quantile(<span class="fl">0.75</span>)  <span class="co"># 71.02</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q3 <span class="op">-</span> q1          <span class="co"># 29.67</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># スターゲスの公式（ビン数）</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>sturges <span class="op">=</span> <span class="bu">int</span>(np.ceil(np.log2(n <span class="op">+</span> <span class="dv">1</span>)))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># np.ceil(np.log2(101)) = np.ceil(6.658) = 7</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;スターゲス: </span><span class="sc">{</span>sturges<span class="sc">}</span><span class="ss"> ビン&quot;</span>)   <span class="co"># → 7</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># スコットの公式（ビン幅）</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>scott_w <span class="op">=</span> <span class="fl">3.5</span> <span class="op">*</span> std <span class="op">/</span> n<span class="op">**</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.5 * 20.54 / 4.642 = 15.49 万円</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;スコット: ビン幅 </span><span class="sc">{</span>scott_w<span class="sc">:.1f}</span><span class="ss"> 万円&quot;</span>)  <span class="co"># → 15.5 万円</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># フリーマン＝ダイアコニスの公式（ビン幅）</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>fd_w <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> iqr <span class="op">/</span> n<span class="op">**</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 * 29.67 / 4.642 = 12.78 万円</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;FD: ビン幅 </span><span class="sc">{</span>fd_w<span class="sc">:.1f}</span><span class="ss"> 万円&quot;</span>)   <span class="co"># → 12.8 万円</span></span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>公式</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スターゲス</td>
+<td>7 ビン</td>
+</tr>
+<tr>
+<td>スコット</td>
+<td>ビン幅 15.5 万円（範囲104万円 ÷ 15.5 ≈ <strong>7
+ビン</strong>）</td>
+</tr>
+<tr>
+<td>フリーマン＝ダイアコニス</td>
+<td>ビン幅 12.8 万円（範囲104万円 ÷ 12.8 ≈ <strong>8〜9
+ビン</strong>）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="bins-の決定とコード">(3) bins の決定とコード</h4>
+<p>3つの公式の結果は 7〜9 ビンで概ね一致している。
+FD公式はIQR（四分位範囲）を使うため外れ値の影響を受けにくく、
+本データのように外れ値が存在しうる場合に信頼性が高い。 ここでは
+FD公式に基づきビン幅を約13万円とし、
+データ範囲に合わせた区切りリストを設定する。</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 0万円から110万円を13万円刻みで区切る</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>bins_sales <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">115</span>, <span class="dv">13</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># → [0, 13, 26, 39, 52, 65, 78, 91, 104]</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;売上高&quot;</span>].plot(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    kind<span class="op">=</span><span class="st">&quot;hist&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span>bins_sales,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&quot;おでんの売上高分布&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">&quot;売上高（万円）&quot;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    grid<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<blockquote>
+<p><strong>なぜ整数刻みに丸めるか：</strong> 12.78
+万円をそのままビン幅にすると軸ラベルが読みにくくなる。
+視認性を考えて13万円に丸め、0万円から始まるリストにすることで
+軸の目盛りが自然な値になり、読み手が解釈しやすくなる。</p>
+</blockquote>
+<blockquote>
+<p><strong>3公式の結果が異なる場合の優先順位：</strong>
+外れ値が少なくデータが正規分布に近い場合はスコット公式が安定している。
+外れ値が疑われる場合はFD公式（IQRベース）が頑健。
+スターゲスはあくまでデータ数だけから求めるシンプルな目安であり、
+分布の形を考慮しない点で精度は落ちる。迷ったらFD公式を基本とすると良い。</p>
+</blockquote>
+<hr />
+<h3 id="f3.-dtype-が-object-のまま分析を始めると何が起きるか">F3. dtype
+が <code>object</code> のまま分析を始めると何が起きるか</h3>
+<h4 id="typeerror-の原因補足スクリプトの例">(1) TypeError
+の原因（補足スクリプトの例）</h4>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>birth <span class="op">=</span> pd.read_csv(<span class="st">&quot;data/chapter02.csv&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;Shift-jis&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>birth[<span class="st">&quot;世帯年間収入&quot;</span>] <span class="op">&gt;</span> <span class="dv">6000</span>  <span class="co"># → TypeError</span></span></code></pre></div>
+<p><code>birth.dtypes</code> を確認すると「世帯年間収入」列が
+<code>object</code>（文字列型）になっている。
+<code>birth["世帯年間収入"][0]</code> を確認すると
+<code>'4,488'</code>（カンマ付きの文字列）であることがわかる。</p>
+<p>CSVファイル内でカンマが桁区切りとして使われていたため、 pandas
+が数値として認識できず文字列のまま読み込んだ。
+文字列（str）と整数（int）の間で <code>&gt;</code> 比較はできないので
+TypeError が発生する。</p>
+<p>解決策はCSV読み込み時に <code>thousands=","</code>
+を指定することである。</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>birth <span class="op">=</span> pd.read_csv(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;data/chapter02.csv&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    thousands<span class="op">=</span><span class="st">&quot;,&quot;</span>,      <span class="co"># カンマを桁区切りとして処理</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    encoding<span class="op">=</span><span class="st">&quot;Shift-jis&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>birth.dtypes</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 世帯年間収入    int64  ← 正しく整数型になる</span></span></code></pre></div>
+<h4 id="chapter03_exercise.xlsx-の-dtype-確認">(2)
+chapter03_exercise.xlsx の dtype 確認</h4>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">&quot;chapter03_exercise.xlsx&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span></code></pre></div>
+<p>出力：</p>
+<pre><code>気温     float64
+売上高    float64
+dtype: object</code></pre>
+<p>気温・売上高ともに
+<code>float64</code>（小数を含む数値型）として正しく読み込まれているため、
+そのまま比較演算や統計計算を行うことができる。</p>
+<h4 id="もし-object-になっていた場合の原因と対処法">(3) もし
+<code>object</code> になっていた場合の原因と対処法</h4>
+<p><strong>想定される原因：</strong> -
+セル内にカンマや単位（「円」「万」など）が含まれている -
+一部のセルに文字列が混入している（空白セルや「N/A」など） -
+Excelファイル上でセルが文字列書式に設定されている</p>
+<p><strong>対処法（コード例）：</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 方法1：読み込み後に pd.to_numeric() で変換</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;売上高&quot;</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">&quot;売上高&quot;</span>], errors<span class="op">=</span><span class="st">&quot;coerce&quot;</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># errors=&quot;coerce&quot;：変換できない値は NaN にする</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 方法2：読み込み時に dtype を指定</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;chapter03_exercise.xlsx&quot;</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">&quot;気温&quot;</span>: <span class="bu">float</span>, <span class="st">&quot;売上高&quot;</span>: <span class="bu">float</span>}</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 変換後に NaN が発生していないか確認する</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isnull().<span class="bu">sum</span>())</span></code></pre></div>
+<blockquote>
+<p><strong>実務上の教訓：</strong>
+データを読み込んだら、分析を始める前に必ず <code>df.dtypes</code> と
+<code>df.head()</code> を確認する習慣をつける。
+「計算できた数値」が実は文字列の並びを操作したものだった、
+というミスは静かに起きるため、実行時エラーよりも発見が難しい。</p>
+</blockquote>
+<hr />
+<h2 id="分析企画側-解答例">分析・企画側 解答例</h2>
+<hr />
+<h3 id="g1.-平均中央値標準偏差は何を代表しているのか">G1.
+平均・中央値・標準偏差は何を「代表」しているのか</h3>
+<h4 id="ばらつきの比較と経営上の意味">(1)
+ばらつきの比較と経営上の意味</h4>
+<p>相対的なばらつきを比べるために変動係数（CV = 標準偏差 ÷
+平均）を使う。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>標準偏差</th>
+<th>平均</th>
+<th>変動係数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>気温</td>
+<td>6.53℃</td>
+<td>20.25℃</td>
+<td><strong>32.3%</strong></td>
+</tr>
+<tr>
+<td>売上高</td>
+<td>20.54万円</td>
+<td>56.03万円</td>
+<td><strong>36.7%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>売上高の方がばらつきが大きい。</p>
+<p>経営上の意味：売上が日によって大きく変動することを示している。
+「いつも同じくらい売れる」のではなく、「よく売れる日と売れない日の差が大きい」。
+これは在庫管理や仕入れ計画を難しくする要因であり、
+売上を安定させるための施策（気温連動の仕入れ調整など）が重要になることを示唆する。</p>
+<h4 id="代表値の選択">(2) 代表値の選択</h4>
+<p><strong>中央値（58.80万円）を使う方が適切。</strong></p>
+<p>理由：売上高データでは平均（56.03万円）より中央値（58.80万円）の方が大きい。
+これはデータが左に裾を引いている、つまり売上が極端に低い日が
+少数あって平均を引き下げていることを意味する
+（最小値が0.33万円と非常に低いことからも確認できる）。</p>
+<p>平均はこうした外れ値の影響を受けやすいため、
+「典型的な日の売上」を表す指標としては中央値の方が実態に近い。</p>
+<p>平均を使うと「普通の日の売上は約56万円」と伝えることになるが、
+実際には半数以上の日が58万円以上売れており、やや過小評価になる。</p>
+<h4 id="つの数値では伝わらないこと">(3) 1つの数値では伝わらないこと</h4>
+<ul>
+<li><strong>ばらつきの大きさ</strong>：平均や中央値は「中心」を示すだけで、日々の変動幅はわからない。標準偏差（20.54万円）もあわせて示さないと、「安定して56万円売れる」と誤解される恐れがある。</li>
+<li><strong>分布の形（偏り・外れ値）</strong>：最小値が0.33万円と極端に低い日が存在することは、平均・中央値だけでは読み取れない。ヒストグラムや最小・最大値を示して初めてわかる。</li>
+</ul>
+<hr />
+<h3 id="g2.-ヒストグラムは誰のために描くのか">G2.
+ヒストグラムは「誰のため」に描くのか</h3>
+<h4 id="自己理解のための読み取り3点">(1)
+自己理解のための読み取り（3点）</h4>
+<ol type="1">
+<li><strong>分布のピーク帯</strong>：売上高は60〜80万円付近に最も多く集中しており、この帯が「よくある売上日」である。</li>
+<li><strong>低売上日の存在</strong>：0〜20万円台にも数日分のデータがあり、極端に売れない日がごく少数ある。最小値は0.33万円と、ほぼ売上ゼロの日も存在する。</li>
+<li><strong>分布の偏り（左裾）</strong>：高売上側（80〜100万円超）よりも低売上側（0〜30万円台）に外れた値が多く、分布は左に引きずられる形をしている。これが平均が中央値より低い原因である。</li>
+</ol>
+<h4 id="他者業者への説明での見せ方の工夫">(2)
+他者（業者）への説明での見せ方の工夫</h4>
+<p>自己理解のためのヒストグラムのままでは、見せる相手がデータ分析に慣れていない場合に伝わりにくい。以下の点を工夫する。</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;売上高&quot;</span>].plot(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    kind<span class="op">=</span><span class="st">&quot;hist&quot;</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span><span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">115</span>, <span class="dv">13</span>)),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&quot;おでん1日あたり売上高の分布（過去100日）&quot;</span>,  <span class="co"># 期間を明記</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">&quot;売上高（万円）&quot;</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">&quot;日数（日）&quot;</span>,                              <span class="co"># 縦軸の意味を明記</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    grid<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.axvline(df[<span class="st">&quot;売上高&quot;</span>].median(), color<span class="op">=</span><span class="st">&quot;red&quot;</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="ss">f&quot;中央値 </span><span class="sc">{</span>df[<span class="st">&#39;売上高&#39;</span>]<span class="sc">.</span>median()<span class="sc">:.0f}</span><span class="ss">万円&quot;</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code></pre></div>
+<ul>
+<li>タイトルに「過去100日」など調査期間を入れ、いつのデータかを明示する</li>
+<li>縦軸のラベルを「日数（日）」と入れ、棒の高さが何を表しているかを明示する</li>
+<li>中央値の補助線を引き、「標準的な日の売上」がひと目でわかるようにする</li>
+</ul>
+<h4 id="ヒストグラム1枚に加えてほしいグラフや情報">(3)
+ヒストグラム1枚に加えてほしいグラフや情報</h4>
+<ul>
+<li><strong>気温と売上高の散布図</strong>：気温と売上の関係（相関）が視覚的に確認でき、「低気温の日ほど売れる」という仮説の裏付けになる。</li>
+<li><strong>日付順の折れ線グラフ（時系列）</strong>：季節的な傾向（夏は売れない、冬は売れるなど）がヒストグラムでは見えない。時系列で並べることで傾向が把握できる。</li>
+</ul>
+<hr />
+<h3 id="g3.-特徴を踏まえて計画を立てるために何が必要か">G3.
+「特徴を踏まえて計画を立てる」ために何が必要か</h3>
+<h4 id="言えること言えないこと">(1) 言えること・言えないこと</h4>
+<p><strong>確実に言えること（2点）：</strong> -
+過去100日間のおでん売上高は、半数の日が58.8万円以上、半数が58.8万円未満だった（中央値による事実）。
+-
+売上高には大きなばらつきがあり（標準偏差20.5万円）、最低0.33万円〜最高104.9万円と約100万円の幅で変動した。</p>
+<p><strong>言えそうで言えないこと（2点）：</strong> -
+「これからも同じ傾向が続く」とは言えない。100日分のデータがどの時期のものか不明であり、季節変動や年次変化を考慮していない。
+-
+「気温が低いから売上が高い」という因果関係は言えない。相関があっても因果は別問題であり、他の要因（曜日・イベント・競合など）が影響している可能性がある。</p>
+<h4 id="仕入れ計画への活用と使えなかった情報">(2)
+仕入れ計画への活用と、使えなかった情報</h4>
+<p><strong>活用できる判断プロセス：</strong></p>
+<ol type="1">
+<li>中央値58.8万円を「ベースの仕入れ量」の基準にする（平均ではなく中央値を使う理由：外れ値に引きずられない）。</li>
+<li>標準偏差20.5万円を踏まえ、売上が「中央値 ±
+20万円（38〜79万円）」の範囲に収まる確率が約7割と想定し、その幅をカバーできる在庫を準備する。</li>
+<li>売上高0〜20万円台の日が数日存在することを念頭に、廃棄リスクが高い仕入れは避ける。</li>
+</ol>
+<p><strong>使えなかった情報（2点）：</strong> -
+<strong>気温予報との対応関係</strong>：気温と売上が実際にどう連動しているかが数値でわかれば、翌日の気温予報から仕入れ量を調整できる。今回のデータ分析だけではその対応関係を定量化できていない。
+-
+<strong>曜日・日程の情報</strong>：週末や祝日・イベント日に売上が変動するかどうかが不明。仕入れ計画を立てるには日付情報が必要だが、今回のデータにはない。</p>
+<h4 id="店長への口頭報告1分">(3) 店長への口頭報告（1分）</h4>
+<p>「過去100日分のおでんの売上データを分析しました。
+典型的な日の売上は約59万円ですが、日によって大きくばらつきがあり、
+最低0.33万円から最高104万円まで約100万円の差がありました。</p>
+<p>売上の高い日と低い日の差が非常に大きいため、
+毎日同じ量を仕入れるのではなく、気温予報などに合わせて仕入れ量を
+調整できると、廃棄ロスを減らせる可能性があります。</p>
+<p>ただし、今回は気温と売上の関係や、曜日・季節ごとの傾向まではわかっていないため、
+追加のデータ分析が必要です。」</p>
+</body>
+</html>
