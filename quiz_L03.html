@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3・4・5章確認テスト</title>
+<style>
+  :root {
+    --primary:#1a56a0; --accent:#e8a020; --light:#f5f7fa;
+    --border:#dde3ea; --text:#1e2733; --muted:#5a6472;
+    --green:#1d8a4f; --red:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif;color:var(--text);background:var(--light);font-size:16px;line-height:1.7;padding:24px 16px 48px;}
+  code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:14px;font-family:'Courier New',monospace;}
+  pre{background:#eef2f8;border-radius:6px;padding:10px 14px;font-size:13px;font-family:'Courier New',monospace;margin-bottom:12px;white-space:pre-wrap;}
+  h1{font-size:20px;color:var(--primary);font-weight:800;margin-bottom:4px;}
+  .subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .notice{font-size:12px;color:#7a5200;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:8px 12px;margin-bottom:24px;max-width:720px;}
+
+  .section{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:24px;overflow:hidden;max-width:720px;margin-left:auto;margin-right:auto;}
+  .sec-header{background:var(--primary);color:#fff;padding:12px 20px;font-weight:700;font-size:15px;}
+  .sec-desc{background:#e8f0fb;border-bottom:1px solid var(--border);padding:16px 20px;font-size:14px;}
+  .sec-desc p{margin-top:4px;}
+
+  .q-block{padding:20px;border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.6;}
+
+  .input-row{display:flex;gap:8px;margin-bottom:8px;}
+  input[type=text],textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  input.correct{border-color:var(--green)!important;background:#f0faf5;}
+  input.wrong{border-color:var(--red)!important;background:#fdf0f0;}
+  textarea{resize:vertical;min-height:72px;}
+
+  .choices{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .choice{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;transition:background .15s;}
+  .choice:hover{background:var(--light);}
+  .choice input[type=radio]{margin-top:3px;flex-shrink:0;}
+  .choice.correct-choice{border-color:var(--green)!important;background:#f0faf5!important;}
+  .choice.wrong-choice{border-color:var(--red)!important;background:#fdf0f0!important;}
+
+  .btn{padding:8px 20px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s;}
+  .btn-submit{background:var(--primary);color:#fff;}
+  .btn-submit:hover{background:#154a8a;}
+  .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
+  .btn-answer:hover{background:#e8f0fb;}
+
+  .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
+  .feedback.wrong{background:#fdf0f0;border:1.5px solid #f0b0a8;color:#8b1a10;}
+  .feedback.partial{background:#fff8e1;border:1.5px solid #f5d78e;color:#7a5200;}
+  .feedback .label{font-weight:800;margin-bottom:2px;}
+
+  .answer-box{background:#f0faf5;border:1.5px solid #a8dfc0;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .answer-box .label{font-weight:700;color:var(--green);margin-bottom:2px;}
+  .locked-msg{font-size:13px;color:#b56000;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:6px 12px;margin-top:8px;display:none;}
+
+  .score-bar{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:24px 28px;max-width:720px;margin:0 auto 24px;display:none;}
+  .score-bar h2{font-size:18px;color:var(--primary);margin-bottom:12px;}
+  .score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1;}
+  .score-msg{font-size:15px;color:var(--muted);margin-top:6px;}
+  .progress-bg{background:var(--border);border-radius:4px;height:8px;margin-top:12px;}
+  .progress-fill{height:8px;border-radius:4px;background:var(--primary);transition:width .6s;}
+  .btn-retry{background:var(--primary);color:#fff;margin-top:16px;width:100%;padding:12px;font-size:16px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+  .btn-retry:hover{background:#154a8a;}
+
+  .calc-wrap{max-width:720px;margin:0 auto 24px;text-align:center;}
+</style>
+</head>
+<body>
+
+<div style="max-width:720px;margin:0 auto 16px">
+  <h1>4・5章 確認テスト</h1>
+  <div class="subtitle">プログラミング演習1(Python) ／ 全21問・各1点（記述問題は簡易採点）</div>
+  <div class="notice">⚠️ 正誤判定は簡易な自動処理で行っているため、実際の正解・不正解と異なる場合があります。判定結果はあくまで参考としてご利用ください。</div>
+</div>
+
+<div class="score-bar" id="score-bar">
+  <h2>結果</h2>
+  <div class="score-big" id="score-val">-</div>
+  <div class="score-msg" id="score-msg"></div>
+  <div class="progress-bg"><div class="progress-fill" id="score-fill" style="width:0%"></div></div>
+  <button class="btn-retry" onclick="location.reload()">もう一度挑戦する</button>
+</div>
+
+<!-- ===== Section A ===== -->
+<div class="section">
+  <div class="sec-header">セクション A：関数とメソッドの区別</div>
+  <div class="sec-desc">
+    <p>4章・5章では新しく <code>seaborn</code> (sns) や <code>scikit-learn</code> が登場します。<code>sns.heatmap(...)</code> のようにモジュール名にドットを付けて呼ぶ形と、<code>df.corr()</code> のようにオブジェクトにドットを付けて呼ぶメソッドを区別しましょう。</p>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["関数"]' data-example="関数（seabornの関数 / snsの関数 / モジュールの関数 / function も可）" data-unlock="2026-05-12">
+    <div class="q-label">問A-1（短答）</div>
+    <div class="q-text">コード 5-3 の <code>sns.regplot(...)</code> における <code>regplot</code> は _____ である。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["メソッド"]' data-example="メソッド（DataFrameのメソッド / データフレームのメソッド / dfのメソッド / method も可）" data-unlock="2026-05-12">
+    <div class="q-label">問A-2（短答）</div>
+    <div class="q-text">コード 4-10 の <code>df.corr()</code> における <code>corr</code> は _____ である。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section B ===== -->
+<div class="section">
+  <div class="sec-header">セクション B：出力を読む（散布図・相関係数）</div>
+  <div class="sec-desc">
+    <p>このセクションでは、コードを実行したときに得られる数値や表の意味を読み取ります。相関係数の符号（+／-）と絶対値の大きさが、2変数の関係をどう表すのかを理解しましょう。</p>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["100"]' data-example="100" data-unlock="2026-04-21">
+    <div class="q-label">問B-1（数値）</div>
+    <div class="q-text">コード 4-2 の <code>len(df)</code> を実行すると何が表示されるか。数値で答えよ。</div>
+    <div class="input-row"><input type="text" placeholder="数値を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["広告費","売上高","相関係数"]' data-example="広告費と売上高の相関係数" data-unlock="2026-05-12">
+    <div class="q-label">問B-2（短答）</div>
+    <div class="q-text">コード 4-6 の <code>df.corr()["広告費"]["売上高"]</code> は何を表しているか。一言で答えよ。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="広告費が大きいほど売上高も大きい傾向が、強く見られる（+0.85 は強い正の相関）" data-unlock="2026-05-12">
+    <div class="q-label">問B-3（選択）</div>
+    <div class="q-text">コード 4-6 の実行結果は <code>0.8492139637899264</code> である。この値から読み取れることとして最も適切なものはどれか。</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="B3"> 広告費が大きいほど売上高も大きい傾向が、強く見られる</label>
+      <label class="choice"><input type="radio" name="B3"> 広告費が大きいほど売上高は小さい傾向が、強く見られる</label>
+      <label class="choice"><input type="radio" name="B3"> 広告費と売上高には、ほとんど関係がない</label>
+      <label class="choice"><input type="radio" name="B3"> 広告費を増やせば、必ず売上高が増える（因果関係がある）</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["負","距離","売上"]' data-example="負。距離が大きいほど売上高が小さい傾向がある。" data-unlock="2026-05-12">
+    <div class="q-label">問B-4（短答）</div>
+    <div class="q-text">コード 4-7 の実行結果は <code>-0.3373218755500288</code> である。この符号（＋／−）と、そこから読み取れる傾向を簡潔に書け。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["1"]' data-example="1（1.0 も可）" data-unlock="2026-05-12">
+    <div class="q-label">問B-5（数値）</div>
+    <div class="q-text">コード 4-9 の <code>df.corr()["広告費"]["広告費"]</code> の値はいくつか。小数で答えよ。</div>
+    <div class="input-row"><input type="text" placeholder="小数で答える" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section C ===== -->
+<div class="section">
+  <div class="sec-header">セクション C：コードを書く（scatter / corr / regplot / 線形回帰）</div>
+  <div class="sec-desc">
+    <p>このセクションでは、散布図・相関表・回帰直線・線形回帰モデルなど、指定された操作を行うためのコードを自分で書きます。引数の書き方には複数の正解があるので、自分が書きやすい書き方で答えましょう。</p>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["scatter"]' data-example='df.plot(kind="scatter", x="広告費", y="売上高") など' data-unlock="2026-05-12">
+    <div class="q-label">問C-1（短答）</div>
+    <div class="q-text">DataFrame <code>df</code> に「広告費」「売上高」の列があるとき、横軸を広告費、縦軸を売上高とする散布図を描くコードを 1 行で書け。（色やタイトルは省略してよい）</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["corr"]' data-example='df.corr() など（df.corr(numeric_only=True) も可）' data-unlock="2026-05-12">
+    <div class="q-label">問C-2（短答）</div>
+    <div class="q-text">DataFrame <code>df</code> のすべての数値列どうしの相関係数を一覧にした表を得るコードを書け。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["regplot"]' data-example='sns.regplot(data=df, x="広告費", y="売上高") など' data-unlock="2026-05-12">
+    <div class="q-label">問C-3（短答）</div>
+    <div class="q-text">seaborn を <code>sns</code> としてインポートしているとき、<code>df</code> の「広告費」と「売上高」の散布図に回帰直線を重ねて描画するコードを 1 行で書け。（信頼区間や線の色の指定は省略してよい）</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["fit","[["]' data-example='model.fit(df[["広告費"]], df[["売上高"]]) など' data-unlock="2026-05-12">
+    <div class="q-label">問C-4（短答）</div>
+    <div class="q-text">sklearn の LinearRegression をインポート済みで <code>model = LinearRegression()</code> と準備しているとき、<code>df</code> の「広告費」を説明変数、「売上高」を目的変数として単回帰モデルを学習させる 1 行を書け。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["[["]' data-example='df[["広告費", "距離"]] など' data-unlock="2026-05-12">
+    <div class="q-label">問C-5（短答）</div>
+    <div class="q-text">重回帰で、説明変数として「広告費」と「距離」の 2 列をまとめた変数 <code>z</code> を作りたい。<code>z = _____</code> の空欄を埋めよ。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section D ===== -->
+<div class="section">
+  <div class="sec-header">セクション D：型・意味を読む（回帰の結果の読み取り）</div>
+  <div class="sec-desc">
+    <p>回帰分析（scikit-learn の <code>LinearRegression</code>）の学習後には、<code>coef_</code>・<code>intercept_</code>・<code>score()</code> の 3 つがよく使われます。それぞれが何を表しているかを理解しましょう。</p>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["傾き","a","係数"]' data-example="傾き（a / 回帰係数 も可）" data-unlock="2026-05-12">
+    <div class="q-label">問D-1（短答）</div>
+    <div class="q-text">コード 5-6 の <code>model.coef_</code> は、直線の式 <em>y = ax + b</em> における _____ を表している。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["切片","b","定数項"]' data-example="切片（b / y切片 / 定数項 も可）" data-unlock="2026-05-12">
+    <div class="q-label">問D-2（短答）</div>
+    <div class="q-text">コード 5-6 の <code>model.intercept_</code> は、直線の式 <em>y = ax + b</em> における _____ を表している。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="決定係数（R²）。モデルが目的変数のばらつきをどれくらい説明できているかを 0〜1 で示す" data-unlock="2026-05-12">
+    <div class="q-label">問D-3（選択）</div>
+    <div class="q-text">コード 5-6 の <code>model.score(x, y)</code> が返す値について、最も適切な説明はどれか。</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="D3"> 決定係数（R²）。モデルが目的変数のばらつきをどれくらい説明できているかを 0〜1 で示す</label>
+      <label class="choice"><input type="radio" name="D3"> 相関係数。2変数の関係の強さを -1〜1 で示す</label>
+      <label class="choice"><input type="radio" name="D3"> 予測の平均誤差（RMSE）</label>
+      <label class="choice"><input type="radio" name="D3"> モデルの学習にかかった時間</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["視点","角度","見る"]' data-example="視点の角度（見る角度 / カメラの角度 / どこから見るか も可）" data-unlock="2026-05-12">
+    <div class="q-label">問D-4（短答）</div>
+    <div class="q-text">コード 5-8 の <code>ax.view_init(45, 45)</code> は 3D グラフの何を決めているか。簡潔に答えよ。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section E ===== -->
+<div class="section">
+  <div class="sec-header">セクション E：エラーとデータ取り込み（read_excel）</div>
+  <div class="sec-desc">
+    <p>4章・5章では、<code>pd.read_csv()</code> ではなく <code>pd.read_excel()</code> でデータを読み込みます。ファイル形式に応じて読み込み関数を使い分ける必要がある点に注目しましょう。</p>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="データファイルの形式が異なるから（xlsx は Excel 形式、csv は CSV 形式）" data-unlock="2026-05-12">
+    <div class="q-label">問E-1（選択）</div>
+    <div class="q-text">4章・5章では <code>pd.read_excel(...)</code> を使っている。2章の <code>pd.read_csv(...)</code> と使い分ける主な理由として最も適切なものはどれか。</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="E1"> データファイルの形式が異なるから（xlsx は Excel 形式、csv は CSV 形式）</label>
+      <label class="choice"><input type="radio" name="E1"> read_csv は遅いから、毎回 read_excel を使うべきである</label>
+      <label class="choice"><input type="radio" name="E1"> read_excel は文字コードを指定しなくてよいから、常にこちらを使うべきである</label>
+      <label class="choice"><input type="radio" name="E1"> 相関係数を計算するときは read_excel が必要だから</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='["read_excel","chapter04.xlsx"]' data-example='df = pd.read_excel("data/chapter04.xlsx")' data-unlock="2026-05-12">
+    <div class="q-label">問E-2（短答）</div>
+    <div class="q-text"><code>data/chapter04.xlsx</code> を読み込んで DataFrame <code>df</code> に格納するコードを 1 行で書け（pandas は <code>pd</code> としてインポート済み）。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力" /><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="locked-msg"></div>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <button class="btn btn-submit" style="padding:12px 40px;font-size:17px" onclick="calcTotal()">採点する</button>
+</div>
+
+<script>
+const scores = {};
+let qIdx = 0;
+
+function isUnlocked(dateStr) {
+  return new Date() >= new Date(dateStr + 'T00:00:00');
+}
+
+function showAnswer(btn) {
+  const block = btn.closest('.q-block');
+  const unlock = block.dataset.unlock;
+  const example = block.dataset.example;
+  const locked = block.querySelector('.locked-msg');
+  const box = block.querySelector('.answer-box');
+  const text = block.querySelector('.answer-text');
+  if (isUnlocked(unlock)) {
+    text.textContent = example;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+    locked.style.display = 'none';
+  } else {
+    const d = new Date(unlock + 'T00:00:00');
+    locked.textContent = `正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`;
+    locked.style.display = 'block';
+  }
+}
+
+function submitShort(btn) {
+  const block = btn.closest('.q-block');
+  const input = block.querySelector('input[type=text]');
+  const ans = input.value.trim();
+  if (!ans) return;
+  const patterns = JSON.parse(block.dataset.patterns);
+  const ok = patterns.every(p => ans.includes(p));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  input.className = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function submitMulti(btn) {
+  const block = btn.closest('.q-block');
+  const correctIdx = parseInt(block.dataset.correctIdx);
+  const choices = block.querySelectorAll('.choice');
+  const selected = block.querySelector('input[type=radio]:checked');
+  if (!selected) return;
+  const selIdx = [...choices].indexOf(selected.closest('.choice'));
+  const ok = selIdx === correctIdx;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  choices.forEach((c, i) => {
+    c.querySelector('input').disabled = true;
+    if (i === correctIdx) c.classList.add('correct-choice');
+    else if (i === selIdx && !ok) c.classList.add('wrong-choice');
+  });
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function calcTotal() {
+  const total = Object.values(scores).reduce((a, b) => a + b, 0);
+  const max = 21;
+  const pct = Math.round((total / max) * 100);
+  const msg = pct === 100 ? '🎉 満点です！' : pct >= 70 ? '👍 よくできました！' : '📚 復習してみましょう。';
+  const bar = document.getElementById('score-bar');
+  bar.style.display = 'block';
+  document.getElementById('score-val').textContent = total.toFixed(1) + ' / ' + max;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-fill').style.width = pct + '%';
+  bar.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
