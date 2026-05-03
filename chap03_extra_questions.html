@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+<title>第3章 追加問題</title>
+
+<style>
+html {
+  color: #1a1a1a;
+  background-color: #fdfdfd;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 36em;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  line-height: 1.7;
+  font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 0.95em;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+}
+
+@media print {
+  html {
+    background-color: white;
+  }
+
+  body {
+    background-color: transparent;
+    color: black;
+    font-size: 12pt;
+  }
+
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2, h3, h4 {
+    page-break-after: avoid;
+  }
+}
+
+p { margin: 1em 0; }
+
+a { color: #1a1a1a; }
+
+a:visited { color: #1a1a1a; }
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.4em;
+  margin-bottom: 0.6em;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2em;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.2em;
+}
+
+h5, h6 {
+  font-size: 1em;
+  font-style: italic;
+}
+
+h6 { font-weight: normal; }
+
+ol, ul {
+  padding-left: 1.7em;
+  margin-top: 1em;
+}
+
+li > ol, li > ul {
+  margin-top: 0;
+}
+
+blockquote {
+  margin: 1em 0 1em 1.7em;
+  padding-left: 1em;
+  border-left: 4px solid #e6e6e6;
+  color: #606060;
+}
+
+code {
+  white-space: pre-wrap;
+  font-family: Consolas, Menlo, Monaco, monospace;
+  font-size: 0.9em;
+  background: #f5f5f5;
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
+}
+
+pre {
+  margin: 1em 0;
+  overflow: auto;
+  background: #f8f8f8;
+  padding: 1em;
+  border-radius: 6px;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #1a1a1a;
+  height: 1px;
+  margin: 2em 0;
+}
+
+table {
+  margin: 1em 0;
+  border-collapse: collapse;
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.4em 0.6em;
+}
+
+th { background: #f0f0f0; }
+
+header {
+  margin-bottom: 4em;
+  text-align: center;
+}
+
+#TOC li { list-style: none; }
+
+#TOC ul { padding-left: 1.3em; }
+
+#TOC > ul { padding-left: 0; }
+
+#TOC a:not(:hover) {
+  text-decoration: none;
+}
+</style>
+
+
+</head>
+<body>
+
+<header id="title-block-header">
+<h1 class="title">第3章 追加問題</h1>
+</header>
+
+
+<h1 id="第3章-追加問題">第3章 追加問題</h1>
+<h2 id="開発側f">開発側（F）</h2>
+<h3 id="f1.-len-とメソッドの違いを説明しよう">F1. <code>len()</code> とメソッドの違いを説明しよう</h3>
+<p><code>chapter03_exercise.xlsx</code> を読み込んだデータフレーム <code>df</code> に対して、次の2つのコード（コード 3-2, 3-4）を見てください。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="bu">len</span>(df)           <span class="co"># コード 3-2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>df[<span class="st">&quot;気温&quot;</span>].mean() <span class="co"># コード 3-4</span></span></code></pre></div>
+<ol type="1">
+<li><code>len(df)</code> は<strong>関数</strong>の呼び出しです。<code>df["気温"].mean()</code> は<strong>メソッド</strong>の呼び出しです。関数とメソッドの違いを、コードの書き方（構文）の観点から説明してください。</li>
+<li><code>len(df)</code> の戻り値は何を表していますか？データフレームの「行数」が返る理由を、データフレームの構造（行と列の関係）をふまえて説明してください。</li>
+<li><code>df.mean()</code> と <code>df["気温"].mean()</code> の結果はどう異なりますか？それぞれの戻り値の型（DataFrame か Series か）とあわせて説明してください。</li>
+</ol>
+<hr />
+<h3 id="f2.-bins-のデフォルト値が不適切な理由を説明しよう">F2. <code>bins</code> のデフォルト値が「不適切」な理由を説明しよう</h3>
+<p>コード 3-10（<code>sns.histplot(df["売上高"])</code>）と、コード 3-8（<code>age_spans</code> を使ったヒストグラム）を比較します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># コード 3-8</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>age_spans <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">110</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>df[<span class="st">&quot;売上高&quot;</span>].plot(kind<span class="op">=</span><span class="st">&quot;hist&quot;</span>, bins<span class="op">=</span>age_spans, grid<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="co"># コード 3-10</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>sns.histplot(df[<span class="st">&quot;売上高&quot;</span>])</span></code></pre></div>
+<p>今回のデータでは、売上高の最小値は約 <strong>0.3万円</strong>、最大値は約 <strong>104.9万円</strong> です。</p>
+<ol type="1">
+<li><code>sns.histplot</code> のデフォルトの <code>bins</code> は何ですか？デフォルトのまま描いた場合、このデータではどのような問題が生じる可能性があるか説明してください。</li>
+<li>コード 3-8 で <code>age_spans</code> を使って階級の境界を明示しているのはなぜですか？「幅が均等になるから」以外の理由を、このデータの意味（売上高・単位：万円）をふまえて説明してください。</li>
+<li>階級数の決め方には「データ数から決める方法」と「幅の範囲で決める方法」があります。今回のデータ（n=100）に対して、どちらの方法がより適切だと思いますか？理由とともに答えてください。</li>
+</ol>
+<hr />
+<h2 id="分析企画側g">分析・企画側（G）</h2>
+<h3 id="g1.-平均と中央値のズレを解釈しよう">G1. 平均と中央値の「ズレ」を解釈しよう</h3>
+<p>今回のおでんデータを分析したところ、次の結果が得られました。</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>平均</th>
+<th>中央値</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>気温</td>
+<td>20.3℃</td>
+<td>18.7℃</td>
+</tr>
+<tr class="even">
+<td>売上高</td>
+<td>56.0万円</td>
+<td>58.8万円</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>気温では「平均 &gt; 中央値」、売上高では「平均 &lt; 中央値」になっています。それぞれについて、<strong>どのような形の分布</strong>が考えられるか説明してください。</li>
+<li>おでんの販売戦略を立てる担当者として、気温と売上高について「平均」と「中央値」のどちらを重視しますか？それぞれ理由を答えてください。</li>
+<li>標準偏差が気温は約 <strong>6.5℃</strong>、売上高は約 <strong>20.5万円</strong> でした。売上高のばらつきが大きいことは、おでんの仕入れや販売計画にどのような影響を与えると思いますか？</li>
+</ol>
+<hr />
+<h3 id="g2.-データから言えることと言えないことを区別しよう">G2. データから「言えること」と「言えないこと」を区別しよう</h3>
+<p>今回のデータは、ある地域の店舗で収集された 100 日分のおでんの売上高と気温のデータです。</p>
+<p>ヒストグラムを描いたところ、売上高が <strong>10万円未満の日が数日</strong>あることがわかりました。また、<strong>100万円を超える日も数日</strong>ありました。</p>
+<ol type="1">
+<li>「気温が高い日は売上高が低い傾向がある」と言えますか？今回の章で学んだ手法（統計量・ヒストグラム）だけでこの主張を裏付けることはできますか？できない場合、どのような追加の分析が必要ですか？</li>
+<li>売上高が 10万円未満の日について、「その日は気温が高かったに違いない」と結論づけることはできますか？データから「言えること」と「言えないこと」の違いを説明してください。</li>
+<li>このデータが「ある地域の1店舗のみ」のデータだとしたら、全国のおでん市場に対して一般化することはできますか？できない場合、その理由を説明してください。</li>
+</ol>
+
+</body>
+</html>
