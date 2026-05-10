@@ -175,7 +175,7 @@
           <div class="quiz-icon">🧪</div>
           <div class="quiz-info">
             <div class="quiz-title">確認テスト</div>
-            <div class="quiz-desc">3章の理解を確認するブラウザ上のクイズ</div>
+            <div class="quiz-desc">4,5章の理解を確認するブラウザ上のクイズ</div>
             <a class="quiz-link" href="https://slp-hu.github.io/class-PythonDS/quiz_L03.html" target="_blank">テストを受ける</a>
           </div>
         </div>
@@ -213,7 +213,48 @@
     <!-- 第4回 -->
     <details>
       <summary><span class="session-num">第4回</span> 相関・回帰 <span class="arrow">▼</span></summary>
-      <div class="session-body"><p class="placeholder">資料は授業後に順次公開します。</p></div>
+      <div class="session-body">
+        <div class="quiz-card">
+          <div class="quiz-icon">🧪</div>
+          <div class="quiz-info">
+            <div class="quiz-title">確認テスト</div>
+            <div class="quiz-desc">6章の理解を確認するブラウザ上のクイズ</div>
+            <a class="quiz-link" href="https://slp-hu.github.io/class-PythonDS/quiz_L04.html" target="_blank">テストを受ける</a>
+          </div>
+        </div>
+        <div class="quiz-card" style="background:#fefce8; border-color:#fde68a;">
+          <div class="quiz-icon">📝</div>
+          <div class="quiz-info">
+            <div class="quiz-title" style="color:#92400e;">課題</div>
+            <div class="quiz-desc">5章の追加課題</div>
+            <a class="quiz-link" href="https://slp-hu.github.io/class-PythonDS/chap05_extra_questions.html" target="_blank" style="background:#d97706;">課題を見る</a>
+          </div>
+        </div>
+
+        <p style="font-size:.88rem; font-weight:600; margin:.75rem 0 .25rem; color:var(--muted);">補足リンク</p>
+        <ul class="supp-list">
+          <li><a href="https://python.atelierkobato.com/elevation_azimuth/" target="_blank">3次元グラフの「視点」</a></li>
+          <li><a href="https://ja.wikipedia.org/wiki/%E3%83%94%E3%82%A2%E3%82%BD%E3%83%B3%E3%81%AE%E7%A9%8D%E7%8E%87%E7%9B%B8%E9%96%A2%E4%BF%82%E6%95%B0" target="_blank">Wikipedia: 相関係数</a></li>
+          <li><a href="https://janhove.github.io/posts/2016-11-21-what-correlations-look-like/" target="_blank">データの分布パターンと相関係数</a></li>
+          <li><a href="https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%B3%E3%82%B9%E3%82%B3%E3%83%A0%E3%81%AE%E4%BE%8B" target="_blank">アンスコムの例</a></li>
+          <li>
+            <span class="supp-label">インタラクティブな散布図のプロット</span>
+            例えば、コード6-19 を次のようにすれば、どの点がどの都道府県なのかなど、インタラクティブに表示させられます。
+            <pre><code>import plotly.express as px
+
+fig = px.scatter(
+    birth_clust_e,
+    x="合計特殊出生率 s",
+    y="世帯年間収入 s",
+    color="cluster4",
+    hover_data=['都道府県'],
+    color_continuous_scale="plotly3",
+)
+fig.update_layout(coloraxis_showscale=False)
+fig.show()</code></pre>
+          </li>
+        </ul>
+      </div>
     </details>
 
     <!-- 第5回 -->
