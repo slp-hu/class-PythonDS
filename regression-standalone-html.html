@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>線形回帰の「あてはめ」を見る</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif; margin: 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react,env">
+const { useState, useMemo } = React;
+
+const DATA = [
+  [104.499, 352.766], [34.570, 32.432], [86.857, 204.436], [85.936, 313.184],
+  [56.638, 133.743], [132.789, 388.255], [91.657, -42.362], [60.144, -51.170],
+  [67.696, 112.702], [105.947, 332.789], [79.149, 73.010], [53.096, -40.903],
+  [93.465, 354.262], [50.617, 211.066], [97.093, 372.587], [13.705, -253.660],
+  [92.695, 237.402], [87.585, 325.004], [59.395, 76.000], [55.180, -5.234],
+  [38.954, 169.463], [83.253, 146.061], [30.932, -120.273], [106.356, 493.247],
+  [69.185, 231.397], [118.901, 313.172], [116.431, 324.028], [38.156, -0.540],
+  [104.329, 241.953], [98.616, 307.654], [53.927, -93.006], [31.991, -108.409],
+  [101.432, 644.200], [51.068, 226.936], [90.350, 233.069], [93.372, 403.915],
+  [89.536, 290.388], [18.216, -104.583], [103.225, 285.477], [122.276, 281.666],
+  [84.018, 152.313], [85.034, 178.976], [101.593, 285.812], [84.691, 351.723],
+  [91.239, 152.967], [82.114, 142.945], [91.076, 151.493], [69.259, 194.574],
+  [71.795, 180.066], [101.373, 304.426], [67.105, 243.460], [65.083, -52.536],
+  [87.247, 111.036], [0.1, -237.982], [129.529, 302.393], [82.540, 228.090],
+  [44.125, -169.312], [105.220, 187.531], [24.744, -196.385], [48.788, -186.558],
+  [63.538, 175.572], [18.906, -291.844], [40.353, -18.799], [33.719, 62.736],
+  [79.401, 340.298], [109.416, 432.725], [66.016, -29.352], [2.788, -401.732],
+  [109.147, 398.408], [56.773, 96.701], [106.331, 189.612], [16.923, -128.767],
+  [90.009, 430.060], [79.348, 214.777], [85.322, 220.857], [70.786, 171.610],
+  [121.462, 455.190], [67.704, 55.553], [82.849, 324.280], [138.623, 506.858],
+  [71.066, 228.482], [37.639, 23.094], [100.363, 175.633], [10.841, -237.371],
+  [45.342, 11.607], [40.678, -46.774], [59.791, 164.319], [81.035, 186.004],
+  [94.742, 241.980], [125.703, 348.847], [99.684, 323.273], [35.289, -107.145],
+  [81.592, 177.753], [39.558, -143.923], [41.136, 68.869], [51.040, 210.679],
+  [115.407, 365.307], [89.499, 247.871], [26.649, -157.378], [107.972, 624.126]
+];
+
+function ZoomDetail({ stats, pickIdx, setPickIdx, candidates }) {
+  const P = candidates[pickIdx];
+
+  const yReg = stats.slopeReg * P.x + stats.interceptReg;
+  const footReg = { x: P.x, y: yReg };
+
+  const dx = P.x - stats.meanX;
+  const dy = P.y - stats.meanY;
+  const t = dx * stats.v1x + dy * stats.v1y;
+  const footPC = {
+    x: stats.meanX + t * stats.v1x,
+    y: stats.meanY + t * stats.v1y
+  };
+
+  const xs = [P.x, footReg.x, footPC.x];
+  const ys = [P.y, footReg.y, footPC.y];
+  const xMin = Math.min(...xs) - 60;
+  const xMax = Math.max(...xs) + 60;
+  const yMin = Math.min(...ys) - 100;
+  const yMax = Math.max(...ys) + 100;
+
+  const W = 500, H = 320;
+  const pad = { top: 20, right: 20, bottom: 30, left: 50 };
+  const pw = W - pad.left - pad.right;
+  const ph = H - pad.top - pad.bottom;
+  const sx = (x) => pad.left + ((x - xMin) / (xMax - xMin)) * pw;
+  const sy = (y) => pad.top + ph - ((y - yMin) / (yMax - yMin)) * ph;
+
+  const regEnds = {
+    x1: xMin, y1: stats.slopeReg * xMin + stats.interceptReg,
+    x2: xMax, y2: stats.slopeReg * xMax + stats.interceptReg
+  };
+  const pcEnds = {
+    x1: xMin, y1: stats.slopePC1 * xMin + stats.interceptPC1,
+    x2: xMax, y2: stats.slopePC1 * xMax + stats.interceptPC1
+  };
+
+  const dyReg = P.y - yReg;
+  const distPC = Math.hypot(P.x - footPC.x, P.y - footPC.y);
+
+  return (
+    <div className="bg-white rounded p-2 border border-gray-200">
+      <div className="flex items-center gap-2 mb-2 flex-wrap">
+        <span className="text-xs font-bold text-gray-700">点を選ぶ:</span>
+        {candidates.map((c, i) => (
+          <button
+            key={i}
+            onClick={() => setPickIdx(i)}
+            className="px-2 py-1 text-xs rounded transition"
+            style={{
+              backgroundColor: pickIdx === i ? c.color : '#f3f4f6',
+              color: pickIdx === i ? 'white' : '#374151',
+              fontWeight: pickIdx === i ? 'bold' : 'normal'
+            }}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
+        {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
+          <g key={i}>
+            <line x1={pad.left} y1={pad.top + ph * t} x2={W - pad.right} y2={pad.top + ph * t} stroke="#f3f4f6" strokeWidth="1"/>
+            <line x1={pad.left + pw * t} y1={pad.top} x2={pad.left + pw * t} y2={H - pad.bottom} stroke="#f3f4f6" strokeWidth="1"/>
+          </g>
+        ))}
+
+        <line x1={pad.left} y1={H - pad.bottom} x2={W - pad.right} y2={H - pad.bottom} stroke="#9ca3af" strokeWidth="1"/>
+        <line x1={pad.left} y1={pad.top} x2={pad.left} y2={H - pad.bottom} stroke="#9ca3af" strokeWidth="1"/>
+
+        {[0, 0.5, 1].map((t, i) => {
+          const xVal = xMin + (xMax - xMin) * t;
+          const yVal = yMin + (yMax - yMin) * t;
+          return (
+            <g key={`tk-${i}`}>
+              <text x={pad.left + pw * t} y={H - pad.bottom + 12} textAnchor="middle" fontSize="9" fill="#9ca3af">{xVal.toFixed(0)}</text>
+              <text x={pad.left - 4} y={pad.top + ph * (1 - t) + 3} textAnchor="end" fontSize="9" fill="#9ca3af">{yVal.toFixed(0)}</text>
+            </g>
+          );
+        })}
+
+        <line x1={sx(pcEnds.x1)} y1={sy(pcEnds.y1)} x2={sx(pcEnds.x2)} y2={sy(pcEnds.y2)} stroke="#a855f7" strokeWidth="2" strokeDasharray="6,3"/>
+
+        <line x1={sx(regEnds.x1)} y1={sy(regEnds.y1)} x2={sx(regEnds.x2)} y2={sy(regEnds.y2)} stroke="#10b981" strokeWidth="2.5"/>
+
+        <line x1={sx(P.x)} y1={sy(P.y)} x2={sx(footReg.x)} y2={sy(footReg.y)} stroke="#10b981" strokeWidth="2.5" strokeDasharray="2,2"/>
+        <circle cx={sx(footReg.x)} cy={sy(footReg.y)} r="3" fill="#10b981" stroke="white" strokeWidth="1"/>
+
+        <line x1={sx(P.x)} y1={sy(P.y)} x2={sx(footPC.x)} y2={sy(footPC.y)} stroke="#a855f7" strokeWidth="2.5" strokeDasharray="2,2"/>
+        <circle cx={sx(footPC.x)} cy={sy(footPC.y)} r="3" fill="#a855f7" stroke="white" strokeWidth="1"/>
+
+        {(() => {
+          const ax = stats.v1x, ay = stats.v1y;
+          const bx = P.x - footPC.x, by = P.y - footPC.y;
+          const bn = Math.hypot(bx, by);
+          if (bn < 1e-6) return null;
+          const bx_n = bx / bn, by_n = by / bn;
+          const scale_a = 10 / 70;
+          const scale_b = 10 / 50;
+          const p1 = [footPC.x + ax * scale_a * 30, footPC.y + ay * scale_a * 30];
+          const p2 = [footPC.x + ax * scale_a * 30 + bx_n * scale_b * 30, footPC.y + ay * scale_a * 30 + by_n * scale_b * 30];
+          const p3 = [footPC.x + bx_n * scale_b * 30, footPC.y + by_n * scale_b * 30];
+          return (
+            <polyline
+              points={`${sx(p1[0])},${sy(p1[1])} ${sx(p2[0])},${sy(p2[1])} ${sx(p3[0])},${sy(p3[1])}`}
+              fill="none" stroke="#a855f7" strokeWidth="1"
+            />
+          );
+        })()}
+
+        <circle cx={sx(P.x)} cy={sy(P.y)} r="11" fill="none" stroke={P.color} strokeWidth="2.5"/>
+        <circle cx={sx(P.x)} cy={sy(P.y)} r="6" fill={P.color} stroke="white" strokeWidth="2"/>
+        <text x={sx(P.x) + 14} y={sy(P.y) - 8} fontSize="11" fill={P.color} fontWeight="bold">
+          {P.label}
+        </text>
+        <text x={sx(P.x) + 14} y={sy(P.y) + 4} fontSize="9" fill="#6b7280">
+          ({P.x.toFixed(1)}, {P.y.toFixed(1)})
+        </text>
+
+        <text x={sx(footReg.x) - 5} y={sy((P.y + footReg.y) / 2)} fontSize="11" fill="#10b981" fontWeight="bold" textAnchor="end">
+          縦の距離
+        </text>
+        <text x={sx(footReg.x) - 5} y={sy((P.y + footReg.y) / 2) + 13} fontSize="9" fill="#10b981" textAnchor="end">
+          = {Math.abs(dyReg).toFixed(1)}
+        </text>
+
+        <text x={sx((P.x + footPC.x) / 2) + 6} y={sy((P.y + footPC.y) / 2) - 4} fontSize="11" fill="#a855f7" fontWeight="bold">
+          垂直距離
+        </text>
+        <text x={sx((P.x + footPC.x) / 2) + 6} y={sy((P.y + footPC.y) / 2) + 8} fontSize="9" fill="#a855f7">
+          = {distPC.toFixed(1)}
+        </text>
+
+        <g transform={`translate(${W - 160}, ${pad.top + 5})`}>
+          <line x1="0" y1="6" x2="20" y2="6" stroke="#10b981" strokeWidth="2.5"/>
+          <text x="25" y="10" fontSize="10" fill="#10b981" fontWeight="bold">回帰直線</text>
+          <line x1="0" y1="22" x2="20" y2="22" stroke="#a855f7" strokeWidth="2" strokeDasharray="6,3"/>
+          <text x="25" y="26" fontSize="10" fill="#a855f7" fontWeight="bold">主軸(PCA)</text>
+        </g>
+      </svg>
+      <div className="text-xs text-gray-700 mt-1 px-2">
+        同じ点でも、<span className="text-green-700 font-bold">回帰では「縦に下ろした足」までの距離</span>を測り、
+        <span className="text-purple-700 font-bold">主軸では「直線へ垂直に下ろした足」までの距離</span>を測る。
+        この違いが、両直線の角度の違いを生む。
+      </div>
+    </div>
+  );
+}
+
+function RegressionByCovariance() {
+  const data = useMemo(() => DATA.map(([x, y]) => ({ x, y })), []);
+  const [stage, setStage] = useState(0);
+  const [showRegLine, setShowRegLine] = useState(true);
+  const [showPC1, setShowPC1] = useState(false);
+  const [showPC2, setShowPC2] = useState(false);
+  const [showEllipse, setShowEllipse] = useState(false);
+  const [ellipseScale, setEllipseScale] = useState(2);
+
+  const zoomCandidates = [
+    { x: 109.147, y: 398.408, label: '点A(右上)', color: '#dc2626' },
+    { x: 31.991, y: -108.409, label: '点B(左下)', color: '#f59e0b' },
+    { x: 18.216, y: -104.583, label: '点C(左)', color: '#0ea5e9' },
+  ];
+  const [pickIdx, setPickIdx] = useState(0);
+
+  const stats = useMemo(() => {
+    const n = data.length;
+    const meanX = data.reduce((s, p) => s + p.x, 0) / n;
+    const meanY = data.reduce((s, p) => s + p.y, 0) / n;
+    let Sxx = 0, Syy = 0, Sxy = 0;
+    for (const p of data) {
+      Sxx += (p.x - meanX) ** 2;
+      Syy += (p.y - meanY) ** 2;
+      Sxy += (p.x - meanX) * (p.y - meanY);
+    }
+    Sxx /= (n - 1);
+    Syy /= (n - 1);
+    Sxy /= (n - 1);
+    const r = Sxy / Math.sqrt(Sxx * Syy);
+    const slopeReg = Sxy / Sxx;
+    const interceptReg = meanY - slopeReg * meanX;
+    const tr = Sxx + Syy;
+    const det = Sxx * Syy - Sxy * Sxy;
+    const disc = Math.sqrt(tr * tr / 4 - det);
+    const lam1 = tr / 2 + disc;
+    const lam2 = tr / 2 - disc;
+    let v1x = Sxy, v1y = lam1 - Sxx;
+    const n1 = Math.hypot(v1x, v1y);
+    v1x /= n1; v1y /= n1;
+    const v2x = -v1y, v2y = v1x;
+    const slopePC1 = v1y / v1x;
+    const interceptPC1 = meanY - slopePC1 * meanX;
+    const slopePC2 = v2y / v2x;
+    const interceptPC2 = meanY - slopePC2 * meanX;
+    return {
+      n, meanX, meanY, Sxx, Syy, Sxy, r,
+      slopeReg, interceptReg,
+      lam1, lam2, v1x, v1y, v2x, v2y,
+      slopePC1, interceptPC1, slopePC2, interceptPC2
+    };
+  }, [data]);
+
+  const bounds = useMemo(() => {
+    const xs = data.map(p => p.x);
+    const ys = data.map(p => p.y);
+    return {
+      xMin: Math.min(...xs) - 10,
+      xMax: Math.max(...xs) + 10,
+      yMin: Math.min(...ys) - 50,
+      yMax: Math.max(...ys) + 50
+    };
+  }, [data]);
+
+  const W = 700, H = 500;
+  const padding = { top: 30, right: 30, bottom: 50, left: 70 };
+  const plotW = W - padding.left - padding.right;
+  const plotH = H - padding.top - padding.bottom;
+  const sx = (x) => padding.left + ((x - bounds.xMin) / (bounds.xMax - bounds.xMin)) * plotW;
+  const sy = (y) => padding.top + plotH - ((y - bounds.yMin) / (bounds.yMax - bounds.yMin)) * plotH;
+
+  const ellipsePoints = useMemo(() => {
+    const pts = [];
+    const k = ellipseScale;
+    for (let i = 0; i <= 100; i++) {
+      const theta = (i / 100) * 2 * Math.PI;
+      const a = Math.sqrt(stats.lam1) * k;
+      const b = Math.sqrt(stats.lam2) * k;
+      const x_local = a * Math.cos(theta);
+      const y_local = b * Math.sin(theta);
+      const dx = x_local * stats.v1x + y_local * stats.v2x;
+      const dy = x_local * stats.v1y + y_local * stats.v2y;
+      pts.push([stats.meanX + dx, stats.meanY + dy]);
+    }
+    return pts;
+  }, [stats, ellipseScale]);
+
+  const stages = [
+    { name: '① 2次元分布', desc: 'データを「広告費 × 売上高」の2次元分布として見る' },
+    { name: '② 共分散行列', desc: '分布の広がりを2×2行列で要約する' },
+    { name: '③ 回帰係数の正体', desc: '傾き a = Sxy / Sxx — 共分散行列から直接出る' },
+    { name: '④ 固有ベクトル vs 回帰', desc: '楕円の主軸と回帰直線は違う — それはなぜか' }
+  ];
+
+  const handleStage = (s) => {
+    setStage(s);
+    if (s === 0) {
+      setShowEllipse(false); setShowRegLine(false); setShowPC1(false); setShowPC2(false);
+    } else if (s === 1) {
+      setShowEllipse(true); setShowRegLine(false); setShowPC1(false); setShowPC2(false);
+    } else if (s === 2) {
+      setShowEllipse(true); setShowRegLine(true); setShowPC1(false); setShowPC2(false);
+    } else if (s === 3) {
+      setShowEllipse(true); setShowRegLine(true); setShowPC1(true); setShowPC2(true);
+    }
+  };
+
+  const lineEnds = (slope, intercept) => {
+    const y1 = slope * bounds.xMin + intercept;
+    const y2 = slope * bounds.xMax + intercept;
+    return { x1: bounds.xMin, y1, x2: bounds.xMax, y2 };
+  };
+
+  return (
+    <div className="w-full max-w-6xl mx-auto p-4 bg-white">
+      <h1 className="text-2xl font-bold mb-2 text-gray-800">回帰を「分布の形」から見る</h1>
+      <p className="text-sm text-gray-600 mb-4">共分散行列・固有ベクトル・相関係数 と 回帰直線の関係</p>
+
+      <div className="flex gap-2 mb-4 flex-wrap">
+        {stages.map((s, i) => (
+          <button
+            key={i}
+            onClick={() => handleStage(i)}
+            className={`px-3 py-2 rounded text-sm transition ${
+              stage === i ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            {s.name}
+          </button>
+        ))}
+      </div>
+      <div className="text-sm text-gray-700 mb-3 px-3 py-2 bg-blue-50 rounded">
+        {stages[stage].desc}
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '8px', marginBottom: '16px' }}>
+        <div className="bg-gray-50 rounded-lg p-2" style={{ flex: stage === 3 ? '1 1 60%' : '1 1 100%', minWidth: 0 }}>
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
+            {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
+              <g key={i}>
+                <line x1={padding.left} y1={padding.top + plotH * t} x2={W - padding.right} y2={padding.top + plotH * t} stroke="#e5e7eb" strokeWidth="1"/>
+                <line x1={padding.left + plotW * t} y1={padding.top} x2={padding.left + plotW * t} y2={H - padding.bottom} stroke="#e5e7eb" strokeWidth="1"/>
+              </g>
+            ))}
+            {bounds.yMin < 0 && bounds.yMax > 0 && (
+              <line x1={padding.left} y1={sy(0)} x2={W - padding.right} y2={sy(0)} stroke="#9ca3af" strokeWidth="1" strokeDasharray="4,3"/>
+            )}
+            <line x1={padding.left} y1={H - padding.bottom} x2={W - padding.right} y2={H - padding.bottom} stroke="#374151" strokeWidth="2"/>
+            <line x1={padding.left} y1={padding.top} x2={padding.left} y2={H - padding.bottom} stroke="#374151" strokeWidth="2"/>
+            <text x={W / 2} y={H - 10} textAnchor="middle" fontSize="13" fill="#374151" fontWeight="bold">広告費 x</text>
+            <text x={18} y={H / 2} textAnchor="middle" fontSize="13" fill="#374151" fontWeight="bold" transform={`rotate(-90, 18, ${H / 2})`}>売上高 y</text>
+            {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
+              const xVal = bounds.xMin + (bounds.xMax - bounds.xMin) * t;
+              const yVal = bounds.yMin + (bounds.yMax - bounds.yMin) * t;
+              return (
+                <g key={`tick-${i}`}>
+                  <text x={padding.left + plotW * t} y={H - padding.bottom + 15} textAnchor="middle" fontSize="10" fill="#6b7280">{xVal.toFixed(0)}</text>
+                  <text x={padding.left - 5} y={padding.top + plotH * (1 - t) + 3} textAnchor="end" fontSize="10" fill="#6b7280">{yVal.toFixed(0)}</text>
+                </g>
+              );
+            })}
+
+            {showEllipse && (
+              <polyline
+                fill="rgba(99, 102, 241, 0.08)"
+                stroke="#6366f1"
+                strokeWidth="1.5"
+                points={ellipsePoints.map(([x, y]) => `${sx(x)},${sy(y)}`).join(' ')}
+              />
+            )}
+
+            {showPC1 && (() => {
+              const { x1, y1, x2, y2 } = lineEnds(stats.slopePC1, stats.interceptPC1);
+              return (
+                <g>
+                  <line x1={sx(x1)} y1={sy(y1)} x2={sx(x2)} y2={sy(y2)} stroke="#a855f7" strokeWidth="2.5" strokeDasharray="6,3"/>
+                  {(() => {
+                    const k = ellipseScale;
+                    const tipX = stats.meanX + stats.v1x * Math.sqrt(stats.lam1) * k;
+                    const tipY = stats.meanY + stats.v1y * Math.sqrt(stats.lam1) * k;
+                    return (
+                      <g>
+                        <line x1={sx(stats.meanX)} y1={sy(stats.meanY)} x2={sx(tipX)} y2={sy(tipY)} stroke="#a855f7" strokeWidth="3" markerEnd="url(#arrPurple)"/>
+                        <text x={sx(tipX) + 6} y={sy(tipY) - 6} fontSize="12" fill="#a855f7" fontWeight="bold">第1主軸</text>
+                      </g>
+                    );
+                  })()}
+                </g>
+              );
+            })()}
+
+            {showPC2 && (() => {
+              const k = ellipseScale;
+              const tipX = stats.meanX + stats.v2x * Math.sqrt(stats.lam2) * k;
+              const tipY = stats.meanY + stats.v2y * Math.sqrt(stats.lam2) * k;
+              return (
+                <g>
+                  <line x1={sx(stats.meanX)} y1={sy(stats.meanY)} x2={sx(tipX)} y2={sy(tipY)} stroke="#06b6d4" strokeWidth="3" markerEnd="url(#arrCyan)"/>
+                  <text x={sx(tipX) + 6} y={sy(tipY) + 14} fontSize="12" fill="#06b6d4" fontWeight="bold">第2主軸</text>
+                </g>
+              );
+            })()}
+
+            {showRegLine && (() => {
+              const { x1, y1, x2, y2 } = lineEnds(stats.slopeReg, stats.interceptReg);
+              return <line x1={sx(x1)} y1={sy(y1)} x2={sx(x2)} y2={sy(y2)} stroke="#10b981" strokeWidth="3"/>;
+            })()}
+
+            {data.map((p, i) => (
+              <circle key={i} cx={sx(p.x)} cy={sy(p.y)} r="3" fill="#1f2937" opacity="0.6"/>
+            ))}
+
+            {stage === 3 && (() => {
+              const P = zoomCandidates[pickIdx];
+              return (
+                <g>
+                  <circle cx={sx(P.x)} cy={sy(P.y)} r="11" fill="none" stroke={P.color} strokeWidth="2.5"/>
+                  <circle cx={sx(P.x)} cy={sy(P.y)} r="5" fill={P.color} stroke="white" strokeWidth="2"/>
+                  <text x={sx(P.x) + 14} y={sy(P.y) + 4} fontSize="12" fill={P.color} fontWeight="bold">
+                    {P.label}
+                  </text>
+                </g>
+              );
+            })()}
+
+            {stage >= 0 && (
+              <g>
+                <circle cx={sx(stats.meanX)} cy={sy(stats.meanY)} r="7" fill="#f59e0b" stroke="white" strokeWidth="2"/>
+                <text x={sx(stats.meanX) + 12} y={sy(stats.meanY) - 8} fontSize="11" fill="#f59e0b" fontWeight="bold">
+                  (x̄, ȳ) = ({stats.meanX.toFixed(1)}, {stats.meanY.toFixed(1)})
+                </text>
+              </g>
+            )}
+
+            <g transform={`translate(${W - padding.right - 175}, ${padding.top})`}>
+              {showRegLine && (
+                <g transform="translate(0, 0)">
+                  <line x1="0" y1="6" x2="25" y2="6" stroke="#10b981" strokeWidth="3"/>
+                  <text x="32" y="10" fontSize="11" fill="#10b981" fontWeight="bold">回帰直線 y = ax+b</text>
+                </g>
+              )}
+              {showPC1 && (
+                <g transform="translate(0, 18)">
+                  <line x1="0" y1="6" x2="25" y2="6" stroke="#a855f7" strokeWidth="2.5" strokeDasharray="6,3"/>
+                  <text x="32" y="10" fontSize="11" fill="#a855f7" fontWeight="bold">第1主軸(λ₁の固有方向)</text>
+                </g>
+              )}
+            </g>
+
+            <defs>
+              <marker id="arrPurple" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <polygon points="0 0, 8 4, 0 8" fill="#a855f7"/>
+              </marker>
+              <marker id="arrCyan" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <polygon points="0 0, 8 4, 0 8" fill="#06b6d4"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+        {stage === 3 && (
+          <div className="bg-gray-50 rounded-lg p-2" style={{ flex: '1 1 40%', minWidth: 0 }}>
+            <ZoomDetail 
+              stats={stats} 
+              pickIdx={pickIdx} 
+              setPickIdx={setPickIdx} 
+              candidates={zoomCandidates}
+            />
+          </div>
+        )}
+      </div>
+
+      {showEllipse && (
+        <div className="mb-3 px-3 py-2 bg-gray-50 rounded text-sm">
+          <label className="text-xs text-gray-700">等密度楕円の大きさ:{ellipseScale.toFixed(1)} σ</label>
+          <input
+            type="range" min={0.5} max={3} step={0.1}
+            value={ellipseScale} onChange={(e) => setEllipseScale(parseFloat(e.target.value))}
+            className="w-full"
+          />
+        </div>
+      )}
+
+      {stage === 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded p-3 mb-4 text-sm">
+          <div className="font-bold text-amber-900 mb-2">データを「2次元分布」として見る</div>
+          <p className="text-xs text-amber-900 mb-2">
+            広告費 x と売上高 y の組 (x, y) を、平面上の点群=<strong>2次元分布</strong> として見ます。
+            分布の中心は平均点 (x̄, ȳ) = ({stats.meanX.toFixed(1)}, {stats.meanY.toFixed(1)}) で、
+            これは <strong>回帰直線が必ず通る点</strong> でもあります。
+          </p>
+          <p className="text-xs text-amber-900">
+            分布の「広がり」と「傾き加減」をどう数値で捉えるか?次のステージで共分散行列を見ます。
+          </p>
+        </div>
+      )}
+
+      {stage === 1 && (
+        <div className="bg-indigo-50 border border-indigo-200 rounded p-3 mb-4 text-sm">
+          <div className="font-bold text-indigo-900 mb-2">共分散行列 Σ — 分布の広がりを2×2で捉える</div>
+          <div className="font-mono text-xs bg-white p-3 rounded mb-2 leading-relaxed">
+            <div>Sₓₓ = (1/(n−1)) Σ(xᵢ − x̄)² &nbsp;= &nbsp;<strong>{stats.Sxx.toFixed(1)}</strong>&nbsp;&nbsp;<span className="text-gray-500">(xの分散)</span></div>
+            <div>S_yy = (1/(n−1)) Σ(yᵢ − ȳ)² &nbsp;= &nbsp;<strong>{stats.Syy.toFixed(1)}</strong>&nbsp;&nbsp;<span className="text-gray-500">(yの分散)</span></div>
+            <div>Sₓ_y = (1/(n−1)) Σ(xᵢ − x̄)(yᵢ − ȳ) &nbsp;= &nbsp;<strong>{stats.Sxy.toFixed(1)}</strong>&nbsp;&nbsp;<span className="text-gray-500">(xとyの共分散)</span></div>
+            <div className="mt-2">
+              Σ = ⎡ Sₓₓ&nbsp;&nbsp;Sₓ_y ⎤ = ⎡ {stats.Sxx.toFixed(0)}&nbsp;&nbsp;{stats.Sxy.toFixed(0)} ⎤<br/>
+              <span className="ml-3">⎣ Sₓ_y&nbsp;&nbsp;S_yy ⎦&nbsp;&nbsp;&nbsp;⎣ {stats.Sxy.toFixed(0)}&nbsp;&nbsp;{stats.Syy.toFixed(0)} ⎦</span>
+            </div>
+            <div className="mt-2">
+              相関係数 r = Sₓ_y / √(Sₓₓ · S_yy) = <strong className="text-indigo-700">{stats.r.toFixed(3)}</strong>
+            </div>
+          </div>
+          <p className="text-xs text-indigo-900">
+            楕円(等密度楕円)は、この共分散行列の「形」を可視化したもの。
+            <strong>細長い向き = xとyが連動して動く方向</strong>、太さ = 散らばりの大きさ。
+          </p>
+        </div>
+      )}
+
+      {stage === 2 && (
+        <div className="bg-green-50 border border-green-200 rounded p-3 mb-4 text-sm">
+          <div className="font-bold text-green-900 mb-2">回帰係数は共分散行列の要素から直接出る</div>
+          <p className="text-xs text-green-900 mb-2">
+            回帰直線 y = ax + b の傾き a と切片 b は、共分散行列の要素だけで書けます:
+          </p>
+          <div className="font-mono text-sm bg-white p-3 rounded mb-2 leading-loose">
+            <div>傾き&nbsp;&nbsp; <strong className="text-green-700">a = Sₓ_y / Sₓₓ</strong> = {stats.Sxy.toFixed(2)} / {stats.Sxx.toFixed(2)} = <strong>{stats.slopeReg.toFixed(4)}</strong></div>
+            <div>切片&nbsp;&nbsp; <strong className="text-green-700">b = ȳ − a·x̄</strong> = {stats.meanY.toFixed(2)} − {stats.slopeReg.toFixed(3)}×{stats.meanX.toFixed(2)} = <strong>{stats.interceptReg.toFixed(2)}</strong></div>
+          </div>
+          <p className="text-xs text-green-900 mb-2">
+            <strong>意味:</strong> 傾き a は「x が 1 増えるごとに y が平均的にどれだけ増えるか」。
+            これは「共分散 Sₓ_y(xとyの連動の強さ)」を「xの分散 Sₓₓ(xの広がり)」で割ったもの、と読める。
+          </p>
+          <p className="text-xs text-green-900">
+            <strong>切片 b の正体:</strong> 直線が必ず平均点 (x̄, ȳ) を通る、という条件から自動的に決まる。
+          </p>
+        </div>
+      )}
+
+      {stage === 3 && (
+        <div className="bg-rose-50 border border-rose-200 rounded p-3 mb-4 text-sm">
+          <div className="font-bold text-rose-900 mb-2">楕円の主軸 ≠ 回帰直線(これが「あてはめ」の本質)</div>
+          
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '12px' }}>
+            <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+              <p className="text-xs text-rose-900 mb-2">
+                共分散行列 Σ の <strong>固有値・固有ベクトル</strong> は分布の「主軸」を与えます:
+              </p>
+              <div className="font-mono text-xs bg-white p-3 rounded mb-2 leading-relaxed">
+                <div>固有値:λ₁ = <strong>{stats.lam1.toFixed(1)}</strong>(主軸方向の分散)</div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; λ₂ = <strong>{stats.lam2.toFixed(1)}</strong>(直交方向の分散)</div>
+                <div className="mt-1">第1固有ベクトル v₁ = ({stats.v1x.toFixed(3)}, {stats.v1y.toFixed(3)})</div>
+                <div className="mt-2">
+                  <span className="text-purple-700">主軸の傾き</span> = v₁_y / v₁_x = <strong>{stats.slopePC1.toFixed(4)}</strong>
+                </div>
+                <div>
+                  <span className="text-green-700">回帰の傾き</span> &nbsp;&nbsp; = Sₓ_y / Sₓₓ = <strong>{stats.slopeReg.toFixed(4)}</strong>
+                </div>
+                <div className="text-rose-700 mt-1 font-bold">→ 主軸の方が急</div>
+              </div>
+            </div>
+            
+            <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+              <ul className="text-xs text-rose-900 ml-4 list-disc space-y-1">
+                <li><span className="text-green-700 font-bold">回帰直線</span>:点から直線への<strong>縦方向の距離(y方向)</strong>の二乗和を最小化</li>
+                <li><span className="text-purple-700 font-bold">第1主軸</span>:点から直線への<strong>垂直距離</strong>の二乗和を最小化(=主成分分析)</li>
+              </ul>
+              <p className="text-xs text-rose-900 mt-2">
+                回帰では「x は誤差なし、y のみに誤差がある」と仮定。
+                だから「分布の自然な主軸」より<strong>少し寝た傾き</strong>になる(regression toward the mean の起源)。
+              </p>
+              <div className="font-mono text-xs bg-white p-2 rounded mt-2">
+                <strong>a (回帰) = r × (σ_y / σ_x)</strong><br/>
+                = {stats.r.toFixed(3)} × ({Math.sqrt(stats.Syy).toFixed(2)}/{Math.sqrt(stats.Sxx).toFixed(2)}) = {(stats.r * Math.sqrt(stats.Syy / stats.Sxx)).toFixed(4)}
+                <div className="text-[11px] text-gray-600 mt-1">(r=1 なら主軸と一致、r=0 なら傾き0)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-3 gap-3 mb-3">
+        <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-3 rounded">
+          <div className="text-xs text-indigo-700">相関係数 r</div>
+          <div className="text-xl font-bold text-indigo-700">{stats.r.toFixed(4)}</div>
+        </div>
+        <div className="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded">
+          <div className="text-xs text-green-700">回帰係数</div>
+          <div className="text-sm font-mono text-green-700">a = {stats.slopeReg.toFixed(3)}<br/>b = {stats.interceptReg.toFixed(2)}</div>
+        </div>
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-3 rounded">
+          <div className="text-xs text-purple-700">固有値</div>
+          <div className="text-sm font-mono text-purple-700">λ₁ = {stats.lam1.toFixed(0)}<br/>λ₂ = {stats.lam2.toFixed(0)}</div>
+        </div>
+      </div>
+
+      <div className="text-xs text-gray-600 leading-relaxed border-t pt-3">
+        <p>
+          <strong>まとめ:</strong> 回帰係数 a, b は反復計算で求めるものではなく、<strong>共分散行列の要素から直接</strong>計算されます
+          (a = Sₓ_y/Sₓₓ、b = ȳ − a·x̄)。「あてはめ(fit)」の正体は「2次元分布の共分散構造を一つの直線で表現する」操作で、
+          それは分布の自然な主軸(楕円の長軸)とは違う、縦方向の誤差を最小化するための直線です。
+        </p>
+      </div>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<RegressionByCovariance />);
+</script>
+</body>
+</html>
