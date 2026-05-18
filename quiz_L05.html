@@ -92,7 +92,7 @@
     <p>決定木は「木構造」と呼ばれるデータ構造をしています。教科書 p.107 図7.1 で示される、木構造を構成する要素の名前を確認しましょう。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;根&quot;]" data-example="根（root）" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;根&quot;]" data-example="根（root）" data-unlock="2026-05-26">
     <div class="q-label">問A-1（短答）</div>
     <div class="q-text">木構造において、一番上にある最初のノードを _____ と呼ぶ。（日本語1文字で）</div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -102,7 +102,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;葉&quot;]" data-example="葉（leaf）" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;葉&quot;]" data-example="葉（leaf）" data-unlock="2026-05-26">
     <div class="q-label">問A-2（短答）</div>
     <div class="q-text">木構造において、それ以上分岐しない一番下の終端ノードを _____ と呼ぶ。（日本語1文字で）</div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -112,7 +112,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;日照時間&quot;]" data-example="日照時間（しきい値は 10.1 時間）" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;日照時間&quot;]" data-example="日照時間（しきい値は 10.1 時間）" data-unlock="2026-05-26">
     <div class="q-label">問A-3（短答）</div>
     <div class="q-text">コード 7-12 を実行すると決定木の図が描かれる（教科書 p.118 図7.4）。この図において、<strong>最初の分岐（根のノード）</strong>で使われている特徴量の名前を答えよ。</div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -130,7 +130,7 @@
     <p>コード 7-2 〜 7-10 を実行したときに表示される件数や正解率を、正確に読み取り、その意味を理解する練習です。パラメータを変えると結果がどう変わるかも考えてみましょう。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;250&quot;]" data-example="250" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;250&quot;]" data-example="250" data-unlock="2026-05-26">
     <div class="q-label">問B-1（数値）</div>
     <div class="q-text">コード 7-3 の <code>len(X)</code> の出力は _____ である。</div>
     <div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -140,7 +140,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[[&quot;96.83&quot;,&quot;96.82&quot;]]" data-example="96.83（正確には 96.8253... %）。max_depth=2 のとき（98.41%）より下がる。これは「過学習」の典型例で、深くするほど良いとは限らない。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[[&quot;96.83&quot;,&quot;96.82&quot;]]" data-example="96.83（正確には 96.8253... %）。max_depth=2 のとき（98.41%）より下がる。これは「過学習」の典型例で、深くするほど良いとは限らない。" data-unlock="2026-05-26">
     <div class="q-label">問B-2（数値）</div>
     <div class="q-text">コード 7-9 では <code>DecisionTreeClassifier(max_depth=2, random_state=0)</code> と指定している。<br>
       ここで <code>max_depth=4</code> に変更してから再度コード 7-9〜7-10 を実行すると、表示される正解率の数値は何 % になるか？<br>
@@ -154,7 +154,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;25&quot;]" data-example="25（テスト用に 25%、訓練用に 75% に分けられる。250 × 0.25 = 62.5 → 63 件）" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;25&quot;]" data-example="25（テスト用に 25%、訓練用に 75% に分けられる。250 × 0.25 = 62.5 → 63 件）" data-unlock="2026-05-26">
     <div class="q-label">問B-3（数値）</div>
     <div class="q-text">コード 7-6 の <code>train_test_split(X2, y, random_state=0)</code> では、テスト用の割合を引数で指定していない。<br>このときデフォルトでは、データ全体のおよそ何 % がテスト用に分けられるか。数値で答えよ（% は不要）。</div>
     <div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -164,7 +164,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="テスト用に分けた 63 件のデータのうち、約 98% をモデルが正しく分類できたという意味。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="テスト用に分けた 63 件のデータのうち、約 98% をモデルが正しく分類できたという意味。" data-unlock="2026-05-26">
     <div class="q-label">問B-4（選択）</div>
     <div class="q-text">コード 7-10 を実行すると、<code>正解率 98.4126984126984 %</code> のように表示される。この数値の意味として<strong>最も正しいもの</strong>を選べ。
       <pre>score_te = model.score(X_test, y_test)
@@ -191,7 +191,7 @@ print("正解率", score_te * 100, "%")</pre>
     <p>コード 7-4 〜 7-9 で登場する関数・メソッド・パラメータの名前を、実際に書けるかを確認します。教科書のコードを参照しながら答えましょう。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;hue&quot;]" data-example="hue" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;hue&quot;]" data-example="hue" data-unlock="2026-05-26">
     <div class="q-label">問C-1（短答）</div>
     <div class="q-text">コード 7-4 の <code>sns.scatterplot</code> で、「購入」列の値ごとに点の<strong>色</strong>を変えるために指定しているパラメータの名前は _____ である。
       <pre>sns.scatterplot(
@@ -208,7 +208,7 @@ print("正解率", score_te * 100, "%")</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;購入&quot;]" data-example='X["購入"]' data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;購入&quot;]" data-example='X["購入"]' data-unlock="2026-05-26">
     <div class="q-label">問C-2（短答）</div>
     <div class="q-text">コード 7-5 の空欄に入るコードを書きなさい。「購入」列を目的変数 y に取り出すコードです。
       <pre>y = ______
@@ -221,7 +221,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[[&quot;DataFrame&quot;,&quot;dataframe&quot;,&quot;Dataframe&quot;]]" data-example="DataFrame（X.copy() の返り値が DataFrame であり、そこに drop メソッドが定義されている）" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[[&quot;DataFrame&quot;,&quot;dataframe&quot;,&quot;Dataframe&quot;]]" data-example="DataFrame（X.copy() の返り値が DataFrame であり、そこに drop メソッドが定義されている）" data-unlock="2026-05-26">
     <div class="q-label">問C-3（短答）</div>
     <div class="q-text">コード 7-5 の <code>X.copy().drop("購入", axis=1)</code> における <code>drop</code> は、何という型（オブジェクト）のメソッドか。pandas で表（表形式データ）を表すクラスの英語名で答えよ。</div>
     <div class="input-row"><input type="text" placeholder="回答を入力（英語）"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -231,7 +231,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[&quot;fit&quot;]" data-example="fit" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[&quot;fit&quot;]" data-example="fit" data-unlock="2026-05-26">
     <div class="q-label">問C-4（短答）</div>
     <div class="q-text">決定木モデルを訓練データで学習させるコードでは、<code>model.____(X_train, y_train)</code> と書く。空欄に入るメソッド名は _____ である。</div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -249,7 +249,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <p>コード 7-5 〜 7-10 で使われている操作（copy・max_depth・score）が何を意味しているのか、データ分析の文脈で正しく理解できているかを確認します。</p>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns="[[&quot;元&quot;,&quot;もと&quot;,&quot;オリジナル&quot;,&quot;X&quot;],[&quot;変更&quot;,&quot;変わ&quot;,&quot;書き換&quot;,&quot;上書き&quot;,&quot;影響&quot;]]" data-example="元のデータフレーム X を変更してしまわないため（X2 を変更しても X はそのまま残るように）" data-unlock="2026-05-19">
+  <div class="q-block" data-type="short" data-patterns="[[&quot;元&quot;,&quot;もと&quot;,&quot;オリジナル&quot;,&quot;X&quot;],[&quot;変更&quot;,&quot;変わ&quot;,&quot;書き換&quot;,&quot;上書き&quot;,&quot;影響&quot;]]" data-example="元のデータフレーム X を変更してしまわないため（X2 を変更しても X はそのまま残るように）" data-unlock="2026-05-26">
     <div class="q-label">問D-1（短答・記述）</div>
     <div class="q-text">コード 7-5 で <code>X.copy()</code> を使っているのはなぜか。簡潔に説明せよ。
       <pre>X2 = X.copy().drop("購入", axis=1)</pre>
@@ -264,7 +264,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="木の深さ（根から葉までの分岐の段数）を最大 2 までに制限する。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="木の深さ（根から葉までの分岐の段数）を最大 2 までに制限する。" data-unlock="2026-05-26">
     <div class="q-label">問D-2（選択）</div>
     <div class="q-text">コード 7-9 の <code>DecisionTreeClassifier(max_depth=2, random_state=0)</code> における <code>max_depth=2</code> の意味として、<strong>最も適切なもの</strong>を選べ。</div>
     <div class="choices">
@@ -280,7 +280,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="X_test に対するモデルの予測の正解率（accuracy）。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="X_test に対するモデルの予測の正解率（accuracy）。" data-unlock="2026-05-26">
     <div class="q-label">問D-3（選択）</div>
     <div class="q-text"><code>model.score(X_test, y_test)</code> が返す値は何か。<strong>最も正しいもの</strong>を選べ。</div>
     <div class="choices">
@@ -304,7 +304,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <p>教科書では、決定木がどうやって分岐の場所を決めているのかは詳しく説明されていません。コード 7-12 の出力（決定木の図）を見て、「どうやって分割の場所が決まるのか」「なぜ訓練とテストに分けるのか」を、自分で考えてみましょう。</p>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="分割後の 2 つのグループそれぞれにおいて、正解ラベルができるだけ偏る（同じラベルが集まる）分割が良い。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="分割後の 2 つのグループそれぞれにおいて、正解ラベルができるだけ偏る（同じラベルが集まる）分割が良い。" data-unlock="2026-05-26">
     <div class="q-label">問E-1（選択）</div>
     <div class="q-text">コード 7-12 で出力される決定木の図を見ると、まず「日照時間 10.1 時間」、次に「年齢 36.8 才」「年齢 50.6 才」など、特定の値を境にしてデータが 2 つに分割されている。<br>
       決定木がデータを 2 つに分割するとき、「<strong>良い分割</strong>」とはどのようなものだと考えられるか。最も適切なものを選べ。
@@ -322,7 +322,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="学習に使っていないデータでモデルの性能を評価することで、未知データへの予測精度を確認するため。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="学習に使っていないデータでモデルの性能を評価することで、未知データへの予測精度を確認するため。" data-unlock="2026-05-26">
     <div class="q-label">問E-2（選択）</div>
     <div class="q-text">コード 7-6 では、データを訓練データとテストデータに分けてから学習している。なぜわざわざデータを<strong>2 つに分けて</strong>から学習・評価するのか。<strong>最も適切なもの</strong>を選べ。</div>
     <div class="choices">
@@ -338,7 +338,7 @@ X2 = X.copy().drop("購入", axis=1)</pre>
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="multi" data-correct-idx="2" data-example="random_state を同じ値に固定しておくと、毎回同じデータ分割・同じ学習結果が得られるため、結果を再現できる。" data-unlock="2026-05-19">
+  <div class="q-block" data-type="multi" data-correct-idx="2" data-example="random_state を同じ値に固定しておくと、毎回同じデータ分割・同じ学習結果が得られるため、結果を再現できる。" data-unlock="2026-05-26">
     <div class="q-label">問E-3（選択）</div>
     <div class="q-text">コード 7-6 の <code>train_test_split(X2, y, random_state=0)</code> と、コード 7-9 の <code>DecisionTreeClassifier(max_depth=2, random_state=0)</code> の両方で <code>random_state=0</code> が指定されている。<br>
       なぜ <code>random_state</code> を指定するのか。<strong>最も適切なもの</strong>を選べ。
