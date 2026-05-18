@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>第6章 追加問題</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">第6章 追加問題</h1>
+</header>
+<h1 id="第6章-追加問題">第6章 追加問題</h1>
+<h2 id="データセット">データセット</h2>
+<p>SSDSE-社会生活（SSDSE-D-2023）を使う。
+都道府県別・男女別の自由時間活動と生活時間のデータで、教育用標準データセットとして
+独立行政法人 統計センターから公開されている。</p>
+<p>ダウンロード: <a href="https://www.nstac.go.jp/use/literacy/ssdse/"
+class="uri">https://www.nstac.go.jp/use/literacy/ssdse/</a></p>
+<p>このデータには 5
+つの行動分類の総数（行動者率、%）が含まれている：</p>
+<ul>
+<li>学習・自己啓発・訓練の総数</li>
+<li>スポーツの総数</li>
+<li>趣味・娯楽の総数</li>
+<li>ボランティア活動の総数</li>
+<li>旅行・行楽の総数</li>
+</ul>
+<p>ここでは「男女の別」が <code>0_総数</code>（男女計）の 47
+都道府県分（全国を除く）を対象とする。</p>
+<hr />
+<h2 id="開発側の問題">開発側の問題</h2>
+<p>教科書 6 章のクラスタリング手法を多次元データに拡張する。授業で扱った
+クラスタ数 n
+の客観的評価指標（エルボー法・シルエットスコア）を活用する。</p>
+<h3 id="f1.-5-つの行動分類でのクラスタリングと-n-の選択">F1. 5
+つの行動分類でのクラスタリングと n の選択</h3>
+<p>教科書 6 章（コード 6-3, 6-9,
+6-16）では合計特殊出生率と世帯年間収入の 2 変数で n=2, 3, 4
+を試したが、ここでは 5 変数に拡張する。 2
+次元なら散布図で目視判断できたが、5 次元では散布図に描けないため、
+<strong>授業で扱った客観指標を使うしかない</strong>。</p>
+<ol type="1">
+<li><p>SSDSE-D から 47 都道府県・男女総数のデータを取り出し、上記 5 列を
+<code>StandardScaler</code> で標準化せよ（コード 6-3 と同じ手順）。</p>
+<p>そのうえで、<strong>5
+列の標準偏差（生スケール、標準化前）を求めて表示せよ</strong>。
+今回のデータは「すべて行動者率（%）」で<strong>単位は同じ</strong>だが、標準偏差は
+最小と最大で約 2 倍以上の差がある。「単位が同じだから標準化は不要では
+ないか」という考え方が<strong>なぜ誤りか</strong>、k-means
+が用いるユークリッド距離 との関係から説明せよ。</p></li>
+<li><p>n=2 から n=10 まで
+<code>KMeans(n_clusters=n, n_init=10, random_state=0)</code>
+で繰り返しクラスタリングし、各 n の <strong>inertia</strong> と
+<strong>silhouette score</strong>
+を計算してそれぞれ折れ線グラフで可視化せよ。</p></li>
+<li><p>上の 2 つのグラフから、採用する n を 1
+つ選べ。<strong>ただし、教科書 6 章
+本文のデータでも本問のデータでも、エルボーは明確には現れない</strong>ことが
+知られている。</p>
+<ul>
+<li>エルボーが見えにくい理由を、「クラスタの分布が連続的である場合の
+inertia の減り方」という観点から説明せよ。</li>
+<li>今回のデータで silhouette score が支持する n と、解釈可能性の観点を
+加味して採用する n を決め、選んだ根拠を述べよ。</li>
+</ul></li>
+</ol>
+<h3 id="f2.-クラスタごとの特徴と解釈可能性">F2.
+クラスタごとの特徴と解釈可能性</h3>
+<p>問 F1 で採用した n でクラスタリングした結果について、各クラスタの
+特徴を読み取る。</p>
+<ol type="1">
+<li><p>クラスタごとに 5 列それぞれの平均を求めよ（コード 6-4, 6-10, 6-17
+と
+同様）。さらに、各クラスタに所属する<strong>都道府県の一覧</strong>を出力せよ
+（コード 6-8, 6-15, 6-21 と同様の手順）。</p></li>
+<li><p>クラスタごとに、他のクラスタと比べて値が大きい / 小さい行動分類を
+それぞれ 1〜2 個挙げ、そのクラスタの特徴を 1 文で表現せよ
+（例：「学習・自己啓発が高く、ボランティアが低いクラスタ」）。</p></li>
+<li><p>採用した n で作ったクラスタの中に、地理的に近い都道府県が
+まとまっているもの、または何らかの社会的意味で説明しやすい
+まとまりがあるか確認せよ。あれば 1 つ取り上げて説明せよ。
+なければ「<strong>特に地理的・社会的に説明できるまとまりは見当たらない</strong>」
+と書き、それが採用した n の評価にどう影響するかを述べよ。</p></li>
+</ol>
+<hr />
+<h2 id="分析企画側の問題">分析・企画側の問題</h2>
+<p>ここでは教科書 6 章本文のデータ（合計特殊出生率 × 世帯年間収入、47
+都道府県） を使う。教科書では n=2, 3, 4
+を順に試して終わっているが、授業で扱った <strong>inertia
+とシルエットスコア</strong>を使って、教科書の選択を事後的に検証する。</p>
+<h3 id="補助コードと計算結果">補助コードと計算結果</h3>
+<p>教科書のコード 6-18 までを実行した直後に、以下のコードを追加して n=2
+から n=10 までの 2
+つの指標を計算する。<strong>このコードはそのまま使ってよい</strong>。</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> japanize_matplotlib</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ns <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>inertias, sils <span class="op">=</span> [], []</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> ns:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>n, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> km.fit_predict(birth_clust_sc)  <span class="co"># コード 6-3 で作った標準化済みデータ</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    inertias.append(km.inertia_)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    sils.append(silhouette_score(birth_clust_sc, labels))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(<span class="bu">list</span>(ns), inertias, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">&quot;n&quot;</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">&quot;inertia&quot;</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_title(<span class="st">&quot;エルボー法&quot;</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="bu">list</span>(ns), sils, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>, color<span class="op">=</span><span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">&quot;n&quot;</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">&quot;silhouette&quot;</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_title(<span class="st">&quot;シルエットスコア&quot;</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div>
+<p>実行すると、以下のような結果が得られる：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">inertia</th>
+<th style="text-align: right;">silhouette</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">57.35</td>
+<td style="text-align: right;">0.346</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">39.35</td>
+<td style="text-align: right;">0.363</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">27.06</td>
+<td style="text-align: right;"><strong>0.390</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">21.24</td>
+<td style="text-align: right;">0.357</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">17.92</td>
+<td style="text-align: right;">0.324</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14.88</td>
+<td style="text-align: right;">0.357</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">12.65</td>
+<td style="text-align: right;">0.320</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.43</td>
+<td style="text-align: right;">0.360</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">8.63</td>
+<td style="text-align: right;">0.344</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g1.-教科書の選択を事後的に検証する">G1.
+教科書の選択を事後的に検証する</h3>
+<p>教科書はクラスタ数を n=2 → n=3 → n=4 と試して終わっている。
+これが妥当な止め方だったかを、上の指標を使って評価する。
+（この問題では、文章で答えればよく、追加のコードを書く必要はない。）</p>
+<ol type="1">
+<li><p>シルエットスコアは n=2〜10 のうち、どの n
+で最大か。その値はいくつか。 教科書が試した n=2, 3, 4
+の範囲は、この客観指標から見て<strong>適切な範囲
+だった</strong>と言えるか、述べよ。</p></li>
+<li><p>inertia の表を見ると、明確な「肘」が見当たらない。 それでも n=4
+と n=5 の間に「<strong>緩い肘</strong>」があると主張するとしたら、
+どの数値の変化を根拠にできるか。具体的に <strong>n=3→4 の減り方と n=4→5
+の 減り方を比較</strong>して、自分の言葉で説明せよ。</p></li>
+<li><p>仮にあなたが分析担当者で、上司から「都道府県を意味のあるグループに
+分けて報告してほしい」と頼まれたとする。上の 2 指標と、教科書 6-12, 6-19
+の散布図（n=3 と n=4 の場合）の見え方を踏まえて、<strong>採用する n は 3
+か 4 か</strong>を判断し、上司に説明する 3〜5 文を書け。
+「シルエットが大きいから」だけで終わらせず、報告先が
+<em>使える分け方</em>になっているかという観点を含めること。</p></li>
+</ol>
+<h3 id="g2.-シルエットがぱっとしないことを依頼者にどう説明するか">G2.
+シルエットが「ぱっとしない」ことを依頼者にどう説明するか</h3>
+<p>教科書本文のデータでシルエットスコアの最大値は約 0.39 にとどまる。
+これは授業のデモ（4 クラスタ・各 5 点で 0.68
+程度）と比べて低い値である。</p>
+<ol type="1">
+<li><p>シルエットスコアが 0.39 と 0.68
+ではクラスタの「分かれ具合」がどう 違うか、授業の説明（1
+に近いほど自分のクラスタに馴染んでいる、0 に
+近いほど境界上）を踏まえて、Python を知らない人にも分かるように 2〜3
+文で書け。</p></li>
+<li><p>分析を依頼した相手から「<strong>で、結局この 47 都道府県は 4
+つに分かれて
+いると言っていいんですか？</strong>」と聞かれた場面を想定する。
+この問いに「はい / いいえ」だけで答えず、シルエットの値（約 0.39）が
+意味することを踏まえて、誠実な回答を 3〜5 文で書け。
+「言い切れること」と「言い切れないこと」の両方を含めること。</p></li>
+<li><p>上の回答に続けて、依頼者から「<strong>じゃあ追加でどんな情報があれば、
+もっとはっきり分けられるんですか？</strong>」と聞かれたら、どう答えるか。
+現在のデータ（合計特殊出生率と世帯年間収入の 2
+変数）の<strong>限界</strong>を
+ふまえて、別の変数の追加や別の手法の検討を含めて、2〜3 個の提案を
+箇条書きで示せ。</p></li>
+</ol>
+<hr />
+<h2 id="注意事項">注意事項</h2>
+<ul>
+<li>本問では <code>KMeans</code> の <code>n_init=10</code>,
+<code>random_state=0</code> を共通の設定とする （教科書 6
+章と同じ）。初期値依存をなくして再現性を確保するため。</li>
+<li>データの読み込みでは、SSDSE-D の CSV
+の文字コードに注意せよ（Shift_JIS / CP932）。</li>
+<li>解答には Python
+コード、出力結果（数値・グラフ）、文章での説明を含めること。 AI
+で生成したコードをそのまま貼り付けるのではなく、自分でコードを読み、
+出力を解釈してから文章を書くこと。</li>
+</ul>
+</body>
+</html>
