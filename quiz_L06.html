@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8章確認テスト</title>
+<style>
+  :root {
+    --primary:#1a56a0; --accent:#e8a020; --light:#f5f7fa;
+    --border:#dde3ea; --text:#1e2733; --muted:#5a6472;
+    --green:#1d8a4f; --red:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif;color:var(--text);background:var(--light);font-size:16px;line-height:1.7;padding:24px 16px 48px;}
+  code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:14px;font-family:'Courier New',monospace;}
+  pre{background:#eef2f8;border-radius:6px;padding:10px 14px;font-size:13px;font-family:'Courier New',monospace;margin-bottom:12px;white-space:pre-wrap;}
+  h1{font-size:20px;color:var(--primary);font-weight:800;margin-bottom:4px;}
+  .subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .notice{font-size:12px;color:#7a5200;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:8px 12px;margin-bottom:24px;max-width:720px;}
+  .section{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:24px;overflow:hidden;max-width:720px;margin-left:auto;margin-right:auto;}
+  .sec-header{background:var(--primary);color:#fff;padding:12px 20px;font-weight:700;font-size:15px;}
+  .sec-desc{background:#e8f0fb;border-bottom:1px solid var(--border);padding:16px 20px;font-size:14px;}
+  .q-block{padding:20px;border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.6;}
+  .input-row{display:flex;gap:8px;margin-bottom:8px;}
+  input[type=text],textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  input.correct{border-color:var(--green)!important;background:#f0faf5;}
+  input.wrong{border-color:var(--red)!important;background:#fdf0f0;}
+  textarea{resize:vertical;min-height:72px;}
+  .choices{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .choice{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;transition:background .15s;}
+  .choice:hover{background:var(--light);}
+  .choice input[type=radio]{margin-top:3px;flex-shrink:0;}
+  .choice.correct-choice{border-color:var(--green)!important;background:#f0faf5!important;}
+  .choice.wrong-choice{border-color:var(--red)!important;background:#fdf0f0!important;}
+  .btn{padding:8px 20px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s;}
+  .btn-submit{background:var(--primary);color:#fff;}
+  .btn-submit:hover{background:#154a8a;}
+  .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
+  .btn-answer:hover{background:#e8f0fb;}
+  .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
+  .feedback.wrong{background:#fdf0f0;border:1.5px solid #f0b0a8;color:#8b1a10;}
+  .feedback.partial{background:#fff8e1;border:1.5px solid #f5d78e;color:#7a5200;}
+  .feedback .label{font-weight:800;margin-bottom:2px;}
+  .answer-box{background:#f0faf5;border:1.5px solid #a8dfc0;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .answer-box .label{font-weight:700;color:var(--green);margin-bottom:2px;}
+  .score-bar{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:24px 28px;max-width:720px;margin:0 auto 24px;display:none;}
+  .score-bar h2{font-size:18px;color:var(--primary);margin-bottom:12px;}
+  .score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1;}
+  .score-msg{font-size:15px;color:var(--muted);margin-top:6px;}
+  .progress-bg{background:var(--border);border-radius:4px;height:8px;margin-top:12px;}
+  .progress-fill{height:8px;border-radius:4px;background:var(--primary);transition:width .6s;}
+  .btn-retry{background:var(--primary);color:#fff;margin-top:16px;width:100%;padding:12px;font-size:16px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+  .btn-retry:hover{background:#154a8a;}
+  .calc-wrap{max-width:720px;margin:0 auto 24px;text-align:center;}
+  .locked-msg{font-size:13px;color:#b56000;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:6px 12px;margin-top:8px;display:none;}
+</style>
+</head>
+<body>
+
+<div style="max-width:720px;margin:0 auto 16px">
+  <h1>8章 確認テスト</h1>
+  <div class="subtitle">プログラミング演習1(Python) ／ 全14問・各1点（記述問題は簡易採点）</div>
+  <div class="notice">⚠️ 正誤判定は簡易な自動処理で行っているため、実際の正解・不正解と異なる場合があります。判定結果はあくまで参考としてご利用ください。</div>
+</div>
+
+<div class="score-bar" id="score-bar">
+  <h2>結果</h2>
+  <div class="score-big" id="score-val">-</div>
+  <div class="score-msg" id="score-msg"></div>
+  <div class="progress-bg"><div class="progress-fill" id="score-fill" style="width:0%"></div></div>
+  <button class="btn-retry" onclick="location.reload()">もう一度挑戦する</button>
+</div>
+
+<!-- ===== Section A ===== -->
+<div class="section">
+  <div class="sec-header">セクション A：基本用語・概念</div>
+  <div class="sec-desc"><p>ランダムフォレストに関する基本的な用語や概念を確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["特徴量","とくちょうりょう"]]' data-example="特徴量">
+    <div class="q-label">問A-1（短答）</div>
+    <div class="q-text">予測の手がかりとなるデータの各列のこと、または目的変数（予測したい値）以外のすべての列のことを何と呼びますか？　教科書のキーワードで答えなさい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["対応","紐付","セット","組","一致","ずれ","順番","バラバラ","そろ"]]' data-example="X2（特徴量）と y（目的変数）の行の対応関係を保ったまま分割するため。X2 だけを分割してしまうと、特徴量と正解ラベルの順番がずれてしまう。">
+    <div class="q-label">問A-2（記述）</div>
+    <div class="q-text">コード 8-4 では <code>train_test_split</code> に <code>X2</code> と <code>y</code> の両方を渡しています。<pre>sklearn.model_selection.train_test_split(X2, y, random_state=0)</pre><code>X2</code> だけでなく <code>y</code> も一緒に渡す必要があるのはなぜですか？</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="一度選ばれたデータも再び選ばれる可能性がある抽出方法。これによりランダムフォレストは毎回異なるデータで多様な決定木を作ります。">
+    <div class="q-label">問A-3（選択）</div>
+    <div class="q-text">ランダムフォレストの「手順のイメージ」として登場する「復元抽出」の説明として<strong>正しいもの</strong>はどれですか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="A3"> データを重複なく分割して、それぞれで学習する</label>
+      <label class="choice"><input type="radio" name="A3"> 一度選ばれたデータも再び選ばれる可能性がある抽出方法</label>
+      <label class="choice"><input type="radio" name="A3"> 欠損値を除いたデータだけを使う抽出方法</label>
+      <label class="choice"><input type="radio" name="A3"> 正解率が高いデータから優先的に学習する方法</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section B ===== -->
+<div class="section">
+  <div class="sec-header">セクション B：出力を読む</div>
+  <div class="sec-desc"><p>コードを実行したときの出力の意味を理解しているか確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["変数","特徴量","とくちょうりょう","列","カラム"]]' data-example="変数（特徴量）の数。各列が1つの変数に対応している。">
+    <div class="q-label">問B-1（短答）</div>
+    <div class="q-text">コード 8-2 で <code>X.shape</code> を実行すると <code>(行数, 列数)</code> の形で出力されます。このとき「列数」は何を表していますか？</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='[["欠損","けっそん","missing","null","空"]]' data-example="欠損値が1つもない（データに欠けている値がない）ことを意味する。">
+    <div class="q-label">問B-2（短答）</div>
+    <div class="q-text">コード 8-3 では次のコードを実行します。<pre>X.isnull().sum()</pre>すべての列で出力が <code>0</code> だったとき、それは何を意味しますか？</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="学習用データだけに過剰に合わせてしまうことを過学習（overfitting）といいます。学習データの正解率 > 評価用データの正解率という差が大きいほど過学習が疑われます。">
+    <div class="q-label">問B-3（選択）</div>
+    <div class="q-text">コード 8-5・8-6 を実行すると、評価用データの正解率よりも学習用データの正解率の方が高くなりました。このとき、モデルはどのような状態だと考えられますか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="B3"> 汎化性能が高く、未知のデータにも対応できる状態</label>
+      <label class="choice"><input type="radio" name="B3"> 過学習が起きており、学習データに過剰に適合している状態</label>
+      <label class="choice"><input type="radio" name="B3"> データが少なすぎて学習が不十分な状態</label>
+      <label class="choice"><input type="radio" name="B3"> 評価用データに誤りが含まれている状態</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section C ===== -->
+<div class="section">
+  <div class="sec-header">セクション C：コードを読む</div>
+  <div class="sec-desc"><p>各コードが何をしているかを正確に理解しているか確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["学習","訓練","train"],["評価","テスト","test","分割","わ"]]' data-example="データを学習用と評価用（テスト用）に分割するために使う。">
+    <div class="q-label">問C-1（短答）</div>
+    <div class="q-text">コード 8-4 の <code>train_test_split</code> は何のために使いますか？</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["購入"],["2","二","ふた","種類","値","0","1","する","しない"]]' data-example="目的変数は「購入」。「購入する／しない」の2種類の値（0 と 1 など）をとる。このように有限のクラスに分類するタスクを「分類」という。">
+    <div class="q-label">問C-2（記述）</div>
+    <div class="q-text">コード 8-4 では <code>y = X["購入"]</code> として目的変数を取り出しています。このモデルが予測しようとしている「目的変数」は何ですか？また、それは何種類の値をとりますか？</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["学習","訓練"],["分類"]]' data-example="学習用データを使って、ランダムフォレストのモデルに「分類」のルールを学習させている。">
+    <div class="q-label">問C-3（記述）</div>
+    <div class="q-text">コード 8-4 の <code>model_rf.fit(X_train, y_train)</code> は何をしていますか？「学習」と「分類」という言葉を使って説明しなさい。</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["辞書","dict"],["列名","キー","key","名前"]]' data-example="辞書（dict）型。キーが列名、値が各列のデータになるため、列名とデータをセットで指定できる。">
+    <div class="q-label">問C-4（記述）</div>
+    <div class="q-text">コード 8-7 では次のように DataFrame を作っています。<pre>test_results = pd.DataFrame({
+    "y_test": y_test,
+    "y予想": y_test_pred
+})</pre><code>pd.DataFrame()</code> に渡している引数はどのような型ですか？また、なぜその型を使っているのか説明しなさい。</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section D ===== -->
+<div class="section">
+  <div class="sec-header">セクション D：特徴量重要性・予測結果</div>
+  <div class="sec-desc"><p>予測結果の確認と特徴量の重要性に関するコードを理解しているか確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["特徴量","変数","とくちょうりょう"],["重要","寄与","影響","貢献"]]' data-example="各特徴量（変数）が予測にどれだけ寄与（貢献）しているかを表す値。">
+    <div class="q-label">問D-1（短答）</div>
+    <div class="q-text">コード 8-9・8-10 で使われる <code>model_rf.feature_importances_</code> は何を表していますか？</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["正解率","スコア","score","精度","割合","何%","何パーセント"],["予測値","予測結果","クラス","ラベル","predict","それぞれ","各"]]' data-example="score() は予測の正解率（0〜1 の数値）を返す。predict() は各データに対する予測値（購入するかどうかのクラスラベル）をそれぞれ返す。">
+    <div class="q-label">問D-2（記述）</div>
+    <div class="q-text">コード 8-5 の <code>model_rf.score(X_test, y_test)</code> と、コード 8-7 の <code>model_rf.predict(X_test)</code> のちがいを説明しなさい。</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='[["寄与","重要","特徴量","変数"],["降順","大きい順","高い順","並べ替","ソート","sort"]]' data-example="寄与の値が大きい順（降順）に並べ替えている。ascending=False が降順を意味する。">
+    <div class="q-label">問D-3（短答）</div>
+    <div class="q-text">コード 8-10 の次のコードは何をしていますか？<pre>rf_imp = rf_imp.sort_values(by="寄与", ascending=False)</pre></div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section E ===== -->
+<div class="section">
+  <div class="sec-header">セクション E：考察</div>
+  <div class="sec-desc"><p>内容を理解した上で、自分の言葉で説明できるか確認します。</p></div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["複数","たくさん","多く","多数"],["多数決","平均","集め","アンサンブル","組み合わ"]]' data-example="複数の決定木をそれぞれ異なるデータで学習させ、予測を多数決（または平均）で決めるため、1本の木が学習データに過剰適合しても全体の結果に影響しにくい。">
+    <div class="q-label">問E-1（記述）</div>
+    <div class="q-text">ランダムフォレストは1本の決定木と比べて過学習しにくいといわれています。その理由を、「複数」「多数決」という言葉を参考にして説明しなさい。</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <button class="btn btn-submit" style="padding:12px 40px;font-size:17px" onclick="calcTotal()">採点する</button>
+</div>
+
+<script>
+const scores = {};
+let qIdx = 0;
+
+// ★ 解禁日の設定はここだけ変更してください
+const UNLOCK_DATE = '2026-06-02';
+
+function isUnlocked() {
+  return new Date() >= new Date(UNLOCK_DATE + 'T00:00:00');
+}
+
+function showAnswer(btn) {
+  const block = btn.closest('.q-block');
+  const box = block.querySelector('.answer-box');
+  const text = block.querySelector('.answer-text');
+  if (isUnlocked()) {
+    text.textContent = block.dataset.example;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+    const locked = block.querySelector('.locked-msg');
+    if (locked) locked.style.display = 'none';
+  } else {
+    const d = new Date(UNLOCK_DATE + 'T00:00:00');
+    let locked = block.querySelector('.locked-msg');
+    if (!locked) {
+      locked = document.createElement('div');
+      locked.className = 'locked-msg';
+      btn.after(locked);
+    }
+    locked.textContent = `正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`;
+    locked.style.display = 'block';
+  }
+}
+
+function matchPatterns(ans, patterns) {
+  return patterns.every(group => {
+    if (Array.isArray(group)) return group.some(p => ans.includes(p));
+    return ans.includes(group);
+  });
+}
+
+function submitShort(btn) {
+  const block = btn.closest('.q-block');
+  const input = block.querySelector('input[type=text]');
+  const ans = input.value.trim();
+  if (!ans) return;
+  const ok = matchPatterns(ans, JSON.parse(block.dataset.patterns));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  input.className = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function submitEssay(btn) {
+  const block = btn.closest('.q-block');
+  const ta = block.querySelector('textarea');
+  const ans = ta.value.trim();
+  if (!ans) return;
+  const ok = matchPatterns(ans, JSON.parse(block.dataset.patterns));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  ta.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'partial');
+  fb.innerHTML = ok
+    ? '<div class="label">✅ キーワードが含まれています（1点）</div>'
+    : '<div class="label">📝 回答を記録しました。授業で確認してください。</div>';
+}
+
+function submitMulti(btn) {
+  const block = btn.closest('.q-block');
+  const correctIdx = parseInt(block.dataset.correctIdx);
+  const choices = block.querySelectorAll('.choice');
+  const selected = block.querySelector('input[type=radio]:checked');
+  if (!selected) return;
+  const selIdx = [...choices].indexOf(selected.closest('.choice'));
+  const ok = selIdx === correctIdx;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  choices.forEach((c, i) => {
+    c.querySelector('input').disabled = true;
+    if (i === correctIdx) c.classList.add('correct-choice');
+    else if (i === selIdx && !ok) c.classList.add('wrong-choice');
+  });
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function calcTotal() {
+  const total = Object.values(scores).reduce((a, b) => a + b, 0);
+  const max = 14;
+  const pct = Math.round((total / max) * 100);
+  const msg = pct === 100 ? '🎉 満点です！' : pct >= 70 ? '👍 よくできました！' : '📚 復習してみましょう。';
+  const bar = document.getElementById('score-bar');
+  bar.style.display = 'block';
+  document.getElementById('score-val').textContent = total + ' / ' + max;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-fill').style.width = pct + '%';
+  bar.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body></html>
