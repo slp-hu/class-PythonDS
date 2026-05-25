@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>第7章 追加問題</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">第7章 追加問題</h1>
+</header>
+<h1 id="第7章-追加問題">第7章 追加問題</h1>
+<p>教科書『文系のためのPythonデータ分析』第7章（決定木）と、章末問題（<code>chapter07_exercise.ipynb</code>、47
+都道府県データ
+<code>data/chapter07_exercise.xlsx</code>）を踏まえた追加問題です。</p>
+<p>問題は 2 つの観点で出題されています：</p>
+<ul>
+<li><strong>F 系</strong>（開発側）：Python
+経験者向け。コードを動かしたうえで、設計判断や挙動の理由を
+<strong>説明・比較</strong> することを求めます。</li>
+<li><strong>G 系</strong>（分析・企画側）：データ分析の結果を
+<strong>言語化・判断</strong>
+することを求めます。コードを書く必要はありません。</li>
+</ul>
+<p>各問は AI
+にコードを書かせるだけでは答えられない設計になっています。<strong>自分の言葉で説明する</strong>ことが必須です。</p>
+<hr />
+<h2 id="f1.-テスト-2-件葉-4-つの設定で何が見えているか">F1. テスト 2
+件・葉 4 つの設定で何が見えているか</h2>
+<p>章末問題（<code>chapter07_exercise.ipynb</code>）では、47
+都道府県のデータを <code>test_size=0.04</code>
+で分割し、<code>DecisionTreeClassifier(max_depth=2, random_state=0)</code>
+で「地方」（0:北海道〜7:九州、計 8
+クラス）を予測した。結果は次の通りだった：</p>
+<pre><code>正解率（テスト） 50.0 %
+正解率（訓練）   57.77777777777777 %</code></pre>
+<p>教科書本文（コード 7-9〜7-11）では、250 件のデータ・3
+クラス分類で正解率約 98.41%
+が得られていた。章末問題では値も挙動も大きく異なる。</p>
+<ol type="1">
+<li>章末問題のコードを実行し、テストデータ（2 件）の
+<code>都道府県</code>
+列の値と、その正解ラベル（地方）、<code>model.predict(X_test)</code>
+で得られる予測値、<code>model.score(X_test, y_test)</code> の値の
+<strong>4 つ</strong> を示せ。</li>
+<li><code>max_depth=2</code>
+で学習した決定木は、<strong>葉の数が最大でいくつになるか</strong>
+を答えよ。さらに、本問の正解ラベルは 0〜7 の 8 クラスあるが、この 8
+クラスのうち
+<strong>実際にこの決定木が予測値として出力しうるクラスは最大何種類か</strong>
+を答えよ。<code>model.tree_.n_leaves</code> や <code>plot_tree</code>
+の出力を根拠として示すこと。</li>
+<li>小問 2 の結果を踏まえると、「8
+クラス中の一部のクラスは、テストデータがどれであっても
+<strong>絶対に正解にならない</strong>」という現象が起きうる。これは決定木の何という特性に起因するかを述べたうえで、本問のような
+<strong>クラス数が多くデータが少ない設定</strong> で
+<code>max_depth</code> を浅く取ることに、どんなリスクと利点があるかを
+3〜5 文で説明せよ。</li>
+</ol>
+<hr />
+<h2 id="f2.-max_depth-を変えると何が起きるか-章末問題版">F2. max_depth
+を変えると何が起きるか — 章末問題版</h2>
+<p>教科書本文では <code>max_depth=2</code> で正解率約 98.41%
+だった。授業の確認テストでは、これを <code>max_depth=4</code>
+に変更すると正解率が <strong>下がる</strong>（約
+96.83%）ことを観察した。深ければ良いとは限らない、というのが要点だった。</p>
+<p>章末問題のデータ（47 都道府県、地方を 8
+クラスで予測、<code>test_size=0.04</code>,
+<code>random_state=0</code>）で、同じ実験をする。</p>
+<ol type="1">
+<li><code>max_depth</code> を 1, 2, 3, 4, 5, 10, None（無制限）の 7
+通りに変えて、訓練正解率とテスト正解率の表を作成せよ。それ以外のパラメータと
+<code>random_state=0</code> は固定すること。</li>
+<li>教科書本文（250 件・3 クラス）では <code>max_depth</code> を 2 → 4
+に上げると
+<strong>テスト正解率が下がった</strong>（過学習）。章末問題（47 件・8
+クラス）では、同じ操作でテスト正解率はどう動いたか。<strong>訓練正解率の動き</strong>
+とあわせて報告し、教科書本文と違う動きが見えた場合はその違いを述べよ。</li>
+<li>章末問題ではテストデータが <strong>2 件しかない</strong>
+ため、テスト正解率の取りうる値は 0%, 50%, 100% の <strong>3
+通りしかない</strong>。この事実を踏まえて、「<code>max_depth</code>
+を変えてテスト正解率が変わった／変わらなかった」という観察から、過学習の有無を判断できるかどうかを論じよ。判断できないと考える場合は、どんな手続きを追加すれば判断できるかも合わせて述べること。</li>
+</ol>
+<hr />
+<h2 id="g1.-正解率-50を依頼者にどう説明するか">G1. 「正解率
+50%」を依頼者にどう説明するか</h2>
+<p>ある自治体の担当者から「47
+都道府県の人口統計などから、その県がどの地方に属するかを機械学習で予測してほしい」という依頼を受けたとする。あなたは章末問題と同じ設定（<code>test_size=0.04</code>,
+<code>max_depth=2</code>,
+<code>random_state=0</code>）で分析し、次の結果を得た：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>指標</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>訓練データ件数</td>
+<td>45</td>
+</tr>
+<tr>
+<td>テストデータ件数</td>
+<td>2</td>
+</tr>
+<tr>
+<td>テストデータの正解率</td>
+<td>50.0 %</td>
+</tr>
+<tr>
+<td>訓練データの正解率</td>
+<td>57.78 %</td>
+</tr>
+<tr>
+<td>予測対象クラス数</td>
+<td>8（北海道・東北・関東・中部・近畿・中国・四国・九州）</td>
+</tr>
+</tbody>
+</table>
+<p>依頼者は Python を知らない。</p>
+<ol type="1">
+<li>依頼者から「テストの正解率 50%
+って、コインを投げて当てるのと同じくらいですよね？」と質問された。この理解は
+<strong>どこが妥当で、どこが妥当でないか</strong> を、2〜3
+文で説明せよ。「テストデータが 2
+件しかない」という事実を必ず含めること。</li>
+<li>依頼者から「訓練の正解率 57.78%
+も微妙な値ですよね。やはりこのデータでは地方を予測するのは無理ということですか？」と質問された。「無理」と断定する前に、<strong>この設定（このデータ・このパラメータ）でうまくいかなかっただけ</strong>
+という観点から、依頼者に対する誠実な回答を 3〜5 文で書け。</li>
+<li>「では、もっと正確にするには何をすればよいですか？」と質問されたとして、追加で必要なもの・変更すべきことを
+<strong>3 つの箇条書き</strong>
+で答えよ。各項目は「何を」「なぜ」が分かるように 1〜2
+文で書くこと。「<code>max_depth</code>
+を増やす」のように一語で済ませないこと。</li>
+</ol>
+<hr />
+<h2 id="g2.-上司への報告-予測されない地方をどう伝えるか">G2.
+上司への報告 — 「予測されない地方」をどう伝えるか</h2>
+<p>章末問題の決定木モデルが訓練データ（45
+都道府県）に対してどう予測しているかを調べたところ、次のような状況だった（参考として読んでよい）：</p>
+<ul>
+<li>木の深さは 2 で、葉は 4 つしかない。</li>
+<li>8 つの地方のうち、<strong>この決定木が予測値として出力しうるのは最大
+4 種類</strong> だけである。残り 4
+種類以上の地方は、入力が何であっても予測結果として出てこない。</li>
+<li>訓練データでの正解率は
+57.78%。当たっているのは「予測されうる地方」に属する都道府県の一部のみ。</li>
+</ul>
+<p>上司に「都道府県の人口統計などから地方を予測する分析をしたい」と相談されてこの結果を持ち帰った場面を想定する。</p>
+<ol type="1">
+<li>この結果をそのまま「正解率 57.78%
+でした」と報告するのは、上司にとって誤解を招きうる。<strong>何が誤解されうるか</strong>
+を、上司が分析に期待していそうな内容を想像して 2〜3 文で述べよ。</li>
+<li>上司への 5〜7 文の報告メモを書け。次の 3 点を必ず含めること：
+<ul>
+<li>数値（訓練正解率・テスト正解率・予測対象クラス数・テスト件数）</li>
+<li>「この分析から <strong>言える</strong>
+こと」と「<strong>まだ言えない</strong> こと」の区別</li>
+<li>次に何をすればよいかの提案（複数あってよい）</li>
+</ul></li>
+<li>上司から「テストデータが 2 件しかないのは少なすぎでは？
+なぜそうしたの？」と聞かれた。章末問題で <code>test_size=0.04</code>
+という設定が指定されている背景を踏まえて、「この設定での 2 件は
+<strong>適切な評価のため</strong> というより
+<strong>教材としての設定</strong> である」という趣旨で 2〜3
+文で答えよ。実務でこのデータを評価するならどう分割するか、案を 1
+つ示すこと。</li>
+</ol>
+</body>
+</html>
