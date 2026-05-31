@@ -80,7 +80,7 @@
   <div class="sec-header">セクション A：基本用語・概念</div>
   <div class="sec-desc"><p>ランダムフォレストに関する基本的な用語や概念を確認します。</p></div>
 
-  <div class="q-block" data-type="short" data-patterns='[["特徴量","とくちょうりょう"]]' data-example="特徴量">
+  <div class="q-block" data-type="short" data-patterns='[["特徴量","とくちょうりょう","説明変数","せつめいへんすう"]]' data-example="特徴量（説明変数でも可）。予測に使う入力の各列のこと。">
     <div class="q-label">問A-1（短答）</div>
     <div class="q-text">予測の手がかりとなるデータの各列のこと、または目的変数（予測したい値）以外のすべての列のことを何と呼びますか？　教科書のキーワードで答えなさい。</div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -168,7 +168,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="essay" data-patterns='[["購入"],["2","二","ふた","種類","値","0","1","する","しない"]]' data-example="目的変数は「購入」。「購入する／しない」の2種類の値（0 と 1 など）をとる。このように有限のクラスに分類するタスクを「分類」という。">
+  <div class="q-block" data-type="essay" data-patterns='[["購入"],["4種類","４種類","四種類","4 種類","4個","４個","四個","0〜3","0~3","0から3","0、1、2、3"]]' data-example="目的変数は「購入」。購入は4種類の値（例: 0〜3）をとる。このように複数のクラスに分類するタスクを「分類（多クラス分類）」という。">
     <div class="q-label">問C-2（記述）</div>
     <div class="q-text">コード 8-4 では <code>y = X["購入"]</code> として目的変数を取り出しています。このモデルが予測しようとしている「目的変数」は何ですか？また、それは何種類の値をとりますか？</div>
     <textarea placeholder="回答を入力"></textarea>
@@ -207,7 +207,7 @@
   <div class="sec-header">セクション D：特徴量重要性・予測結果</div>
   <div class="sec-desc"><p>予測結果の確認と特徴量の重要性に関するコードを理解しているか確認します。</p></div>
 
-  <div class="q-block" data-type="short" data-patterns='[["特徴量","変数","とくちょうりょう"],["重要","寄与","影響","貢献"]]' data-example="各特徴量（変数）が予測にどれだけ寄与（貢献）しているかを表す値。">
+  <div class="q-block" data-type="short" data-patterns='[["特徴量","変数","とくちょうりょう","項目"],["重要","寄与","影響","貢献","重視"]]' data-example="各特徴量（変数）が予測にどれだけ寄与（貢献・重要）しているかを表す値。">
     <div class="q-label">問D-1（短答）</div>
     <div class="q-text">コード 8-9・8-10 で使われる <code>model_rf.feature_importances_</code> は何を表していますか？</div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
@@ -226,7 +226,7 @@
     <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
   </div>
 
-  <div class="q-block" data-type="short" data-patterns='[["寄与","重要","特徴量","変数"],["降順","大きい順","高い順","並べ替","ソート","sort"]]' data-example="寄与の値が大きい順（降順）に並べ替えている。ascending=False が降順を意味する。">
+  <div class="q-block" data-type="short" data-patterns='[["寄与","重要","特徴量","変数"],["降順","大きい順","大きな順","高い順","並べ替","並び替","並べ","ソート","sort","順に","順番"]]' data-example="寄与の値が大きい順（降順）に並べ替えている。ascending=False が降順を意味する。">
     <div class="q-label">問D-3（短答）</div>
     <div class="q-text">コード 8-10 の次のコードは何をしていますか？<pre>rf_imp = rf_imp.sort_values(by="寄与", ascending=False)</pre></div>
     <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
