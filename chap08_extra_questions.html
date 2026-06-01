@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>第8章 追加問題</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">第8章 追加問題</h1>
+</header>
+<h1 id="追加問題について">追加問題について</h1>
+<p>本章の追加問題は、章末問題（問1〜問3）で使った都道府県データ（<code>chapter08_exercise.xlsx</code>）ではなく、<strong>教科書本文のデータ
+<code>chapter08.xlsx</code></strong>
+を使う。これは「購入」（購入意欲のレベル 0・1・2・3
+の4クラス）を、7個の特徴量（年齢・閲覧時間・気温・収入・貯金・距離・体力）から予測するデータである。</p>
+<p>まず教科書コード 8-1〜8-8
+を実行して、データの読み込みと基本のランダム・フォレストが動く状態にしておくこと。</p>
+<hr />
+<h2 id="f1.-ランダムフォレストのテスト正解率を上げる">F1.
+ランダム・フォレストのテスト正解率を上げる</h2>
+<p>教科書コード 8-6
+では、次の設定でランダム・フォレストを学習している。</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model_rf <span class="op">=</span> RandomForestClassifier(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    max_depth<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>この設定（<code>n_estimators</code> は既定値の
+100）では、<strong>学習用 約88.2%・評価用 約85.2%</strong>
+という結果になる。この章の追加問題では、<strong>評価用（テスト）の正解率をできるだけ高くする</strong>ことを目指して、その過程で何が効いているのかを説明してもらう。</p>
+<ol type="1">
+<li><p>まずコード 8-6・8-7・8-8
+をそのまま実行し、評価用・学習用の正解率を記録せよ。次に、<code>RandomForestClassifier</code>
+の引数 <code>max_features</code> の既定値は <code>'sqrt'</code>
+である。今回の特徴量は7個だが、<code>max_features='sqrt'</code>
+のとき、<strong>1回の分岐で実際に候補となる特徴量は何個か</strong>を答えよ。そのうえで、授業スライド（ランダム・フォレストの仕組み）を踏まえ、<strong>なぜランダム・フォレストはわざわざ分岐ごとに一部の特徴量しか使わないのか</strong>を、「木をばらけさせる」「平均する」という観点から自分の言葉で説明せよ。</p></li>
+<li><p><code>max_depth=4</code>, <code>n_estimators=200</code>
+は固定したまま、<code>max_features</code> を <code>'sqrt'</code> →
+<code>0.5</code> → <code>0.7</code> →
+<code>None</code>（＝全特徴量を使う）と変えて、それぞれの評価用正解率を求めて表にせよ。観察された傾向を述べ、<strong>このデータではなぜ「分岐で使う特徴量を増やす」方向が有利になりやすいのか</strong>を、特徴量の個数（7個）と各特徴量の情報量という観点から考察せよ。</p></li>
+<li><p><code>max_depth</code>・<code>n_estimators</code>・<code>max_features</code>
+を自分で調整し、<strong>評価用正解率がコード 8-6
+のベースライン（約85.2%）を明確に上回る設定</strong>を見つけよ（目安：88%以上）。最終的に採用した設定と、そのときの学習用・評価用の正解率を示せ。</p></li>
+<li><p>評価用正解率を上げていくと、学習用正解率との差はどう動いたか。そのうえで次の2点を説明せよ。</p>
+<ul>
+<li>1回の
+<code>train_test_split</code>（<code>random_state=0</code>）での評価用正解率が高いことは、本当に「良いモデルができた」と言い切れるか。1つのテスト分割に合わせて調整を続けることの危うさは何か。</li>
+<li>改善が「たまたま」ではなく本物だと、より誠実に確かめるにはどうすればよいか。具体的な方法を1つ挙げ、その方法だと何が分かるのかを説明せよ。</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="g1.-どの要因が効いているかを読み依頼者に伝える">G1.
+「どの要因が効いているか」を読み、依頼者に伝える</h2>
+<p>教科書コード 8-11・8-12 では、ランダム・フォレストの
+<code>feature_importances_</code>（特徴量の寄与）を計算して棒グラフにした。あなたはこのモデル（購入意欲
+0〜3 を予測）の分析を、<strong>Python
+を知らないマーケティング担当者</strong>から依頼されたとする。</p>
+<p>下のコードはそのまま実行してよい。実行すると、寄与のランキングと、参考として「購入」と各変数の相関が表示される。</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.model_selection</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.read_excel(<span class="st">&quot;data/chapter08.xlsx&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[<span class="st">&quot;購入&quot;</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> X.drop(<span class="st">&quot;購入&quot;</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    sklearn.model_selection.train_test_split(X2, y, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>model_rf <span class="op">=</span> RandomForestClassifier(max_depth<span class="op">=</span><span class="dv">4</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>model_rf.fit(X_train, y_train)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 寄与のランキング</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>imp <span class="op">=</span> pd.DataFrame({<span class="st">&quot;変数&quot;</span>: X2.columns, <span class="st">&quot;寄与&quot;</span>: model_rf.feature_importances_})</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(imp.sort_values(<span class="st">&quot;寄与&quot;</span>, ascending<span class="op">=</span><span class="va">False</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 参考：購入と各変数の相関</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.corr()[<span class="st">&quot;購入&quot;</span>].drop(<span class="st">&quot;購入&quot;</span>).sort_values(ascending<span class="op">=</span><span class="va">False</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div>
+<p>実行すると、次の数値が得られる（小数第3位まで）。</p>
+<p><strong>特徴量の寄与（feature_importances_）</strong></p>
+<table>
+<thead>
+<tr>
+<th>変数</th>
+<th>寄与</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>閲覧時間</td>
+<td>0.312</td>
+</tr>
+<tr>
+<td>気温</td>
+<td>0.172</td>
+</tr>
+<tr>
+<td>年齢</td>
+<td>0.130</td>
+</tr>
+<tr>
+<td>収入</td>
+<td>0.127</td>
+</tr>
+<tr>
+<td>体力</td>
+<td>0.095</td>
+</tr>
+<tr>
+<td>距離</td>
+<td>0.086</td>
+</tr>
+<tr>
+<td>貯金</td>
+<td>0.077</td>
+</tr>
+</tbody>
+</table>
+<p><strong>「購入」と各変数の相関（参考）</strong></p>
+<table>
+<thead>
+<tr>
+<th>変数</th>
+<th>相関</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>体力</td>
+<td>+0.595</td>
+</tr>
+<tr>
+<td>貯金</td>
+<td>+0.569</td>
+</tr>
+<tr>
+<td>気温</td>
+<td>+0.081</td>
+</tr>
+<tr>
+<td>年齢</td>
+<td>−0.080</td>
+</tr>
+<tr>
+<td>収入</td>
+<td>−0.390</td>
+</tr>
+<tr>
+<td>距離</td>
+<td>−0.392</td>
+</tr>
+<tr>
+<td>閲覧時間</td>
+<td>−0.496</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li><p>寄与のランキングでは「閲覧時間」が 0.312
+で最も大きい。<code>feature_importances_</code>
+が何を測っている数字なのかを、<strong>Python
+を知らない担当者にも分かる言い方</strong>で説明せよ。あわせて、「閲覧時間の寄与が一番大きい」という事実は、「閲覧時間が長いほど購入意欲が高い／低い」のどちらを意味するのか、<strong>この寄与の数字だけから言えるかどうか</strong>を述べよ。</p></li>
+<li><p>寄与では「閲覧時間」が1位だが、相関の表を見ると、購入と最も強く（正の方向に）関係しているのは「体力」(+0.595)
+と「貯金」(+0.569)
+で、「閲覧時間」の相関はむしろ負(−0.496)である。担当者から「結局どっちが正しいの？」と聞かれた。<strong>寄与と相関が食い違うことがあるのはなぜか</strong>、それぞれの数字が何を捉えているのかを説明せよ。</p></li>
+<li><p>担当者は「じゃあ閲覧時間を増やせば購入が増えるんだね」と言っている。この分析から
+<strong>(a) 自信をもって言えること</strong> と <strong>(b)
+言えないこと</strong>（因果・効果の向き・「閲覧時間を増やせば購入が増える」と断定できるか）をそれぞれ挙げ、担当者に何をどう助言するかを
+2〜3 文で書け。</p></li>
+</ol>
+</body>
+</html>
