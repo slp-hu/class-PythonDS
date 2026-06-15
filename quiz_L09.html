@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10章確認テスト</title>
+<style>
+  :root {
+    --primary:#1a56a0; --accent:#e8a020; --light:#f5f7fa;
+    --border:#dde3ea; --text:#1e2733; --muted:#5a6472;
+    --green:#1d8a4f; --red:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif;color:var(--text);background:var(--light);font-size:16px;line-height:1.7;padding:24px 16px 48px;}
+  code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:14px;font-family:'Courier New',monospace;}
+  pre{background:#eef2f8;border-radius:6px;padding:10px 14px;font-size:13px;font-family:'Courier New',monospace;margin-bottom:12px;white-space:pre-wrap;}
+  h1{font-size:20px;color:var(--primary);font-weight:800;margin-bottom:4px;}
+  .subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .notice{font-size:12px;color:#7a5200;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:8px 12px;margin-bottom:24px;max-width:720px;}
+  .section{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:24px;overflow:hidden;max-width:720px;margin-left:auto;margin-right:auto;}
+  .sec-header{background:var(--primary);color:#fff;padding:12px 20px;font-weight:700;font-size:15px;}
+  .sec-desc{background:#e8f0fb;border-bottom:1px solid var(--border);padding:16px 20px;font-size:14px;}
+  .q-block{padding:20px;border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.6;}
+  .input-row{display:flex;gap:8px;margin-bottom:8px;}
+  input[type=text],textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  input.correct{border-color:var(--green)!important;background:#f0faf5;}
+  input.wrong{border-color:var(--red)!important;background:#fdf0f0;}
+  textarea{resize:vertical;min-height:72px;}
+  .choices{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .choice{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;transition:background .15s;}
+  .choice:hover{background:var(--light);}
+  .choice input[type=radio]{margin-top:3px;flex-shrink:0;}
+  .choice.correct-choice{border-color:var(--green)!important;background:#f0faf5!important;}
+  .choice.wrong-choice{border-color:var(--red)!important;background:#fdf0f0!important;}
+  .btn{padding:8px 20px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s;}
+  .btn-submit{background:var(--primary);color:#fff;}
+  .btn-submit:hover{background:#154a8a;}
+  .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
+  .btn-answer:hover{background:#e8f0fb;}
+  .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
+  .feedback.wrong{background:#fdf0f0;border:1.5px solid #f0b0a8;color:#8b1a10;}
+  .feedback.partial{background:#fff8e1;border:1.5px solid #f5d78e;color:#7a5200;}
+  .feedback .label{font-weight:800;margin-bottom:2px;}
+  .answer-box{background:#f0faf5;border:1.5px solid #a8dfc0;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .answer-box .label{font-weight:700;color:var(--green);margin-bottom:2px;}
+  .score-bar{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:24px 28px;max-width:720px;margin:0 auto 24px;display:none;}
+  .score-bar h2{font-size:18px;color:var(--primary);margin-bottom:12px;}
+  .score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1;}
+  .score-msg{font-size:15px;color:var(--muted);margin-top:6px;}
+  .progress-bg{background:var(--border);border-radius:4px;height:8px;margin-top:12px;}
+  .progress-fill{height:8px;border-radius:4px;background:var(--primary);transition:width .6s;}
+  .btn-retry{background:var(--primary);color:#fff;margin-top:16px;width:100%;padding:12px;font-size:16px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+  .btn-retry:hover{background:#154a8a;}
+  .calc-wrap{max-width:720px;margin:0 auto 24px;text-align:center;}
+  .locked-msg{font-size:13px;color:#b56000;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:6px 12px;margin-top:8px;display:none;}
+</style>
+</head>
+<body>
+
+<div style="max-width:720px;margin:0 auto 16px">
+  <h1>10章 確認テスト</h1>
+  <div class="subtitle">プログラミング演習1(Python) ／ 全14問・各1点（記述問題は簡易採点）</div>
+  <div class="notice">⚠️ 正誤判定は簡易な自動処理で行っているため、実際の正解・不正解と異なる場合があります。判定結果はあくまで参考としてご利用ください。</div>
+</div>
+
+<div class="score-bar" id="score-bar">
+  <h2>結果</h2>
+  <div class="score-big" id="score-val">-</div>
+  <div class="score-msg" id="score-msg"></div>
+  <div class="progress-bg"><div class="progress-fill" id="score-fill" style="width:0%"></div></div>
+  <button class="btn-retry" onclick="location.reload()">もう一度挑戦する</button>
+</div>
+
+<!-- ===== Section A ===== -->
+<div class="section">
+  <div class="sec-header">セクション A：因果推論の基本用語・考え方</div>
+  <div class="sec-desc"><p>因果推論の基本的な考え方や用語を確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["処置","介入","Treatment","treatment","トリートメント"]]' data-example="処置（Treatment）。因果推論では、効果を調べたい原因となる施策・介入のことを「処置(treatment)」と呼ぶ。このデータでは研修を受けたか(1)・受けないか(0)を表す Treatment 列がそれにあたる。">
+    <div class="q-label">問A-1（短答）</div>
+    <div class="q-text">因果推論では、効果を調べたい「原因」となる施策・介入のことを何と呼びますか？　このデータでは <code>Treatment</code> 列が表しているものです。（日本語・英語どちらでも可）</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="研修（処置）を受けていない Treatment=0 のグループを対照群（コントロール群、untreated）と呼ぶ。処置を受けた Treatment=1 のグループ（処置群、treated）と比べることで、研修の効果を調べる。">
+    <div class="q-label">問A-2（選択）</div>
+    <div class="q-text">このデータの <code>Treatment</code> 列は、1 が研修（処置）を受けた人、0 が受けていない人を表します。比較の基準となる「研修を受けていない（<code>Treatment=0</code>）人たちのグループ」を一般に何と呼びますか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="A2"> 処置群（treated）</label>
+      <label class="choice"><input type="radio" name="A2"> 対照群（コントロール群／untreated）</label>
+      <label class="choice"><input type="radio" name="A2"> 標本群</label>
+      <label class="choice"><input type="radio" name="A2"> 予測群</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="観察データでは「もともと前向きな人ほど研修を受けやすい」のように、処置を受けるかどうかと結果（幸福度）の両方に影響する要因があり、両群の性質が偏っている。だから単純比較では研修自体の効果と偏りの影響を区別できない。これが傾向スコアを使う動機。">
+    <div class="q-label">問A-3（選択）</div>
+    <div class="q-text">研修（処置）を受けた人と受けていない人の幸福度を<strong>そのまま比較</strong>しても、研修の本当の効果が分からないことがあります。その主な理由として最も適切なものはどれですか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="A3"> 研修を受けるかどうかと結果（幸福度）の両方に影響する別の要因があり、両群の性質が偏っているから</label>
+      <label class="choice"><input type="radio" name="A3"> 幸福度は数値なので平均を計算できないから</label>
+      <label class="choice"><input type="radio" name="A3"> 研修を受けた人の人数が必ず多くなるから</label>
+      <label class="choice"><input type="radio" name="A3"> Python では文字列の列を比較できないから</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section B ===== -->
+<div class="section">
+  <div class="sec-header">セクション B：出力を読む</div>
+  <div class="sec-desc"><p>コードの出力（要約統計量・傾向スコア・効果の値）を正しく読めるか確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["800"]]' data-example="800（人）。describe() の count 行が各列のデータ件数を表しており、すべて 800 になっている。">
+    <div class="q-label">問B-1（短答）</div>
+    <div class="q-text">コード10-2 の <code>df.describe()</code> を実行すると、各列の <code>count</code>（件数）はすべて同じ値になりました。このデータは何人分のデータですか？　数値で答えなさい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='[["傾向スコア","処置を受ける確率","研修を受ける確率","処置される確率","受ける確率","1になる確率","Treatmentが1"]]' data-example="傾向スコア。コード10-3 のロジスティック回帰が予測した「その人が処置(Treatment=1)を受ける確率」で、predict_proba の [:, 1]（クラス1の確率）を prop 列に入れている。">
+    <div class="q-label">問B-2（短答）</div>
+    <div class="q-text">コード10-3 を実行すると、新しく <code>prop</code> 列が追加されます（例：ID 0 の人は約 0.18）。この <code>prop</code> 列が表している数値は何ですか？</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="short" data-patterns='[["328"]]' data-example="328 人。df['Treatment'].value_counts() を実行すると、処置群(Treatment=1)が 328 人、対照群(Treatment=0)が 472 人とわかる（合計 800 人）。">
+    <div class="q-label">問B-3（短答）</div>
+    <div class="q-text">ノートブックで <code>df["Treatment"].value_counts()</code> を実行して確認しなさい。研修を受けた人（<code>Treatment=1</code>、処置群）は何人いますか？　数値で答えなさい。</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section C ===== -->
+<div class="section">
+  <div class="sec-header">セクション C：コードを読む</div>
+  <div class="sec-desc"><p>各コードが何をしているかを正確に理解しているか確認します。</p></div>
+
+  <div class="q-block" data-type="short" data-patterns='[["LogisticRegression","Logistic","logistic","ロジスティック"]]' data-example="LogisticRegression（ロジスティック回帰）。Treatment が 0/1 の二値なので分類モデルを使い、その「1（処置を受ける）になる確率」を傾向スコアとして利用する。">
+    <div class="q-label">問C-1（短答）</div>
+    <div class="q-text">コード10-3 では、傾向スコア（処置を受ける確率）を推定するために、<code>from sklearn.linear_model import ___</code> であるモデルをインポートして使っています。このモデルの名前は何ですか？</div>
+    <div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="1" data-example="predict_proba は各クラスの確率を [クラス0の確率, クラス1の確率] の順で返す。[:, 1] は2列目、つまり Treatment=1（処置を受ける）クラスの確率で、これが傾向スコアになる。">
+    <div class="q-label">問C-2（選択）</div>
+    <div class="q-text">コード10-3 では <code>prop_score = model.predict_proba(X)</code> の結果から <code>prop_score[:, 1]</code> を取り出して <code>prop</code> 列にしています。<code>[:, 1]</code> で取り出しているのは、何の確率ですか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="C2"> その人が処置を受けない（Treatment=0）確率</label>
+      <label class="choice"><input type="radio" name="C2"> その人が処置を受ける（Treatment=1）確率（＝傾向スコア）</label>
+      <label class="choice"><input type="radio" name="C2"> その人の予測が当たる確率</label>
+      <label class="choice"><input type="radio" name="C2"> その人の研修後の幸福度が上がる確率</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="0" data-example="傾向スコアは 0〜1 の小数なので、20 倍して astype(int) で小数を切り捨てると 0〜19 の整数になる。これにより傾向スコアが近い人を同じグループ(group)にまとめ、グループ内で処置群と対照群を比べられるようにしている（マッチングの準備）。">
+    <div class="q-label">問C-3（選択）</div>
+    <div class="q-text">コード10-5 の <code>df["group"] = (df.prop * 20).astype(int)</code> は何をしていますか？　最も適切なものを選びなさい。</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="C3"> 傾向スコア(0〜1)を20倍して整数に切り捨て、近いスコアの人を同じグループ(0〜19)にまとめている</label>
+      <label class="choice"><input type="radio" name="C3"> 傾向スコアを20で割って、その平均値を求めている</label>
+      <label class="choice"><input type="radio" name="C3"> prop 列を20個ぶんコピーして列を増やしている</label>
+      <label class="choice"><input type="radio" name="C3"> 傾向スコアの上位20人だけを選び出している</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="multi" data-correct-idx="2" data-example="2つのキー(group と Treatment)で groupby して HappyAfter の平均をとり、unstack(&quot;Treatment&quot;) で Treatment(0/1) を列に展開している。結果は、傾向スコアグループごとに「対照群の平均」と「処置群の平均」が左右に並ぶ表になる。グループ分けと処置/対照の区別の両方が効いている点がポイント。">
+    <div class="q-label">問C-4（選択）</div>
+    <div class="q-text">コード10-6 の <code>df.groupby(["group","Treatment"])["HappyAfter"].mean().unstack("Treatment")</code> が作る表として、最も適切なものはどれですか？</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="C4"> 傾向スコアグループは区別せず、処置群・対照群それぞれの HappyAfter 平均（全体で2つの値）を並べた表</label>
+      <label class="choice"><input type="radio" name="C4"> 処置群・対照群は区別せず、傾向スコアグループごとの HappyAfter 平均（各グループ1つの値）を並べた表</label>
+      <label class="choice"><input type="radio" name="C4"> 傾向スコアグループごとに、処置群(Treatment=1)・対照群(Treatment=0)それぞれの HappyAfter 平均を求め、Treatment を列に並べた表</label>
+      <label class="choice"><input type="radio" name="C4"> 各人について、その人の HappyAfter とグループ平均との差を並べた表</label>
+    </div>
+    <button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section D ===== -->
+<div class="section">
+  <div class="sec-header">セクション D：マッチングの目的・意味</div>
+  <div class="sec-desc"><p>マッチングの目的や図の意味を、自分の言葉で説明できるか確認します。</p></div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["処置","Treatment","両群","2つ","二つ","対照","受けた","受けてい"],["分布","重な","ばらつき","広がり","似","共通","比較","範囲","かぶ"]]' data-example="処置群と対照群で傾向スコアの分布が重なっている領域があるかを確認するために描く。重なり（共通する範囲）があって初めて、似た傾向スコアの人どうしを比較（マッチング）できる。">
+    <div class="q-label">問D-1（記述）</div>
+    <div class="q-text">コード10-4 では、傾向スコア(<code>prop</code>)を <code>Treatment</code> で色分けしたヒストグラムを描いています。このグラフは何を確認するために描くのですか？</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["偏り","背景","属性","性質","条件","年齢","勤続","元","特徴","違い","Age","EmpLength"],["揃え","そろえ","同じ","近い","公平","フェア","補正","取り除","比べ","条件を"]]' data-example="処置群と対照群では年齢・勤続年数・元々の幸福度などの背景が偏っている。傾向スコアが近い（＝処置の受けやすさが似た）人どうしを比べることで、これらの条件をそろえ、研修そのものの効果に近づけて測るため。">
+    <div class="q-label">問D-2（記述）</div>
+    <div class="q-text">研修を受けた人と受けていない人をそのまま比べるのではなく、わざわざ<strong>傾向スコアが近い人どうし</strong>をグループにして比べるのはなぜですか？</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<!-- ===== Section E ===== -->
+<div class="section">
+  <div class="sec-header">セクション E：結果を考察する</div>
+  <div class="sec-desc"><p>マッチングの結果を読み取り、効果を考察できるか確認します。</p></div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["処置群","対照群","片方","一方","どちらか","treated","untreated","NaN","欠損","相手"],["いない","ない","欠","NaN","比べ","マッチ","できない","存在しない","片方"]]' data-example="グループ0には処置群(treated)が、グループ19には対照群(untreated)が一人もおらず、表ではその欄が NaN になっている。片方の群しかいないグループは処置群と対照群を比べられない（マッチング相手がいない）ので、差を計算する対象から除いている。">
+    <div class="q-label">問E-1（記述）</div>
+    <div class="q-text">コード10-10 では <code>ps_match_a.drop(ps_match_a.index[[0, 19]])</code> として、グループ0とグループ19を計算から除いています。コード10-6〜10-8 の出力も参考に、なぜこの2つのグループを除くのか説明しなさい。</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+
+  <div class="q-block" data-type="essay" data-patterns='[["効果","高め","上げ","上がっ","向上","プラス","良い","ある"],["仮定","条件","偏り","未観測","他の要因","前提","断定","限らない","可能性","注意","証明"]]' data-example="傾向スコアで背景条件をそろえて比べても処置群の方が約1.5高いので、研修には幸福度を高める効果があったと推定できる。ただしこれは「傾向スコアに使った変数以外に両群の差を生む未観測の要因がない」などの仮定に依存しており、完全な因果の証明ではない点に注意が必要。">
+    <div class="q-label">問E-2（記述）</div>
+    <div class="q-text">マッチング後、研修を受けた群は受けていない群より研修後の幸福度が平均しておよそ 1.5 高いという結果が出ました（コード10-9・10-10）。この結果から研修の効果についてどのようなことが言えますか？　気をつけるべき点（前提・仮定）にも触れて、考えを書きなさい。</div>
+    <textarea placeholder="回答を入力"></textarea>
+    <div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+    <div class="feedback"></div>
+    <button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+    <div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <button class="btn btn-submit" style="padding:12px 40px;font-size:17px" onclick="calcTotal()">採点する</button>
+</div>
+
+<script>
+const scores = {};
+let qIdx = 0;
+
+// ★ 解禁日の設定はここだけ変更してください
+const UNLOCK_DATE = '2026-06-23';
+
+function isUnlocked() {
+  return new Date() >= new Date(UNLOCK_DATE + 'T00:00:00');
+}
+
+function showAnswer(btn) {
+  const block = btn.closest('.q-block');
+  const box = block.querySelector('.answer-box');
+  const text = block.querySelector('.answer-text');
+  if (isUnlocked()) {
+    text.textContent = block.dataset.example;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+    const locked = block.querySelector('.locked-msg');
+    if (locked) locked.style.display = 'none';
+  } else {
+    const d = new Date(UNLOCK_DATE + 'T00:00:00');
+    let locked = block.querySelector('.locked-msg');
+    if (!locked) {
+      locked = document.createElement('div');
+      locked.className = 'locked-msg';
+      btn.after(locked);
+    }
+    locked.textContent = `正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`;
+    locked.style.display = 'block';
+  }
+}
+
+function matchPatterns(ans, patterns) {
+  return patterns.every(group => {
+    if (Array.isArray(group)) return group.some(p => ans.includes(p));
+    return ans.includes(group);
+  });
+}
+
+function submitShort(btn) {
+  const block = btn.closest('.q-block');
+  const input = block.querySelector('input[type=text]');
+  const ans = input.value.trim();
+  if (!ans) return;
+  const ok = matchPatterns(ans, JSON.parse(block.dataset.patterns));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  input.className = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function submitEssay(btn) {
+  const block = btn.closest('.q-block');
+  const ta = block.querySelector('textarea');
+  const ans = ta.value.trim();
+  if (!ans) return;
+  const ok = matchPatterns(ans, JSON.parse(block.dataset.patterns));
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  ta.disabled = true;
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'partial');
+  fb.innerHTML = ok
+    ? '<div class="label">✅ キーワードが含まれています（1点）</div>'
+    : '<div class="label">📝 回答を記録しました。授業で確認してください。</div>';
+}
+
+function submitMulti(btn) {
+  const block = btn.closest('.q-block');
+  const correctIdx = parseInt(block.dataset.correctIdx);
+  const choices = block.querySelectorAll('.choice');
+  const selected = block.querySelector('input[type=radio]:checked');
+  if (!selected) return;
+  const selIdx = [...choices].indexOf(selected.closest('.choice'));
+  const ok = selIdx === correctIdx;
+  const qid = block.dataset.qid || (block.dataset.qid = 'q'+(++qIdx));
+  scores[qid] = ok ? 1 : 0;
+  choices.forEach((c, i) => {
+    c.querySelector('input').disabled = true;
+    if (i === correctIdx) c.classList.add('correct-choice');
+    else if (i === selIdx && !ok) c.classList.add('wrong-choice');
+  });
+  btn.disabled = true;
+  const fb = block.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = ok ? '<div class="label">✅ 正解！（1点）</div>' : '<div class="label">❌ 不正解（0点）</div>';
+}
+
+function calcTotal() {
+  const total = Object.values(scores).reduce((a, b) => a + b, 0);
+  const max = 14;
+  const pct = Math.round((total / max) * 100);
+  const msg = pct === 100 ? '🎉 満点です！' : pct >= 70 ? '👍 よくできました！' : '📚 復習してみましょう。';
+  const bar = document.getElementById('score-bar');
+  bar.style.display = 'block';
+  document.getElementById('score-val').textContent = total + ' / ' + max;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-fill').style.width = pct + '%';
+  bar.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body></html>
