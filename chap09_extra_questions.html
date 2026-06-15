@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>第9章 追加問題</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">第9章 追加問題</h1>
+</header>
+<h1 id="第9章-追加問題">第9章 追加問題</h1>
+<p>観光地域のデータセット（<code>chapter09_exercise.xlsx</code>、300
+地域）を使い、ランダムフォレスト回帰で観光客数を予測した章末問題の続きです。章末ノートブックのコード番号（コード
+9-1 〜 9-7）を参照します。</p>
+<hr />
+<h2 id="開発側の問題">開発側の問題</h2>
+<hr />
+<h3 id="f1.-ランダムフォレストと重回帰どちらが良いモデルか">F1.
+ランダムフォレストと重回帰、どちらが「良いモデル」か</h3>
+<p>章末の練習問題（<code>chapter09_exercise.xlsx</code>、観光地域 300
+件）では、コード 9-4・9-5
+で観光客数をランダムフォレスト回帰（<code>RandomForestRegressor(random_state=0)</code>）で予測し、次の結果を得ました。</p>
+<pre><code>ランダムフォレスト  学習用： R² = 0.97,  RMSE = 253
+ランダムフォレスト  評価用： R² = 0.78,  RMSE = 667</code></pre>
+<p>同じ学習用・評価用データ（コード 9-2 の
+<code>train_test_split(..., test_size=0.25, random_state=0)</code>
+で分けたもの）に、第5章で学んだ重回帰（<code>LinearRegression</code>）をあてはめて比べます。</p>
+<ol type="1">
+<li><p><code>LinearRegression</code> を <code>X_train, y_train</code>
+で学習し、学習用・評価用それぞれの R² と RMSE
+を求めよ。上のランダムフォレストの結果と並べた表を作り、4 つの数値（学習
+R²・評価 R²・学習 RMSE・評価 RMSE）を比較せよ。</p></li>
+<li><p>小問1
+で求めた重回帰の結果と、上のランダムフォレストの結果について、それぞれ「学習用と評価用の
+R² の差」に注目せよ。2
+つのモデルで、この差の大きさにどのような違いがあるか。そのうえで、なぜそのような違いが生じるのかを、<strong>「過学習」と「データの構造」</strong>
+という 2 つの言葉を使って説明せよ。</p></li>
+<li><p>小問1・2 の結果を踏まえて考える。</p>
+<ol type="a">
+<li><p>一般に、ランダムフォレストのほうが重回帰より高い予測性能を出しやすいのは、どんな性質のデータか。理由とともに述べよ。</p></li>
+<li><p>ランダムフォレストの評価成績を改善できないか、<code>max_depth</code>
+か <code>min_samples_leaf</code> のどちらかを変えて少なくとも 2
+通り試し、学習用・評価用の R²
+がどう変わるかを表にせよ。調整によって、小問1 で求めた重回帰の評価用 R²
+の水準に届いたか、結果から言えることを述べよ。</p></li>
+</ol></li>
+</ol>
+<hr />
+<h3 id="f2.-観光地域データ正規化標準化すると予測は良くなるか">F2.
+観光地域データ：正規化（標準化）すると予測は良くなるか</h3>
+<p>機械学習では特徴量を標準化（正規化）してから学習することがよくあります。観光地域データ（<code>chapter09_exercise.xlsx</code>）でも、特徴量を標準化すると観光客数の予測が良くなるのか、F1
+の 2 つのモデルで確かめます。</p>
+<ol type="1">
+<li><p><code>StandardScaler</code> で
+<code>X_train</code>・<code>X_test</code> を標準化せよ（学習用で
+<code>fit</code> し、学習用・評価用の両方を <code>transform</code>
+する）。(a) ランダムフォレスト、(b)
+重回帰のそれぞれについて、標準化前と標準化後の評価用 R²
+を求めて並べよ。</p></li>
+<li><p>小問1 の結果から、この 2
+つのモデルでは標準化が予測性能に効くか・効かないかを述べよ。そのうえで、なぜそうなるのかを次の観点から説明せよ。</p>
+<ul>
+<li>ランダムフォレスト：木は「特徴量がしきい値より大きいか」で分割する。標準化すると分割の結果は変わるか。</li>
+<li>重回帰：特徴量を定数倍すると、係数と予測値はどうなるか。</li>
+</ul></li>
+<li><p>次に、標準化が係数の大きさに与える影響を調べる。重回帰の係数を「標準化なし」と「標準化あり」の両方で求め、各特徴量の係数の大きさがどう変わるかを見よ。とくに宿泊料金の係数が標準化の前後でどう変わるかに注目し、なぜそのような変化が起きるのかを、宿泊料金の単位（円）に触れて説明せよ。そして、標準化はどんな目的のときに役立つか、1
+文で述べよ。</p></li>
+</ol>
+<hr />
+<h2 id="分析企画側の問題">分析・企画側の問題</h2>
+<hr />
+<h3 id="g1.-観光地域データ何が効いているかをどう施策につなげるか">G1.
+観光地域データ：「何が効いているか」をどう施策につなげるか</h3>
+<p>章末の練習問題（<code>chapter09_exercise.xlsx</code>、300
+地域）では観光客数を予測し、問4 でコード 9-7
+により各特徴量の寄与度（重要度）を棒グラフにしました。各特徴量の意味は練習問題の説明のとおりです。</p>
+<ul>
+<li><strong>満足度</strong>：過去の観光客の評価。プラスが大きいほど満足度が高く、マイナスは（絶対値が大きいほど）満足度が低い</li>
+<li><strong>最寄り空港からの距離</strong>：空港から市街地までの距離（km）</li>
+<li><strong>観光スポット数</strong>：その地域の観光スポットの数（個）</li>
+<li><strong>宿泊料金・飲食料金</strong>：その地域の平均料金（円）／
+<strong>気温</strong>（℃）・<strong>日照時間</strong>（時間）</li>
+</ul>
+<p>問4
+で得られる寄与度を高い順に並べると次のようになります（この表をそのまま使ってよい）。</p>
+<table>
+<thead>
+<tr>
+<th>順位</th>
+<th>特徴量</th>
+<th>寄与度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>気温</td>
+<td>0.44</td>
+</tr>
+<tr>
+<td>2</td>
+<td>観光スポット数</td>
+<td>0.18</td>
+</tr>
+<tr>
+<td>3</td>
+<td>宿泊料金</td>
+<td>0.16</td>
+</tr>
+<tr>
+<td>4</td>
+<td>最寄り空港からの距離</td>
+<td>0.09</td>
+</tr>
+<tr>
+<td>5</td>
+<td>満足度（過去の観光客の評価）</td>
+<td>0.07</td>
+</tr>
+<tr>
+<td>6</td>
+<td>飲食料金</td>
+<td>0.03</td>
+</tr>
+<tr>
+<td>7</td>
+<td>日照時間</td>
+<td>0.02</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li><p>寄与度の上位 3 つの特徴量を挙げ、問4
+の図でいう「寄与度が高い」とはこの分析においてどういう意味か、Python
+を知らない自治体の観光担当者に向けて 1〜2 文で説明せよ。</p></li>
+<li><p>この自治体が「観光客数を増やしたい」と考えているとする。上位の特徴量を
+<strong>「自治体が働きかけられるもの」と「働きかけられないもの」</strong>
+に分けよ（例えば気温や空港〜市街地の距離はすぐには変えられない）。そのうえで、現実的に取り組めそうな施策を
+1 つ、根拠とともに提案せよ。</p></li>
+<li><p>「観光スポット数の寄与度が高いのだから、スポットを増やせば観光客は増える」と言い切れるか。<strong>寄与度（予測への効き具合）と因果関係の違い</strong>
+に触れたうえで、この練習問題のデータだけでは言えないことを述べ、施策の効果を確かめるために追加で必要な情報・データを
+2 つ挙げよ。</p></li>
+</ol>
+<hr />
+<h3
+id="g2.-観光地域データ係数の大きさだけで効いていると判断できるか">G2.
+観光地域データ：係数の大きさだけで「効いている」と判断できるか</h3>
+<p>重回帰（<code>LinearRegression</code>）で観光客数を予測すると、各特徴量に「係数」がつきます。あるメンバーが係数の表（標準化なし）を見て、次のように言いました。</p>
+<table>
+<thead>
+<tr>
+<th>特徴量</th>
+<th>係数（標準化なし）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>気温</td>
+<td>347.6</td>
+</tr>
+<tr>
+<td>満足度（過去の観光客の評価）</td>
+<td>346.4</td>
+</tr>
+<tr>
+<td>観光スポット数</td>
+<td>135.6</td>
+</tr>
+<tr>
+<td>日照時間</td>
+<td>39.4</td>
+</tr>
+<tr>
+<td>最寄り空港からの距離</td>
+<td>14.7</td>
+</tr>
+<tr>
+<td>飲食料金</td>
+<td>0.53</td>
+</tr>
+<tr>
+<td>宿泊料金</td>
+<td>0.47</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>「宿泊料金の係数は 0.47
+ととても小さい。だから宿泊料金は観光客数にほとんど影響していない。」</p>
+</blockquote>
+<ol type="1">
+<li><p>このメンバーの主張は正しいか。各特徴量の単位（気温＝℃、距離＝km、宿泊料金・飲食料金＝円
+など）に注目し、単位のちがう特徴量の係数の「大きさ」をそのまま比べてよいかを説明せよ。</p></li>
+<li><p>そこで、すべての特徴量を同じものさし（平均 0・ばらつき
+1）にそろえてから係数を求め直すと、次のようになった。</p>
+<table>
+<thead>
+<tr>
+<th>特徴量</th>
+<th>係数（標準化あり）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>気温</td>
+<td>972.6</td>
+</tr>
+<tr>
+<td>観光スポット数</td>
+<td>683.9</td>
+</tr>
+<tr>
+<td>宿泊料金</td>
+<td>631.7</td>
+</tr>
+<tr>
+<td>最寄り空港からの距離</td>
+<td>513.3</td>
+</tr>
+<tr>
+<td>満足度（過去の観光客の評価）</td>
+<td>338.0</td>
+</tr>
+<tr>
+<td>飲食料金</td>
+<td>283.8</td>
+</tr>
+<tr>
+<td>日照時間</td>
+<td>109.6</td>
+</tr>
+</tbody>
+</table>
+<p>標準化後の係数で見ると、影響が大きい特徴量の順位はどうなるか。標準化なしのときに「影響が小さい」と誤解されやすかった宿泊料金は、実際にはどの程度効いているか述べよ。</p></li>
+<li><p>この標準化後の係数の順位を、G1
+の寄与度（ランダムフォレストの重要度）の順位と見比べよ。2
+つの異なる方法による「効いている特徴量」の順位は一致しているか。異なる方法で同じ順位が得られることは、施策を考えるうえでどんな安心材料になるか、1〜2
+文で述べよ。</p></li>
+</ol>
+</body>
+</html>
