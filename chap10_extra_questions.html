@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>第10章 追加問題（傾向スコア・マッチング）</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">第10章 追加問題（傾向スコア・マッチング）</h1>
+</header>
+<p>第10章「施策の効果を調べよう（傾向スコア・マッチング）」の追加問題です。
+コードを動かすだけでは答えになりません。<strong>理由・仕組み・判断</strong>を自分の言葉で書いてください。</p>
+<ul>
+<li><strong>開発側（F1・F2）</strong>：実装の仕組みと設計の理由を説明する問題です。</li>
+<li><strong>分析・企画側（G1・G2）</strong>：出てきた数値を読んで、依頼者に説明・判断する問題です。</li>
+</ul>
+<p>開発側は教科書の従業員データ（800名）を使います。分析・企画側は計算結果を問題文に載せてあるので、数値を読んで答えてください。</p>
+<hr />
+<h2 id="開発側">開発側</h2>
+<h3 id="f1.-ビン分けの不安定性と再現性">F1.
+ビン分けの不安定性と再現性</h3>
+<p>コード10-3で傾向スコア <code>prop</code> を求め、コード10-5で
+<code>df["group"] = (df.prop * 20).astype(int)</code>
+としてグループを作り、コード10-6でグループごとに <code>HappyAfter</code>
+の平均を取ります。ここである学生から次の質問が出ました。</p>
+<blockquote>
+<p>教科書ではグループ4の処置群の平均が <strong>1.723015</strong>
+なのに、自分が実行すると <strong>1.884828</strong>
+になります。なぜですか？</p>
+</blockquote>
+<p>調べると、<code>prop</code> は scikit-learn
+の版差で小数第5〜6位だけ動いていました。また、<code>prop * 20</code>
+が整数の境界付近（整数 ±0.05）にいる従業員は約 <strong>85名</strong>
+いて、グループ4の処置群はわずか <strong>17名</strong>
+でした。なお、差の平均（コード10-9）は版が変わっても約
+<strong>1.55</strong> のままです。</p>
+<ol type="1">
+<li><code>(prop * 20).astype(int)</code>
+が「切り捨て」であることを確認した上で、<code>prop</code>
+が第5〜6位で動くだけで、なぜグループ4のような小さなグループの平均が
+1.723 → 1.885
+と目に見えて変わるのかを、上の「境界付近85名」「処置群17名」という数値を使って説明せよ。</li>
+<li>グループごとの平均は揺れるのに、全グループの差の平均（コード10-9、約1.55）はほぼ動かない。この「揺れるのに頑健」が両立する理由を、境界をまたいだ人がどのグループへ移動するか（移動先はどこか）に着目して説明せよ。</li>
+<li><code>(prop * 20).astype(int)</code> の代わりに <code>pd.cut</code>
+を使って境界を固定したビン分けに書き換えるコードを示せ。そのうえで、切り捨てによるビン分けと比べたときの違いを2点述べよ。</li>
+</ol>
+<hr />
+<h3 id="f2.-マッチング集計の仕組みと-nan-の本質">F2.
+マッチング集計の仕組みと NaN の本質</h3>
+<p>コード10-6では
+<code>df.groupby(["group", "Treatment"])["HappyAfter"].mean().unstack("Treatment")</code>
+でグループ×処置の平均表を作ります。このときグループ0とグループ19の値が
+<code>NaN</code> になります。各グループの人数は次の通りです。</p>
+<table>
+<thead>
+<tr class="header">
+<th>group</th>
+<th>対照群(Treatment=0)</th>
+<th>処置群(Treatment=1)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>20名</td>
+<td>0名</td>
+</tr>
+<tr class="even">
+<td>19</td>
+<td>0名</td>
+<td>3名</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li><code>unstack("Treatment")</code>
+を付けると表がどのような形（行・列）に変わるかを説明せよ。そのうえで、グループ0とグループ19が
+<code>NaN</code> を含む理由を、上の人数表をもとに説明せよ。</li>
+<li>コード10-9の <code>difference.mean()</code> は、グループ0・19を
+<code>drop</code> してもしなくても <strong>1.5483</strong>
+になる（pandas が <code>NaN</code>
+を自動でスキップするため）。それなのにコード10-10ではわざわざ
+<code>[0, 19]</code> を <code>drop</code>
+してから集計している。<code>drop</code> する理由を説明せよ。
+ヒント：コード10-10は <code>treated.mean()</code> と
+<code>untreated.mean()</code>
+を<strong>別々に</strong>計算している。<code>drop</code>
+しないと、どのグループのどの値が混入し、treated平均と
+untreated平均がそれぞれどちらの向きに歪むか、次の数値を使って具体的に示せ。
+<ul>
+<li>treated平均：drop なし <strong>2.903</strong> / drop あり
+<strong>2.733</strong></li>
+<li>untreated平均：drop なし <strong>0.982</strong> / drop あり
+<strong>1.185</strong></li>
+</ul></li>
+<li>コード10-3の <code>prop_score = model.predict_proba(X)</code>
+の戻り値は <code>(800, 2)</code>
+の形をしている。<code>df["prop"] = prop_score[:, 1]</code> で
+<code>[:, 1]</code> を取る理由を、<code>model.classes_</code>
+が何を返すかと絡めて説明せよ。
+さらに、同じパイプラインを別の顧客データ（650名・閲覧時間
+<code>Browsing</code> を含む）に適用すると、<code>NaN</code>
+になるのはグループ0だけになり、グループ19は対照群1名・処置群19名で両群がそろう。教科書データでは0と19の両方が
+<code>NaN</code> なのに、データが変わると <code>NaN</code>
+の位置が変わるのはなぜかを説明せよ。</li>
+</ol>
+<hr />
+<h2 id="分析企画側">分析・企画側</h2>
+<h3 id="g1.-傾向スコアの意味とマッチングの動機">G1.
+傾向スコアの意味とマッチングの動機</h3>
+<p>ある会社が、希望者向けの研修の効果を調べました。従業員は
+<strong>800名</strong>、うち研修を受けた人（処置群）が
+<strong>328名</strong>、受けていない人（対照群）が
+<strong>472名</strong>
+です。各従業員について、ロジスティック回帰で求めた
+<code>prop</code>（傾向スコア、0〜1の値、範囲は約
+0.006〜0.961）が計算されています。</p>
+<ol type="1">
+<li>ある従業員の <code>prop</code> は <strong>0.66</strong>
+でした。これを「この人は研修で幸福度が上がる確率が66%だ」と説明するのは正しいか。誤っているなら、<code>prop</code>
+が本当は「何の確率」なのかを明示して、正しい説明に直せ。</li>
+<li>研修を受けた328名の研修後の幸福度の単純平均と、受けていない472名の単純平均を、そのまま引き算して「研修の効果」と呼んではいけない。その理由を、両群の背景（年齢・勤続年数・元々の幸福度など）の偏りという観点から説明せよ。授業で出た「CMを見たグループ／見ていないグループ」の例にも触れてよい。</li>
+<li><code>prop</code>
+が近い人どうしをグループにして比べることで、両群の「何をそろえている」のか。逆に、このやり方でもそろえられない要因（データに入っていない要因）の例を2つ挙げよ。</li>
+</ol>
+<hr />
+<h3 id="g2.-効果の解釈予想外の結果依頼者への説明">G2.
+効果の解釈・予想外の結果・依頼者への説明</h3>
+<p>傾向スコア・マッチングで2つの案件を分析したところ、マッチング後の「差の平均」は次のようになりました。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>案件</th>
+<th>処置</th>
+<th>差の平均</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>従業員研修（800名）</td>
+<td>研修の受講</td>
+<td>約
+<strong>+1.55</strong>（研修後の幸福度が、似た背景の未受講者より平均1.55高い）</td>
+</tr>
+<tr class="even">
+<td>新サイトデザイン（顧客650名）</td>
+<td>新デザインの表示</td>
+<td>約 <strong>−33.56円</strong>（マイナス）</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>従業員研修の「+1.55」を、Python
+を知らない研修担当の上司に1〜2文で報告せよ。あわせて、「研修に効果があった」と断定してよいか、断定するにはどんな前提（仮定）が必要かを一文で添えよ。</li>
+<li>新サイトデザインの案件で、差の平均が <strong>−33.56円</strong>
+とマイナスになった。依頼者から「新デザインは失敗だったということですか？」と聞かれた場面を想定し、言い切れること・言い切れないことの両方を含む誠実な回答を3〜4文で書け。</li>
+<li>続けて依頼者から「もっとはっきりさせるには、どんなデータがあればよいですか？」と聞かれた。データに入っていない要因をそろえられていない可能性を踏まえ、あると分析が改善する情報を2〜3個、箇条書きで挙げよ。</li>
+</ol>
+</body>
+</html>
