@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11回・第12回 確認テスト</title>
+<style>
+  :root {
+    --primary:#1a56a0; --accent:#e8a020; --light:#f5f7fa;
+    --border:#dde3ea; --text:#1e2733; --muted:#5a6472;
+    --green:#1d8a4f; --red:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Helvetica Neue','Hiragino Sans','Meiryo',sans-serif;color:var(--text);background:var(--light);font-size:16px;line-height:1.7;padding:24px 16px 48px;}
+  code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:14px;font-family:'Courier New',monospace;}
+  pre{background:#eef2f8;border-radius:6px;padding:10px 14px;font-size:13px;font-family:'Courier New',monospace;margin-bottom:12px;white-space:pre-wrap;}
+  h1{font-size:20px;color:var(--primary);font-weight:800;margin-bottom:4px;}
+  .subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .notice{font-size:12px;color:#7a5200;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:8px 12px;margin-bottom:24px;max-width:720px;}
+  .section{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:24px;overflow:hidden;max-width:720px;margin-left:auto;margin-right:auto;}
+  .sec-header{background:var(--primary);color:#fff;padding:12px 20px;font-weight:700;font-size:15px;}
+  .sec-desc{background:#e8f0fb;border-bottom:1px solid var(--border);padding:16px 20px;font-size:14px;}
+  .q-block{padding:20px;border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.6;}
+  .input-row{display:flex;gap:8px;margin-bottom:8px;}
+  input[type=text],textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  input.correct{border-color:var(--green)!important;background:#f0faf5;}
+  input.wrong{border-color:var(--red)!important;background:#fdf0f0;}
+  textarea{resize:vertical;min-height:72px;}
+  .choices{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+  .choice{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;transition:background .15s;}
+  .choice:hover{background:var(--light);}
+  .choice input{margin-top:3px;flex-shrink:0;}
+  .choice.correct-choice{border-color:var(--green)!important;background:#f0faf5!important;}
+  .choice.wrong-choice{border-color:var(--red)!important;background:#fdf0f0!important;}
+  .btn{padding:8px 20px;border-radius:8px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s;}
+  .btn-submit{background:var(--primary);color:#fff;}
+  .btn-submit:hover{background:#154a8a;}
+  .btn-submit:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+  .btn-answer{background:#fff;color:var(--primary);border:1.5px solid var(--primary);margin-top:8px;font-size:14px;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:700;}
+  .btn-answer:hover{background:#e8f0fb;}
+  .feedback{border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .feedback.correct{background:#f0faf5;border:1.5px solid #a8dfc0;color:#145c33;}
+  .feedback.wrong{background:#fdf0f0;border:1.5px solid #f0b0a8;color:#8b1a10;}
+  .feedback.partial{background:#fff8e1;border:1.5px solid #f5d78e;color:#7a5200;}
+  .feedback .label{font-weight:800;margin-bottom:2px;}
+  .answer-box{background:#f0faf5;border:1.5px solid #a8dfc0;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;display:none;}
+  .answer-box .label{font-weight:700;color:var(--green);margin-bottom:2px;}
+  .score-bar{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:24px 28px;max-width:720px;margin:0 auto 24px;display:none;}
+  .score-bar h2{font-size:18px;color:var(--primary);margin-bottom:12px;}
+  .score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1;}
+  .score-msg{font-size:15px;color:var(--muted);margin-top:6px;}
+  .progress-bg{background:var(--border);border-radius:4px;height:8px;margin-top:12px;}
+  .progress-fill{height:8px;border-radius:4px;background:var(--primary);transition:width .6s;}
+  .btn-retry{background:var(--primary);color:#fff;margin-top:16px;width:100%;padding:12px;font-size:16px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+  .btn-retry:hover{background:#154a8a;}
+  .calc-wrap{max-width:720px;margin:0 auto 24px;text-align:center;}
+  .locked-msg{font-size:13px;color:#b56000;background:#fff8e1;border:1px solid #f5d78e;border-radius:6px;padding:6px 12px;margin-top:8px;display:none;}
+</style>
+</head>
+<body>
+<div style="max-width:720px;margin:0 auto 16px"><h1>第11回・第12回 確認テスト</h1><div class="subtitle">プログラミング演習1(Python) ／ 第11回（ハンズオン）＋第12回（事前学習）・全20問・各1点</div><div class="notice">⚠️ 自動採点は簡易判定のため、実際の正誤と異なる場合があります（参考用）。第12回は反転授業です。授業の前に配布ノート（§2〜§7）を実行し、相関 r・東京を除いた r・女流出率＞男流出率の県数を確認してから取り組み、締切（授業開始前）までに提出してください。第11回の数値は手元の第11回ノートで確認してOK。就業構造側は擬似データです。</div></div>
+<div class="score-bar" id="score-bar"><h2>結果</h2><div class="score-big" id="score-val">-</div><div class="score-msg" id="score-msg"></div><div class="progress-bg"><div class="progress-fill" id="score-fill" style="width:0%"></div></div><button class="btn-retry" onclick="location.reload()">もう一度挑戦する</button></div>
+<div class="section"><div class="sec-header">【第11回】データの読み込みと「個票・Weight」</div><div class="sec-desc"><p>第11回ハンズオンの土台：読み込み、個票とは何か、集計用乗率 Weight を確認します。第11回ノートを手元で見返してOK。</p></div>
+<div class="q-block" data-type="multiselect" data-correct="[1, 3]" data-example="cp932 を指定しないと、日本語が文字化けしたり読み込みでエラーになることがある／dtype=str で読むと、都道府県コード「01」が「1」にならずに保たれる">
+<div class="q-label">問11A-1（複数選択）</div><div class="q-text">公的統計のCSVを <code>pd.read_csv(PATH, encoding='cp932', dtype=str)</code> と読みました。次のうち<strong>正しい説明をすべて</strong>選びなさい。</div><div class="choices">
+<label class="choice"><input type="checkbox" name="11A-1"> dtype=str にすると、空欄（欠損）が自動で 0 に置きかえられる</label>
+<label class="choice"><input type="checkbox" name="11A-1"> cp932 を指定しないと、日本語が文字化けしたり読み込みでエラーになることがある</label>
+<label class="choice"><input type="checkbox" name="11A-1"> cp932 を指定すると、数値の先頭の「0」が消えずに保たれる</label>
+<label class="choice"><input type="checkbox" name="11A-1"> dtype=str で読むと、都道府県コード「01」が「1」にならずに保たれる</label>
+</div><button class="btn btn-submit" onclick="submitMultiselect(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="2" data-example="決まった切り口しかない集計表と違い、年齢×男女など好きな組合せで自分で数え直せる">
+<div class="q-label">問11A-2（選択）</div><div class="q-text">このデータは「集計表」ではなく「個票（1行＝調査で選ばれた1人の記録）」です。個票の利点として最も適切なものはどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="11A-2"> Weight を気にせず、単純な件数の割合で正しい比率が出せる</label>
+<label class="choice"><input type="radio" name="11A-2"> 1行＝1人なので、行数を数えればそのまま全国の人口が分かる</label>
+<label class="choice"><input type="radio" name="11A-2"> 決まった切り口しかない集計表と違い、年齢×男女など好きな組合せで自分で数え直せる</label>
+<label class="choice"><input type="radio" name="11A-2"> 標本ではなく全数なので、結果を全国の確定値としてそのまま使える</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="1" data-example="誤り">
+<div class="q-label">問11A-3（選択）</div><div class="q-text">このデータの行数（220,391）は、そのまま「全国の15歳以上人口」を表している。</div><div class="choices">
+<label class="choice"><input type="radio" name="11A-3"> 正しい</label>
+<label class="choice"><input type="radio" name="11A-3"> 誤り</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="num" data-answer="500" data-tol="10" data-example="500">
+<div class="q-label">問11A-4（数値）</div><div class="q-text">Weight合計＝110,194,700、行数＝220,391 でした。<strong>1行は母集団の平均およそ何人分</strong>を代表していますか（Weight合計÷行数、整数で）。</div>
+<div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="section"><div class="sec-header">【第11回】母数と「列の適用範囲」の罠</div><div class="sec-desc"><p>率を出すときの母数、非該当(NaN)の扱い、配偶関係の罠（符号表＝列が誰に当てはまるか）を確認します。</p></div>
+<div class="q-block" data-type="multi" data-correct-idx="0" data-example="正規＋非正規（職員・従業員）。役員・自営業主・無業者は分母から外す">
+<div class="q-label">問11B-1（選択）</div><div class="q-text">正規雇用率＝正規 ÷（　？　）を計算します。分母（母数）に入れるのはどれが正しいですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="11B-1"> 正規＋非正規（職員・従業員）。役員・自営業主・無業者は分母から外す</label>
+<label class="choice"><input type="radio" name="11B-1"> 働いている人（有業者）全員。自営業主や役員も分母に含める</label>
+<label class="choice"><input type="radio" name="11B-1"> 正規の職員・従業員だけ（非正規は分母に入れない）</label>
+<label class="choice"><input type="radio" name="11B-1"> 15歳以上の人全員。働いていない人も分母に含める</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="2" data-example="配偶関係は無業者向けの設問で、雇用者（有業者）には記録がそもそも無いから">
+<div class="q-label">問11B-2（選択）</div><div class="q-text">「配偶関係（T_NoworkMarriage）別に正規雇用率を出そう」としたら、雇用者では値が全部 NaN で集計できませんでした。最も適切な理由はどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="11B-2"> 雇用者は配偶関係を「未婚」とみなす決まりで、正規率に影響しないから</label>
+<label class="choice"><input type="radio" name="11B-2"> 標本が少なく、雇用者の配偶関係はたまたますべて欠測になったから</label>
+<label class="choice"><input type="radio" name="11B-2"> 配偶関係は無業者向けの設問で、雇用者（有業者）には記録がそもそも無いから</label>
+<label class="choice"><input type="radio" name="11B-2"> 配偶関係の列は文字なので、平均が計算できないから</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="num" data-answer="46.8" data-tol="0.6" data-example="46.8">
+<div class="q-label">問11B-3（数値）</div><div class="q-text">全国の<strong>女性</strong>の正規雇用率（職員・従業員に占める正規の割合、％）はおよそいくつでしたか。小数第1位まで。</div>
+<div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="section"><div class="sec-header">【第12回】探索の前提と用語</div><div class="sec-desc"><p>今回の問い（素朴な仮説）と「探索／確証」を確認します。</p></div>
+<div class="q-block" data-type="multi" data-correct-idx="3" data-example="右肩下がり（負の相関）― 正規率が高い県ほど流出は小さい">
+<div class="q-label">問12A-1（選択）</div><div class="q-text">素朴な仮説「正規で働きにくい県ほど若い女性が流出する」が正しければ、x（女性正規率）とy（流出率）の散布図はどうなると<strong>予想</strong>されますか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12A-1"> 正規率に関係なく、流出率はどの県もほぼ一定になる</label>
+<label class="choice"><input type="radio" name="12A-1"> 相関は見られない（ばらばらに散らばる）</label>
+<label class="choice"><input type="radio" name="12A-1"> 右肩上がり（正の相関）― 正規率が高い県ほど流出も大きい</label>
+<label class="choice"><input type="radio" name="12A-1"> 右肩下がり（負の相関）― 正規率が高い県ほど流出は小さい</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="short" data-patterns="[[&quot;探索&quot;]]" data-example="探索">
+<div class="q-label">問12A-2（短答）</div><div class="q-text">「効いていそうな関係を見つける（仮説を立てる）」段階を、この授業では何と呼びましたか。漢字2文字で答えなさい（確かめる段階＝確証）。</div>
+<div class="input-row"><input type="text" placeholder="回答を入力"><button class="btn btn-submit" onclick="submitShort(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="section"><div class="sec-header">【第12回】自分で実行して数値を答える</div><div class="sec-desc"><p>配布ノートを実行して出力された数値を答えます（実行していないと答えられません）。</p></div>
+<div class="q-block" data-type="num" data-answer="0.236" data-tol="0.005" data-example="0.236">
+<div class="q-label">問12B-1（数値）</div><div class="q-text">女性正規率と若年女性(20-24)の流出率の、<strong>全47県での相関係数 r</strong> はいくつでしたか。小数第3位まで。</div>
+<div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="num" data-answer="0.492" data-tol="0.005" data-example="0.492">
+<div class="q-label">問12B-2（数値）</div><div class="q-text">東京都を除いて計算し直すと、相関係数 r はいくつになりましたか。小数第3位まで。</div>
+<div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="num" data-answer="37" data-tol="0" data-example="37">
+<div class="q-label">問12B-3（数値）</div><div class="q-text">「女性20-24の流出率 ＞ 男性20-24の流出率」となる県は、47県中いくつでしたか。整数で。</div>
+<div class="input-row"><input type="text" placeholder="数値を入力"><button class="btn btn-submit" onclick="submitNum(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="section"><div class="sec-header">【第12回】コードとデータ処理の意味</div><div class="sec-desc"><p>移動データの読み取りと、流出率の式の各部品の意味を確認します。</p></div>
+<div class="q-block" data-type="multi" data-correct-idx="3" data-example="統計表は更新や版の違いで列の並びが変わることがあり、番号を決め打ちすると気づかないまま別の列を読んでしまうから">
+<div class="q-label">問12C-1（選択）</div><div class="q-text">移動データで「女×20〜24歳」を列58として取り出す前に、毎回ヘッダ行（行3＝男女・行4＝年齢）を目で見て確認します。その理由として最も適切なのはどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12C-1"> 女と男で列の数が違うので、数えないと開始位置が分からないから</label>
+<label class="choice"><input type="radio" name="12C-1"> 列の番号は数える人によって 0 から始めたり 1 から始めたりするので、人ごとに違うから</label>
+<label class="choice"><input type="radio" name="12C-1"> セルが結合されていると、列番号そのものが使えなくなるから</label>
+<label class="choice"><input type="radio" name="12C-1"> 統計表は更新や版の違いで列の並びが変わることがあり、番号を決め打ちすると気づかないまま別の列を読んでしまうから</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="1" data-example="転入超過がマイナス（＝転出超過＝流出）のとき、流出率を正の値にして「大きいほど流出が大きい」とそろえるため">
+<div class="q-label">問12C-2（選択）</div><div class="q-text">流出率を <code>-転入超過 ÷ 人口 × 100</code> と、先頭に「−（マイナス）」を付けて定義しました。その役割はどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12C-2"> 流出は望ましくないことなので、慣習としてマイナスを付けるため</label>
+<label class="choice"><input type="radio" name="12C-2"> 転入超過がマイナス（＝転出超過＝流出）のとき、流出率を正の値にして「大きいほど流出が大きい」とそろえるため</label>
+<label class="choice"><input type="radio" name="12C-2"> 値が大きくなりすぎないように小さくするため</label>
+<label class="choice"><input type="radio" name="12C-2"> 人口で割ったあとに符号が反転するので、それを元に戻すため</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="3" data-example="人数の多い県（東京など）が実数では自動的に大きく出るので、人口あたりにそろえて県どうしを比べるため">
+<div class="q-label">問12C-3（選択）</div><div class="q-text">転入超過の実数ではなく、<strong>人口で割った率</strong>で散布図を描いたのはなぜですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12C-3"> 割合にすれば必ず0〜100に収まって、グラフが描きやすくなるから</label>
+<label class="choice"><input type="radio" name="12C-3"> 実数のままだと値が負になることがあり、割ると正にできるから</label>
+<label class="choice"><input type="radio" name="12C-3"> 人口で割ると、東京のような外れ値が自然に消えてくれるから</label>
+<label class="choice"><input type="radio" name="12C-3"> 人数の多い県（東京など）が実数では自動的に大きく出るので、人口あたりにそろえて県どうしを比べるため</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="section"><div class="sec-header">【第12回】探索と確証・相関と因果</div><div class="sec-desc"><p>出てきた相関をどう読むか。結論と仮説を分けます。</p></div>
+<div class="q-block" data-type="multi" data-correct-idx="3" data-example="相関係数という1つの数字だけで判断せず、散布図を描いて外れ値の影響を確かめる">
+<div class="q-label">問12D-1（選択）</div><div class="q-text">東京を1点除くだけで r が 0.24 から 0.49 へ変わりました。ここから得る教訓として最も適切なのはどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12D-1"> 外れ値は分析を歪めるので、いつも自動的に取り除いてから相関を見る</label>
+<label class="choice"><input type="radio" name="12D-1"> 東京を除くと r が大きくなったので、こちらが本当の強い関係だと言える</label>
+<label class="choice"><input type="radio" name="12D-1"> 1点で動くのは件数が47と少ないからで、件数を増やせば外れ値の問題は無くなる</label>
+<label class="choice"><input type="radio" name="12D-1"> 相関係数という1つの数字だけで判断せず、散布図を描いて外れ値の影響を確かめる</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="1" data-example="関連は見られたが、これは仮説生成（探索）の段階で、因果は言えない">
+<div class="q-label">問12D-2（選択）</div><div class="q-text">この散布図と相関から言えることとして最も適切なものはどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12D-2"> 正規率の低さが流出を引き起こしている、と言える</label>
+<label class="choice"><input type="radio" name="12D-2"> 関連は見られたが、これは仮説生成（探索）の段階で、因果は言えない</label>
+<label class="choice"><input type="radio" name="12D-2"> 相関が弱いので、2つは無関係だと結論できる</label>
+<label class="choice"><input type="radio" name="12D-2"> 傾向スコアを使えば、この相関からそのまま因果が言える</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="1" data-example="男性は転入超過（入ってくる）なのに、女性は転出超過（出ていく）">
+<div class="q-label">問12D-3（選択）</div><div class="q-text">配布ノート（§7）で見たように、栃木県（20-24歳）の移動には男女で違いがあります。その特徴はどれですか。</div><div class="choices">
+<label class="choice"><input type="radio" name="12D-3"> 男女とも転出超過だが、女性のほうが流出が大きい</label>
+<label class="choice"><input type="radio" name="12D-3"> 男性は転入超過（入ってくる）なのに、女性は転出超過（出ていく）</label>
+<label class="choice"><input type="radio" name="12D-3"> 男性は転出超過だが、女性は転入超過</label>
+<label class="choice"><input type="radio" name="12D-3"> 男女とも転入超過で、男女差はほとんどない</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+<div class="q-block" data-type="multi" data-correct-idx="1" data-example="誤り">
+<div class="q-label">問12D-4（選択）</div><div class="q-text">県ごとの平均で見た相関から、「個々の女性がなぜ移動するのか」をそのまま結論してよい。</div><div class="choices">
+<label class="choice"><input type="radio" name="12D-4"> 正しい</label>
+<label class="choice"><input type="radio" name="12D-4"> 誤り</label>
+</div><button class="btn btn-submit" onclick="submitMulti(this)">回答</button>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="section"><div class="sec-header">【第12回】考察（記述する）</div><div class="sec-desc"><p>レポートでの結論の書き方を、記述と因果を分けて書きます。</p></div>
+<div class="q-block" data-type="essay" data-patterns="[[&quot;関連&quot;, &quot;相関&quot;, &quot;関係&quot;], [&quot;因果&quot;, &quot;原因&quot;], [&quot;言えない&quot;, &quot;断定&quot;, &quot;言い切れ&quot;, &quot;限界&quot;], [&quot;擬似&quot;, &quot;出典&quot;]]" data-example="県単位では女性正規率と若年女性(20-24)の流出率に弱い正の関連が見られたが、相関は外れ値（東京）に依存しており、因果は言えない。一方、女性の流出率が男性を上回る県が47中37あるなど、男女差は記述として頑健である。本分析の就業構造側は統計センターの一般用ミクロデータ（擬似データ）であり、出典を明記したうえで実証的結論とはしない。">
+<div class="q-label">問12E-1（記述）</div><div class="q-text">（授業前に記入して提出。授業の解説で扱います。）この分析の結論を、最終課題レポートに3〜5文で書きなさい。<br>(1) 県単位で見られた関連を述べる、(2) 因果は言えないことを明記する、(3) 男女差(37/47)のような記述として頑健な点に触れる、(4) 就業構造側が擬似データである旨と出典を書く、の4点を含めること。</div>
+<textarea placeholder="回答を入力"></textarea><div style="margin-top:8px"><button class="btn btn-submit" onclick="submitEssay(this)">回答</button></div>
+<div class="feedback"></div><button class="btn-answer" onclick="showAnswer(this)">正解を見る</button>
+<div class="answer-box"><div class="label">正解例</div><div class="answer-text"></div></div></div>
+</div>
+<div class="calc-wrap"><button class="btn btn-submit" style="padding:12px 40px;font-size:17px" onclick="calcTotal()">採点する</button></div>
+<script>
+const scores = {};
+let qIdx = 0;
+// ★ 解禁日の設定はここだけ変更してください
+const UNLOCK_DATE = '2026-07-07';
+const MAXQ = 20;
+function isUnlocked(){ return new Date() >= new Date(UNLOCK_DATE + 'T00:00:00'); }
+function showAnswer(btn){
+  const block=btn.closest('.q-block'), box=block.querySelector('.answer-box'), text=block.querySelector('.answer-text');
+  if(isUnlocked()){ text.textContent=block.dataset.example; box.style.display='block'; btn.style.display='none';
+    const l=block.querySelector('.locked-msg'); if(l) l.style.display='none';
+  } else { const d=new Date(UNLOCK_DATE+'T00:00:00'); let l=block.querySelector('.locked-msg');
+    if(!l){ l=document.createElement('div'); l.className='locked-msg'; btn.after(l); }
+    l.textContent=`正解例は ${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 以降に表示されます。`; l.style.display='block'; }
+}
+function matchPatterns(ans,patterns){ return patterns.every(g=>Array.isArray(g)?g.some(p=>ans.includes(p)):ans.includes(g)); }
+function qid(block){ return block.dataset.qid || (block.dataset.qid='q'+(++qIdx)); }
+function fbHTML(ok,pts){ return ok?`<div class="label">✅ 正解！（${pts}点）</div>`:'<div class="label">❌ 不正解（0点）</div>'; }
+
+function submitShort(btn){
+  const b=btn.closest('.q-block'), input=b.querySelector('input[type=text]'), a=input.value.trim(); if(!a)return;
+  const ok=matchPatterns(a,JSON.parse(b.dataset.patterns)); scores[qid(b)]=ok?1:0;
+  input.className=ok?'correct':'wrong'; input.disabled=true; btn.disabled=true;
+  const fb=b.querySelector('.feedback'); fb.style.display='block'; fb.className='feedback '+(ok?'correct':'wrong'); fb.innerHTML=fbHTML(ok,1);
+}
+function submitNum(btn){
+  const b=btn.closest('.q-block'), input=b.querySelector('input[type=text]'), v=parseFloat((input.value||'').trim());
+  if(isNaN(v))return;
+  const ok=Math.abs(v-parseFloat(b.dataset.answer))<=parseFloat(b.dataset.tol)+1e-9; scores[qid(b)]=ok?1:0;
+  input.className=ok?'correct':'wrong'; input.disabled=true; btn.disabled=true;
+  const fb=b.querySelector('.feedback'); fb.style.display='block'; fb.className='feedback '+(ok?'correct':'wrong'); fb.innerHTML=fbHTML(ok,1);
+}
+function submitEssay(btn){
+  const b=btn.closest('.q-block'), ta=b.querySelector('textarea'), a=ta.value.trim(); if(!a)return;
+  const ok=matchPatterns(a,JSON.parse(b.dataset.patterns)); scores[qid(b)]=ok?1:0; ta.disabled=true; btn.disabled=true;
+  const fb=b.querySelector('.feedback'); fb.style.display='block'; fb.className='feedback '+(ok?'correct':'partial');
+  fb.innerHTML=ok?'<div class="label">✅ キーワードを確認しました（1点）</div>':'<div class="label">📝 回答を記録しました。授業で確認してください。</div>';
+}
+function submitMulti(btn){
+  const b=btn.closest('.q-block'), correctIdx=parseInt(b.dataset.correctIdx), choices=b.querySelectorAll('.choice');
+  const sel=b.querySelector('input[type=radio]:checked'); if(!sel)return;
+  const selIdx=[...choices].indexOf(sel.closest('.choice')); const ok=selIdx===correctIdx; scores[qid(b)]=ok?1:0;
+  choices.forEach((c,i)=>{ c.querySelector('input').disabled=true; if(i===correctIdx)c.classList.add('correct-choice'); else if(i===selIdx&&!ok)c.classList.add('wrong-choice'); });
+  btn.disabled=true; const fb=b.querySelector('.feedback'); fb.style.display='block'; fb.className='feedback '+(ok?'correct':'wrong'); fb.innerHTML=fbHTML(ok,1);
+}
+function submitMultiselect(btn){
+  const b=btn.closest('.q-block'), choices=[...b.querySelectorAll('.choice')], correct=JSON.parse(b.dataset.correct).sort();
+  const sel=choices.map((c,i)=>c.querySelector('input').checked?i:-1).filter(i=>i>=0);
+  if(sel.length===0)return;
+  const ok=sel.length===correct.length && sel.every((v,i)=>v===correct[i]); scores[qid(b)]=ok?1:0;
+  choices.forEach((c,i)=>{ c.querySelector('input').disabled=true;
+    if(correct.includes(i)) c.classList.add('correct-choice');
+    else if(c.querySelector('input').checked) c.classList.add('wrong-choice'); });
+  btn.disabled=true; const fb=b.querySelector('.feedback'); fb.style.display='block'; fb.className='feedback '+(ok?'correct':'wrong');
+  fb.innerHTML=ok?'<div class="label">✅ 正解！（1点）</div>':'<div class="label">❌ 不正解（過不足あり・0点）</div>';
+}
+function calcTotal(){
+  const total=Object.values(scores).reduce((a,b)=>a+b,0), pct=Math.round(total/MAXQ*100);
+  const msg=pct===100?'🎉 満点です！':pct>=70?'👍 よくできました！':'📚 復習してみましょう。';
+  const bar=document.getElementById('score-bar'); bar.style.display='block';
+  document.getElementById('score-val').textContent=total+' / '+MAXQ;
+  document.getElementById('score-msg').textContent=msg;
+  document.getElementById('score-fill').style.width=pct+'%';
+  bar.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body></html>
