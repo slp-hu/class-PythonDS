@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>少数データの相関はあてにならない</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEEDE7;
+    --panel:#F7F6F2;
+    --ink:#1E232B;
+    --muted:#7C838C;
+    --hair:#D4D3CA;
+    --grid:#DEDDD4;
+    --sig:#C6412A;      /* 有意（＝この文脈では危険） */
+    --sig-wash:#F0D9D1;
+    --safe:#2E6E63;     /* 頑健・大標本 */
+    --point:#3A424C;
+    --needle:#1E232B;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px,transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/26px 26px,
+      var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans JP",system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 22px 72px;}
+
+  /* ---- header ---- */
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--sig);font-weight:600;
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:30px;height:2px;background:var(--sig);display:inline-block;}
+  h1{
+    font-family:"Space Grotesk","Noto Sans JP",sans-serif;
+    font-weight:700;font-size:clamp(30px,5.4vw,50px);line-height:1.08;
+    letter-spacing:-.01em;margin:0 0 16px;
+  }
+  .lede{font-size:16px;max-width:56ch;color:#3b424b;margin:0;}
+  .lede b{color:var(--sig);font-weight:700;}
+
+  /* ---- controls ---- */
+  .controls{
+    margin:34px 0 26px;padding:20px 22px;
+    background:var(--panel);border:1px solid var(--hair);border-radius:4px;
+    display:grid;grid-template-columns:1fr 1fr auto;gap:22px 30px;align-items:end;
+  }
+  .ctl label{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-size:13px;font-weight:500;margin-bottom:8px;
+  }
+  .ctl .val{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:16px;}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:3px;
+    background:var(--hair);border-radius:2px;outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--ink);cursor:pointer;border:3px solid var(--panel);
+    box-shadow:0 0 0 1px var(--ink);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;background:var(--ink);
+    cursor:pointer;border:3px solid var(--panel);box-shadow:0 0 0 1px var(--ink);
+  }
+  input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--ink),0 0 0 4px var(--sig-wash);}
+  .btns{display:flex;flex-direction:column;gap:9px;}
+  button{
+    font-family:"Noto Sans JP",sans-serif;font-size:13.5px;font-weight:500;
+    padding:10px 16px;border-radius:3px;cursor:pointer;white-space:nowrap;
+    border:1px solid var(--ink);background:var(--ink);color:var(--panel);
+    transition:transform .06s ease,opacity .15s ease;
+  }
+  button.ghost{background:transparent;color:var(--ink);}
+  button:hover{opacity:.86;}
+  button:active{transform:translateY(1px);}
+  button:focus-visible{outline:3px solid var(--sig-wash);outline-offset:2px;}
+
+  /* ---- plots grid ---- */
+  .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;}
+  .card{
+    background:var(--panel);border:1px solid var(--hair);border-radius:4px;
+    padding:18px 20px 20px;
+  }
+  .card h2{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;
+  }
+  svg{display:block;width:100%;height:auto;}
+
+  /* ---- readout ---- */
+  .readout{display:flex;flex-direction:column;gap:0;}
+  .verdict{
+    padding:14px 16px;border-radius:3px;margin-bottom:16px;
+    border:1px solid var(--hair);
+  }
+  .verdict .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
+    font-weight:600;text-transform:uppercase;
+  }
+  .verdict .big{
+    font-family:"Space Grotesk",sans-serif;font-size:26px;font-weight:700;
+    line-height:1.1;margin:2px 0 6px;
+  }
+  .verdict .note{font-size:12.5px;line-height:1.5;color:#3b424b;}
+  .verdict.is-sig{background:var(--sig-wash);border-color:#e0b5aa;}
+  .verdict.is-sig .tag,.verdict.is-sig .big{color:var(--sig);}
+  .verdict.no-sig .tag,.verdict.no-sig .big{color:var(--safe);}
+
+  .stats{border-top:1px solid var(--hair);}
+  .stat{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:10px 2px;border-bottom:1px solid var(--hair);
+  }
+  .stat .k{font-size:13px;color:#3b424b;}
+  .stat .k small{color:var(--muted);font-size:11px;display:block;line-height:1.3;}
+  .stat .v{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;}
+  .stat .v.hl{color:var(--sig);}
+
+  /* ---- histogram card full width ---- */
+  .full{margin-top:20px;}
+  .hist-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+  .hist-caption{font-size:13.5px;max-width:60ch;color:#3b424b;margin:2px 0 16px;}
+  .hist-caption b{color:var(--ink);font-weight:700;font-family:"IBM Plex Mono",monospace;}
+  .rate{
+    font-family:"IBM Plex Mono",monospace;text-align:right;line-height:1.25;
+    flex-shrink:0;
+  }
+  .rate .num{font-size:30px;font-weight:600;color:var(--sig);}
+  .rate .lbl{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+
+  .legend{
+    display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;
+    font-size:12px;color:var(--muted);font-family:"IBM Plex Mono",monospace;
+  }
+  .legend span{display:flex;align-items:center;gap:7px;}
+  .swatch{width:14px;height:10px;border-radius:1px;display:inline-block;}
+
+  .foot{
+    margin-top:38px;padding-top:20px;border-top:1px solid var(--hair);
+    font-size:13px;color:var(--muted);max-width:70ch;
+  }
+  .foot code{font-family:"IBM Plex Mono",monospace;color:#3b424b;background:var(--panel);
+    padding:1px 5px;border-radius:2px;border:1px solid var(--hair);}
+
+  @media (max-width:760px){
+    .controls{grid-template-columns:1fr;gap:18px;}
+    .btns{flex-direction:row;}
+    .btns button{flex:1;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">相関係数と有意性検定</div>
+  <h1>少数データの相関は、<br>あてにならない</h1>
+  <p class="lede">下の散布図は<b>まったく無関係</b>な2つの変数（真の相関 ρ = 0）から乱数で作っています。それでもデータ点が少ないと、直線はきれいに引け、相関係数 <b>r は簡単に大きな値</b>になります。スライダーとボタンで、その「偶然の相関」を自分の手で確かめてください。</p>
+
+  <div class="controls">
+    <div class="ctl">
+      <label for="n">データ点数 <span class="val" id="nVal">6</span></label>
+      <input type="range" id="n" min="3" max="120" value="6" step="1">
+    </div>
+    <div class="ctl">
+      <label for="rho">真の相関 ρ <span class="val" id="rhoVal">0.00</span></label>
+      <input type="range" id="rho" min="-0.9" max="0.9" value="0" step="0.05">
+    </div>
+    <div class="btns">
+      <button id="draw">新しい標本を引く</button>
+      <button id="auto" class="ghost">自動で引き直す</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- 散布図 -->
+    <div class="card">
+      <h2>散布図と回帰直線<span id="drawCount">標本 #1</span></h2>
+      <svg id="scatter" viewBox="0 0 440 380" role="img" aria-label="散布図と回帰直線"></svg>
+    </div>
+
+    <!-- 検定パネル -->
+    <div class="card readout">
+      <div class="verdict" id="verdict">
+        <div class="tag" id="vTag">判定</div>
+        <div class="big" id="vBig">—</div>
+        <div class="note" id="vNote"></div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="k">相関係数 r</div>
+          <div class="v" id="sR">—</div>
+        </div>
+        <div class="stat">
+          <div class="k">t 値<small>t = r√(n−2) / √(1−r²)</small></div>
+          <div class="v" id="sT">—</div>
+        </div>
+        <div class="stat">
+          <div class="k">p 値<small>両側・自由度 n−2</small></div>
+          <div class="v" id="sP">—</div>
+        </div>
+        <div class="stat">
+          <div class="k">有意な |r| の下限<small>有意水準 5%・臨界値</small></div>
+          <div class="v" id="sCrit">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ヒストグラム -->
+  <div class="card full">
+    <div class="hist-head">
+      <div>
+        <h2 style="margin-bottom:4px;">r の散らばり<span>モンテカルロ 4000 回</span></h2>
+        <p class="hist-caption" id="histCap"></p>
+      </div>
+      <div class="rate">
+        <div class="num" id="rateNum">—</div>
+        <div class="lbl" id="rateLbl">「有意」と出る割合</div>
+      </div>
+    </div>
+    <svg id="hist" viewBox="0 0 900 260" role="img" aria-label="相関係数rの標本分布"></svg>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--sig)"></i>|r| ≧ 臨界値（有意と判定される領域）</span>
+      <span><i class="swatch" style="background:#B9BDB4"></i>非有意の領域</span>
+      <span><i class="swatch" style="background:var(--needle);width:3px;height:14px"></i>いまの標本の r</span>
+    </div>
+  </div>
+
+  <p class="foot">
+    n を小さいまま「新しい標本を引く」を何度か押すと、r が毎回大きく跳ねるのが見えます。ρ = 0（無相関）でも n が小さいほど r の分布は横に広がり、偶然だけで見かけの相関が生まれます。逆に n を増やすと分布は 0 に収束し、有意判定に必要な <code>臨界 |r|</code> も下がっていきます。相関を語るには、係数の大きさだけでなく <b>データ点数</b> が要ることの図解です。
+  </p>
+</div>
+
+<script>
+"use strict";
+/* ===== 統計関数 ===== */
+function gammln(xx){
+  const cof=[76.18009172947146,-86.50532032941677,24.01409824083091,
+             -1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];
+  let x=xx,y=xx,tmp=x+5.5; tmp-=(x+0.5)*Math.log(tmp);
+  let ser=1.000000000190015;
+  for(let j=0;j<6;j++){y++;ser+=cof[j]/y;}
+  return -tmp+Math.log(2.5066282746310005*ser/x);
+}
+function betacf(a,b,x){
+  const MAXIT=250,EPS=3e-12,FPMIN=1e-300;
+  let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;
+  if(Math.abs(d)<FPMIN)d=FPMIN; d=1/d; let h=d;
+  for(let m=1;m<=MAXIT;m++){
+    let m2=2*m, aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN;
+    c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN;
+    d=1/d; h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN;
+    c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN;
+    d=1/d; let del=d*c; h*=del;
+    if(Math.abs(del-1)<EPS)break;
+  }
+  return h;
+}
+function betai(a,b,x){
+  if(x<=0)return 0; if(x>=1)return 1;
+  let bt=Math.exp(gammln(a+b)-gammln(a)-gammln(b)+a*Math.log(x)+b*Math.log(1-x));
+  return x<(a+1)/(a+b+2) ? bt*betacf(a,b,x)/a : 1-bt*betacf(b,a,1-x)/b;
+}
+/* 相関 r・n から両側 p 値 */
+function pValue(r,n){
+  if(n<3) return 1;
+  const df=n-2, rr=Math.min(Math.abs(r),0.9999999);
+  const t=rr*Math.sqrt(df/(1-rr*rr));
+  return betai(df/2,0.5,df/(df+t*t));
+}
+/* 有意水準 alpha に対応する臨界 |r| を二分探索 */
+function critR(n,alpha){
+  if(n<3) return 1;
+  let lo=0,hi=0.9999999;
+  for(let i=0;i<60;i++){
+    let mid=(lo+hi)/2;
+    if(pValue(mid,n)>alpha) lo=mid; else hi=mid;
+  }
+  return (lo+hi)/2;
+}
+/* 標準正規乱数（Box-Muller） */
+let spare=null;
+function randn(){
+  if(spare!==null){const s=spare;spare=null;return s;}
+  let u=0,v=0;
+  while(u===0)u=Math.random();
+  while(v===0)v=Math.random();
+  const mag=Math.sqrt(-2*Math.log(u));
+  spare=mag*Math.sin(2*Math.PI*v);
+  return mag*Math.cos(2*Math.PI*v);
+}
+/* 相関 rho をもつ二変量正規標本 */
+function sample(n,rho){
+  const xs=[],ys=[],k=Math.sqrt(1-rho*rho);
+  for(let i=0;i<n;i++){
+    const z1=randn(),z2=randn();
+    xs.push(z1); ys.push(rho*z1+k*z2);
+  }
+  return {xs,ys};
+}
+function pearson(xs,ys){
+  const n=xs.length;
+  let mx=0,my=0;
+  for(let i=0;i<n;i++){mx+=xs[i];my+=ys[i];}
+  mx/=n;my/=n;
+  let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<n;i++){
+    const dx=xs[i]-mx,dy=ys[i]-my;
+    sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;
+  }
+  const den=Math.sqrt(sxx*syy);
+  return den<1e-12?0:sxy/den;
+}
+
+/* ===== 描画 ===== */
+const NS="http://www.w3.org/2000/svg";
+const el=id=>document.getElementById(id);
+function svgEl(tag,attrs){
+  const e=document.createElementNS(NS,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);
+  return e;
+}
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* 散布図 */
+const RANGE=3.3;               // 軸の固定範囲（標本ごとに軸が動かないように）
+const SP={x:52,y:20,w:368,h:320}; // プロット領域
+function dataToPx(vx,vy){
+  const px=SP.x+(vx+RANGE)/(2*RANGE)*SP.w;
+  const py=SP.y+(RANGE-vy)/(2*RANGE)*SP.h;
+  return [px,py];
+}
+function drawScatter(data,r){
+  const svg=el("scatter"); svg.innerHTML="";
+  // 枠・目盛グリッド
+  for(let g=-3;g<=3;g++){
+    const [gx]=dataToPx(g,0), [,gy]=dataToPx(0,g);
+    svg.appendChild(svgEl("line",{x1:gx,y1:SP.y,x2:gx,y2:SP.y+SP.h,
+      stroke:css("--grid"),"stroke-width":1}));
+    svg.appendChild(svgEl("line",{x1:SP.x,y1:gy,x2:SP.x+SP.w,y2:gy,
+      stroke:css("--grid"),"stroke-width":1}));
+  }
+  svg.appendChild(svgEl("rect",{x:SP.x,y:SP.y,width:SP.w,height:SP.h,
+    fill:"none",stroke:css("--hair"),"stroke-width":1}));
+  // 軸ラベル
+  const xl=svgEl("text",{x:SP.x+SP.w/2,y:SP.y+SP.h+30,"text-anchor":"middle",
+    fill:css("--muted"),"font-size":12,"font-family":"IBM Plex Mono"});
+  xl.textContent="変数 X"; svg.appendChild(xl);
+  const yl=svgEl("text",{x:16,y:SP.y+SP.h/2,"text-anchor":"middle",
+    fill:css("--muted"),"font-size":12,"font-family":"IBM Plex Mono",
+    transform:`rotate(-90 16 ${SP.y+SP.h/2})`});
+  yl.textContent="変数 Y"; svg.appendChild(yl);
+
+  // 回帰直線（範囲端で計算）
+  const n=data.xs.length;
+  let mx=0,my=0;
+  for(let i=0;i<n;i++){mx+=data.xs[i];my+=data.ys[i];}
+  mx/=n;my/=n;
+  let sxy=0,sxx=0;
+  for(let i=0;i<n;i++){sxy+=(data.xs[i]-mx)*(data.ys[i]-my);sxx+=(data.xs[i]-mx)**2;}
+  if(sxx>1e-9){
+    const slope=sxy/sxx, inter=my-slope*mx;
+    const x1=-RANGE, x2=RANGE;
+    const [p1x,p1y]=dataToPx(x1,slope*x1+inter);
+    const [p2x,p2y]=dataToPx(x2,slope*x2+inter);
+    svg.appendChild(svgEl("line",{x1:p1x,y1:p1y,x2:p2x,y2:p2y,
+      stroke:css("--sig"),"stroke-width":2.4,"stroke-linecap":"round"}));
+  }
+  // 点
+  for(let i=0;i<n;i++){
+    const [px,py]=dataToPx(data.xs[i],data.ys[i]);
+    svg.appendChild(svgEl("circle",{cx:px,cy:py,r:4.4,
+      fill:css("--point"),"fill-opacity":0.82,stroke:css("--panel"),"stroke-width":1}));
+  }
+  // r ラベル（プロット内右上）
+  const box=svgEl("rect",{x:SP.x+SP.w-96,y:SP.y+8,width:88,height:30,
+    rx:3,fill:css("--panel"),"fill-opacity":0.9,stroke:css("--hair")});
+  svg.appendChild(box);
+  const rt=svgEl("text",{x:SP.x+SP.w-52,y:SP.y+28,"text-anchor":"middle",
+    fill:css("--sig"),"font-size":16,"font-weight":600,"font-family":"IBM Plex Mono"});
+  rt.textContent="r = "+r.toFixed(2); svg.appendChild(rt);
+}
+
+/* ヒストグラム */
+const HP={x:44,y:14,w:812,h:190};
+const NBINS=45;
+function drawHist(dist,rc,curR){
+  const svg=el("hist"); svg.innerHTML="";
+  // ビン集計
+  const bins=new Array(NBINS).fill(0);
+  const lo=-1,hi=1,bw=(hi-lo)/NBINS;
+  for(const v of dist){
+    let idx=Math.floor((v-lo)/bw);
+    if(idx<0)idx=0; if(idx>=NBINS)idx=NBINS-1;
+    bins[idx]++;
+  }
+  const maxc=Math.max(...bins,1);
+  // 軸
+  svg.appendChild(svgEl("line",{x1:HP.x,y1:HP.y+HP.h,x2:HP.x+HP.w,y2:HP.y+HP.h,
+    stroke:css("--hair"),"stroke-width":1}));
+  const xOf=v=>HP.x+(v-lo)/(hi-lo)*HP.w;
+  for(let t=-1;t<=1;t+=0.5){
+    const gx=xOf(t);
+    svg.appendChild(svgEl("line",{x1:gx,y1:HP.y+HP.h,x2:gx,y2:HP.y+HP.h+6,
+      stroke:css("--muted"),"stroke-width":1}));
+    const tx=svgEl("text",{x:gx,y:HP.y+HP.h+24,"text-anchor":"middle",
+      fill:css("--muted"),"font-size":12,"font-family":"IBM Plex Mono"});
+    tx.textContent=t.toFixed(1); svg.appendChild(tx);
+  }
+  const axl=svgEl("text",{x:HP.x+HP.w/2,y:HP.y+HP.h+46,"text-anchor":"middle",
+    fill:css("--muted"),"font-size":12,"font-family":"IBM Plex Mono"});
+  axl.textContent="相関係数 r"; svg.appendChild(axl);
+  // バー
+  for(let i=0;i<NBINS;i++){
+    const center=lo+(i+0.5)*bw;
+    const h=bins[i]/maxc*HP.h;
+    const x=HP.x+i/NBINS*HP.w;
+    const bwpx=HP.w/NBINS;
+    const sig=Math.abs(center)>=rc;
+    svg.appendChild(svgEl("rect",{x:x+0.6,y:HP.y+HP.h-h,width:bwpx-1.2,height:h,
+      fill:sig?css("--sig"):"#B9BDB4",rx:0.5}));
+  }
+  // 臨界線
+  [-rc,rc].forEach(c=>{
+    const gx=xOf(c);
+    svg.appendChild(svgEl("line",{x1:gx,y1:HP.y,x2:gx,y2:HP.y+HP.h,
+      stroke:css("--sig"),"stroke-width":1,"stroke-dasharray":"3 3","stroke-opacity":0.6}));
+  });
+  // いまの標本の r（ニードル）
+  if(curR!==null && isFinite(curR)){
+    const gx=xOf(Math.max(-1,Math.min(1,curR)));
+    svg.appendChild(svgEl("line",{x1:gx,y1:HP.y-4,x2:gx,y2:HP.y+HP.h,
+      stroke:css("--needle"),"stroke-width":3}));
+    svg.appendChild(svgEl("path",{d:`M ${gx-5} ${HP.y-4} L ${gx+5} ${HP.y-4} L ${gx} ${HP.y+5} Z`,
+      fill:css("--needle")}));
+  }
+}
+
+/* ===== 状態と更新 ===== */
+let cur=null;   // 現在の標本
+let autoTimer=null;
+const ALPHA=0.05;
+
+function currentParams(){
+  return {n:+el("n").value, rho:+el("rho").value};
+}
+
+function updateReadout(r,n){
+  const df=n-2;
+  const rr=Math.min(Math.abs(r),0.9999999);
+  const t=df>0? r*Math.sqrt(df/(1-rr*rr)) : 0;
+  const p=pValue(r,n);
+  const rc=critR(n,ALPHA);
+  const sig=p<ALPHA;
+
+  el("sR").textContent=r.toFixed(3);
+  el("sT").textContent=(df>0?t.toFixed(2):"—");
+  el("sP").textContent=p<0.001?"< 0.001":p.toFixed(3);
+  el("sP").className="v"+(sig?" hl":"");
+  el("sCrit").textContent="±"+rc.toFixed(3);
+
+  const v=el("verdict");
+  if(sig){
+    v.className="verdict is-sig";
+    el("vTag").textContent="p < 0.05";
+    el("vBig").textContent="「有意な相関」";
+    const rho=+el("rho").value;
+    el("vNote").innerHTML = Math.abs(rho)<1e-9
+      ? "本当は<b>無相関</b>なのに、この標本では有意に見えています。n が小さいほど、こうした偽陽性が強く出ます。"
+      : "有意と判定されました。ただし n が小さいと、この結論は標本ごとに大きくぶれます。";
+  }else{
+    v.className="verdict no-sig";
+    el("vTag").textContent="p ≧ 0.05";
+    el("vBig").textContent="非有意";
+    el("vNote").innerHTML="この点数では、見かけの r があっても「相関あり」とは言えません。";
+  }
+  return rc;
+}
+
+function recalcHist(n,rho,rc,curR){
+  const TRIALS=4000;
+  const dist=new Float64Array(TRIALS);
+  let sigCount=0;
+  for(let i=0;i<TRIALS;i++){
+    const s=sample(n,rho);
+    const r=pearson(s.xs,s.ys);
+    dist[i]=r;
+    if(Math.abs(r)>=rc)sigCount++;
+  }
+  drawHist(dist,rc,curR);
+  const rate=sigCount/TRIALS*100;
+  el("rateNum").textContent=rate.toFixed(0)+"%";
+  const isNull=Math.abs(rho)<1e-9;
+  el("rateLbl").textContent=isNull?"偶然「有意」と出る割合":"「有意」と出る割合（検出力）";
+  el("histCap").innerHTML = isNull
+    ? `真の相関が <b>ρ = 0</b> のとき、<b>n = ${n}</b> 個のデータから得られる r の分布です。0 のまわりに集まるべきですが、n が小さいほど裾が広く、赤い領域（有意判定）にしばしば入り込みます。`
+    : `真の相関が <b>ρ = ${rho.toFixed(2)}</b>・<b>n = ${n}</b> のときの r の分布です。n が小さいと分布は広く、標本ごとに r が大きくぶれます。`;
+}
+
+function newSample(recompute){
+  const {n,rho}=currentParams();
+  cur=sample(n,rho);
+  const r=pearson(cur.xs,cur.ys);
+  drawScatter(cur,r);
+  const rc=updateReadout(r,n);
+  el("drawCount").textContent="標本 #"+(drawId++);
+  if(recompute) recalcHist(n,rho,rc,r);
+  else{ // ヒストは据え置き、ニードルだけ更新
+    lastDist && drawHist(lastDist,rc,r);
+  }
+  return {r,rc};
+}
+
+/* ヒストの分布をキャッシュしてニードル更新を軽く */
+let lastDist=null;
+function recalcHistCached(n,rho,rc,curR){
+  const TRIALS=4000;
+  const dist=new Float64Array(TRIALS);
+  let sigCount=0;
+  for(let i=0;i<TRIALS;i++){
+    const s=sample(n,rho);
+    const r=pearson(s.xs,s.ys);
+    dist[i]=r; if(Math.abs(r)>=rc)sigCount++;
+  }
+  lastDist=dist;
+  drawHist(dist,rc,curR);
+  const rate=sigCount/TRIALS*100;
+  el("rateNum").textContent=rate.toFixed(0)+"%";
+  const isNull=Math.abs(rho)<1e-9;
+  el("rateLbl").textContent=isNull?"偶然「有意」と出る割合":"「有意」と出る割合（検出力）";
+  el("histCap").innerHTML = isNull
+    ? `真の相関が <b>ρ = 0</b> のとき、<b>n = ${n}</b> 個のデータから得られる r の分布です。0 のまわりに集まるべきですが、n が小さいほど裾が広く、赤い領域（有意判定）にしばしば入り込みます。`
+    : `真の相関が <b>ρ = ${rho.toFixed(2)}</b>・<b>n = ${n}</b> のときの r の分布です。n が小さいと分布は広く、標本ごとに r が大きくぶれます。`;
+}
+
+let drawId=1;
+function fullUpdate(){
+  const {n,rho}=currentParams();
+  cur=sample(n,rho);
+  const r=pearson(cur.xs,cur.ys);
+  drawScatter(cur,r);
+  const rc=updateReadout(r,n);
+  el("drawCount").textContent="標本 #"+drawId;
+  recalcHistCached(n,rho,rc,r);
+}
+function resampleOnly(){
+  const {n,rho}=currentParams();
+  cur=sample(n,rho);
+  const r=pearson(cur.xs,cur.ys);
+  drawScatter(cur,r);
+  const rc=updateReadout(r,n);
+  drawId++;
+  el("drawCount").textContent="標本 #"+drawId;
+  lastDist && drawHist(lastDist,rc,r);
+}
+
+/* ===== イベント ===== */
+el("n").addEventListener("input",e=>{
+  el("nVal").textContent=e.target.value;
+  drawId++; fullUpdate();
+});
+el("rho").addEventListener("input",e=>{
+  el("rhoVal").textContent=(+e.target.value).toFixed(2);
+  drawId++; fullUpdate();
+});
+el("draw").addEventListener("click",()=>{drawId++; resampleOnly();});
+
+const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+el("auto").addEventListener("click",e=>{
+  if(autoTimer){
+    clearInterval(autoTimer);autoTimer=null;
+    e.target.textContent="自動で引き直す";e.target.classList.add("ghost");
+  }else{
+    e.target.textContent="止める";e.target.classList.remove("ghost");
+    autoTimer=setInterval(()=>{drawId++;resampleOnly();}, reduce?900:650);
+  }
+});
+
+/* 初期描画 */
+fullUpdate();
+</script>
+</body>
+</html>
